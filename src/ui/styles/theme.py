@@ -62,6 +62,7 @@ QWidget#centralWidget {{
 QFrame#appShell {{
     background: {sv['bg']};
     border: 1px solid {sv['border']};
+    border-top: 2px solid {tokens["color.accent.primary"]};
     border-radius: {tokens["radius.xl"]};
 }}
 
