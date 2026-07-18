@@ -51,6 +51,8 @@ class MainWindow(QMainWindow):
         self.setGeometry(100, 100, 1400, 900)
         self.setWindowIcon(IconManager.get_icon("my_nexus", size=64, color=_main_token("color.accent.primary")))
         
+        # Premium hover lift for the main window (implemented in global stylesheet)
+        
         # Set stylesheet
         self.setStyleSheet(get_stylesheet())
         

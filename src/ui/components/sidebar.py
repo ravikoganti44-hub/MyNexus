@@ -9,6 +9,7 @@ from PyQt6.QtCore import Qt, pyqtSignal, QSize, QPropertyAnimation, QEasingCurve
 from PyQt6.QtGui import QFont, QColor
 from src.ui.styles.icon_manager import IconManager
 from src.ui.styles.tokens import token, spacing
+from src.ui.styles.tokens import token as _main_token
 from src.ui.styles.motion import duration as _motion_duration, easing as _motion_easing
 from config.settings import APP_NAME, APP_TAGLINE, APP_VERSION
 
@@ -130,13 +131,13 @@ class SidebarWidget(QWidget):
 
         caption = QLabel("PERSONAL HUB")
         caption.setObjectName("sidebarBrandCaption")
-        caption.setFont(QFont("Segoe UI", 8, QFont.Weight.DemiBold))
+        caption.setFont(QFont("Segoe UI", int(_main_token("type.scale.caption").replace("px","")), QFont.Weight.DemiBold))
         caption.setMinimumHeight(16)
         brand_text_layout.addWidget(caption)
 
         # Logo / Title
         title = QLabel(APP_NAME)
-        title.setFont(QFont("Segoe UI", 15, QFont.Weight.Bold))
+        title.setFont(QFont("Segoe UI", int(_main_token("type.scale.h2").replace("px","")), QFont.Weight.Bold))
         title.setObjectName("titleLabel")
         title.setMinimumHeight(24)
         brand_text_layout.addWidget(title)
@@ -145,7 +146,7 @@ class SidebarWidget(QWidget):
         header_layout.addLayout(brand_row)
 
         subtitle = QLabel(APP_TAGLINE)
-        subtitle.setFont(QFont("Segoe UI", 8))
+        subtitle.setFont(QFont("Segoe UI", int(_main_token("type.scale.caption").replace("px",""))))
         subtitle.setObjectName("subtitleLabel")
         subtitle.setWordWrap(True)
         header_layout.addWidget(subtitle)
