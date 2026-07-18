@@ -35,6 +35,7 @@ from src.ui.components.premium_button import PremiumButton
 from src.ui.components.stat_card import StatCard
 from src.core.ai_engine import NexusAI
 from src.ui.components.ai_insights_panel import AIInsightsPanel
+from src.ui.styles.tokens import token
 
 # ---------------------------------------------------------------------------
 # Category suggestions
@@ -57,18 +58,20 @@ LIABILITY_CATEGORIES = [
     "Business Loan", "Tax Liability", "Other Liabilities",
 ]
 
-# Palette
+# UI token refs
+_BG       = token("color.bg.primary")
+_CARD     = token("color.bg.secondary")
+_BORDER   = token("color.border.default")
+_TEXT     = token("color.text.primary")
+_MUTED    = token("color.text.secondary")
+
+# Data/alert colors kept as legacy constants
 _GREEN  = "#3fb950"
 _RED    = "#f85149"
 _BLUE   = "#58a6ff"
 _YELLOW = "#e3b341"
 _PURPLE = "#bc8cff"
 _ORANGE = "#f0883e"
-_BG     = "#0d1117"
-_CARD   = "#161b22"
-_BORDER = "#30363d"
-_TEXT   = "#c9d1d9"
-_MUTED  = "#8b949e"
 
 CATEGORY_COLORS = [
     "#58a6ff", "#3fb950", "#f0883e", "#bc8cff",
@@ -328,8 +331,8 @@ class _SnapshotDialog(QDialog):
         self.setMinimumWidth(580)
         self.setMinimumHeight(560)
         self.setStyleSheet(
-            "QDialog{background-color:#161b22;}"
-            "QLabel{color:#c9d1d9;}")
+            f"QDialog{{background-color:{_CARD};}}"
+            f"QLabel{{color:{_TEXT};}}")
         self._build()
         if existing_data:
             self._load(existing_data)
@@ -344,7 +347,7 @@ class _SnapshotDialog(QDialog):
 
         hdr = QLabel("Edit Snapshot" if self.existing else "New Net Worth Snapshot")
         hdr.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        hdr.setStyleSheet("color:#58a6ff;")
+        hdr.setStyleSheet(f"color:{_BLUE};")
         root.addWidget(hdr)
 
         # Date row
@@ -354,8 +357,8 @@ class _SnapshotDialog(QDialog):
         self.date_edit = QDateEdit(QDate.currentDate())
         self.date_edit.setCalendarPopup(True)
         self.date_edit.setStyleSheet(
-            "QDateEdit{background:#21262d;color:#e6edf3;"
-            "border:1px solid #30363d;border-radius:6px;padding:6px;}")
+            f"QDateEdit{{background:{_CARD};color:{_TEXT};"
+            f"border:1px solid {_BORDER};border-radius:6px;padding:6px;}}")
         date_row.addWidget(date_lbl)
         date_row.addWidget(self.date_edit)
         date_row.addStretch()
