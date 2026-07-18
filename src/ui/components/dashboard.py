@@ -18,7 +18,7 @@ from src.ui.components.premium_button import PremiumButton
 from src.ui.styles.icon_manager import IconManager
 from src.ui.components.ai_insights_panel import AIInsightsPanel
 from src.ui.styles.tokens import token, spacing
-from src.ui.styles.motion import duration as motion_duration
+from src.ui.styles.motion import duration as motion_duration, motion_prefs
 from src.core.ai_engine import NexusAI
 from collections import Counter
 from datetime import datetime, timedelta, date as _date
@@ -27,12 +27,49 @@ from datetime import datetime, timedelta, date as _date
 _ICON_FOR_STAT = {
     "Total Activities": "dashboard",
     "Due This Week": "calendar_view",
-    "Overdue": "error",
+    "Overdue": "alert",
     "Completed Today": "check",
 }
 
 def _stat_icon(name: str, fallback: str) -> str:
     return _ICON_FOR_STAT.get(name, fallback)
+
+
+class CollapsibleSection(QWidget):
+    """Chevron-collapsible section wrapper for dashboard panels."""
+
+    def __init__(self, title: str, widget: QWidget, parent=None):
+        super().__init__(parent)
+        self._widget = widget
+        self._collapsed = False
+
+        root = QVBoxLayout(self)
+        root.setContentsMargins(0, 0, 0, 0)
+        root.setSpacing(0)
+
+        header = QWidget()
+        header_layout = QHBoxLayout(header)
+        header_layout.setContentsMargins(0, 0, 0, 0)
+        header_layout.setSpacing(8)
+        self.chevron = QLabel("▶")
+        self.chevron.setFixedWidth(16)
+        self.chevron.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_lbl = QLabel(title)
+        title_lbl.setFont(QFont("Segoe UI", 12, QFont.Weight.Bold))
+        header_layout.addWidget(self.chevron)
+        header_layout.addWidget(title_lbl)
+        header_layout.addStretch()
+        root.addWidget(header)
+
+        root.addWidget(widget)
+
+        header.setCursor(Qt.CursorShape.PointingHandCursor)
+        header.mousePressEvent = self._toggle
+
+    def _toggle(self, event=None):
+        self._collapsed = not self._collapsed
+        self._widget.setVisible(not self._collapsed)
+        self.chevron.setText("▼" if not self._collapsed else "▶")
 
 
 class DashboardWidget(QWidget):
