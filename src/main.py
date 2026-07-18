@@ -27,6 +27,7 @@ from src.ui.components.sidebar import SidebarWidget
 from src.ui.components.quick_search import QuickSearchDialog
 from src.ui.styles.icon_manager import IconManager
 from src.ui.styles.theme import get_stylesheet
+from src.ui.styles.tokens import token as _main_token
 from src.core.reminder_engine import get_reminder_engine
 from src.database.config import init_db
 from config.settings import APP_NAME, APP_TITLE, APP_VERSION
@@ -48,7 +49,7 @@ class MainWindow(QMainWindow):
         # Setup window
         self.setWindowTitle(APP_TITLE)
         self.setGeometry(100, 100, 1400, 900)
-        self.setWindowIcon(IconManager.get_icon("my_nexus", size=64, color="#8aaefc"))
+        self.setWindowIcon(IconManager.get_icon("my_nexus", size=64, color=_main_token("color.accent.primary")))
         
         # Set stylesheet
         self.setStyleSheet(get_stylesheet())
@@ -181,7 +182,9 @@ class MainWindow(QMainWindow):
         # Ctrl+K search hint
         search_hint = QLabel("Ctrl+K Search")
         search_hint.setObjectName("windowStatusLabel")
-        search_hint.setStyleSheet("color: #444c56; font-size: 9px;")
+        search_hint.setStyleSheet(
+            f"color: {_main_token('color.text.tertiary')}; font-size: 9px;"
+        )
         status_layout.addWidget(search_hint)
 
         shell_layout.addWidget(body_frame, 1)
@@ -335,7 +338,7 @@ def main():
         # Set application properties
         app.setApplicationName(APP_NAME)
         app.setApplicationVersion(APP_VERSION)
-        app.setWindowIcon(IconManager.get_icon("my_nexus", size=64, color="#8aaefc"))
+        app.setWindowIcon(IconManager.get_icon("my_nexus", size=64, color=_main_token("color.accent.primary")))
 
         # Onboarding & passphrase setup
         _show_onboarding_if_needed()
