@@ -22,7 +22,7 @@ def _btn_cell(btn):
 from src.database.config import get_session
 from src.database.operations import IntegrationManager
 from src.ui.components.premium_button import PremiumButton
-from src.ui.styles.icon_manager import IconManager
+from src.ui.styles.tokens import token
 from config.settings import APP_NAME
 
 
@@ -75,27 +75,18 @@ class IntegrationsWidget(QWidget):
             "Name", "Type", "Status", "Last Synced", "Edit", "Delete"
         ])
         self.table.setAlternatingRowColors(True)
-        self.table.setStyleSheet("""
-            QTableWidget {
-                background-color: #161b22;
-                alternate-background-color: #1c2128;
-                gridline-color: #30363d;
-                border: 1px solid #30363d;
-                border-radius: 8px;
-                font-size: 12px;
-            }
-            QTableWidget::item { padding: 4px 8px; border: none; }
-            QTableWidget::item:hover { background-color: rgba(88,166,255,0.06); }
-            QTableWidget::item:selected { background-color: rgba(88,166,255,0.15); color: #e6edf3; }
-            QHeaderView::section {
-                background-color: #1c2128;
-                color: #c9d1d9;
-                padding: 10px 8px;
-                border: none;
-                border-bottom: 2px solid #30363d;
-                font-weight: 700;
-                font-size: 11px;
-            }
+        self.table.setStyleSheet(f"""
+            QTableWidget {{
+                background-color: {token("color.bg.secondary")};
+                alternate-background-color: {token("color.bg.tertiary")};
+                gridline-color: {token("color.border.default")};
+                border: 1px solid {token("color.border.default")}; border-radius: 8px;
+            }}
+            QHeaderView::section {{
+                background-color: {token("color.bg.tertiary")}; color: {token("color.text.secondary")}; padding: 10px 8px;
+                border: none; border-bottom: 2px solid {token("color.border.default")};
+                font-weight: 700; font-size: 11px;
+            }}
         """)
         from PyQt6.QtWidgets import QHeaderView
         header = self.table.horizontalHeader()
