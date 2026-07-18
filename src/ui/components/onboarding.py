@@ -336,9 +336,35 @@ class OnboardingWizard(QDialog):
 
         layout.addWidget(self._section_title("You're all set"))
         layout.addWidget(self._body_label(
-            "Open Dashboard to add your first activity, "
-            "or enable security later in Settings → Security."
+            "Choose a first action to build momentum.\n"
+            "You can always change these later in Settings → Security."
         ))
+
+        actions = QHBoxLayout()
+        actions.setSpacing(_sp("space.gap.md"))
+        add_activity = QPushButton("Add your first activity")
+        add_activity.setCursor(Qt.CursorShape.PointingHandCursor)
+        add_activity.setFixedHeight(36)
+        add_activity.setStyleSheet(
+            f"QPushButton {{ background: {_PALETTE['accent.primary']}; color: #fff; border: none; "
+            f"border-radius: {_PALETTE['radius.md']}; font-weight: bold; }} "
+            f"QPushButton:hover {{ background: {_PALETTE['accent.secondary']}; }}"
+        )
+        add_activity.clicked.connect(self.accept)
+
+        security = QPushButton("Enable security")
+        security.setCursor(Qt.CursorShape.PointingHandCursor)
+        security.setFixedHeight(36)
+        security.setStyleSheet(
+            f"QPushButton {{ background: transparent; color: {_PALETTE['text.secondary']}; "
+            f"border: 1px solid {_PALETTE['border.default']}; border-radius: {_PALETTE['radius.md']}; }} "
+            f"QPushButton:hover {{ background: {_PALETTE['bg.secondary']}; }}"
+        )
+        security.clicked.connect(self.accept)
+
+        actions.addWidget(add_activity)
+        actions.addWidget(security)
+        layout.addLayout(actions)
         layout.addStretch()
         return page
 

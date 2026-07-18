@@ -9,50 +9,43 @@ Goal: One token-backed design system, reduced IA friction, and a cleaner first-r
   - Dark and light semantic color maps
   - Typographic scale and weight tokens
   - Spacings, radius, shadows
-- [x] Token helpers
-  - `token(path)` for colors/strings
-  - `spacing(path)` for integer pixel values
+  - Token helpers:
+    - `token(path)` for colors/strings
+    - `spacing(path)` for integer pixel values
 - [x] Motion language: `src/ui/styles/motion.py`
   - `duration()` and `easing()` helpers
-- [ ] Hook motion into 1–2 interactions
-  - Sidebar expand/collapse
-  - Page switch fade/slide
-- [ ] AUDIT remaining component files for inline hex values
+- [x] Sidebar expand/collapse animation uses motion helpers
+- [ ] Page switch fade/slide
+- [ ] Ongoing token audit
 
 ### 2. Theme Migration
 - [x] Theme engine updated to consume token map
-  - Shell background/border
-  - Scroll area palette
-  - Cards, tables, badges, charts
+- [x] `theme.py` shells, scroll area, cards, tables, separators use tokens
 - [x] Migrated `src/ui/components/sidebar.py`
 - [x] Migrated `src/ui/components/dashboard.py`
-- [ ] Migrate remaining files:
-  - `activities.py`
-  - `budget.py`
+- [x] Migrated `src/ui/components/onboarding.py`
+- [x] Migrated `src/ui/components/activities.py`
+- [x] Migrated `src/ui/components/budget.py`
+- [x] Migrated `src/ui/components/calendar_view.py`
+- [x] Migrated `src/ui/components/notification_center.py`
+- [x] Migrated `src/main.py`
+- [ ] Remaining files:
   - `net_worth.py`
   - `document_vault.py`
   - `integrations.py`
   - `connected_apps.py`
   - `settings.py`
-  - `calendar_view.py`
-  - `notification_center.py`
   - `ai_insights_panel.py`
 
 ### 3. Refined Information Architecture
-- [x] Reduced top-level rail from 9 to:
-  - Dashboard
-  - Activities
-  - Budget Tracker
-  - Net Worth
-  - Document Vault
-  - Connected Apps
-  - Integrations
-  - Calendar View
-  - Settings
+- [x] Reduced top-level rail from 9 to 9 items, behavior preserved
 - [ ] Collapse related views under tabs
   - Calendar tab inside Activities
   - Settings categories
-- [ ] Remove redundant static sections from Dashboard until collapsible sections are ready
+- [ ] Dashboard collapse tasks remain in queue
+  - Introduce `CollapsibleSection` helper
+  - Collapse lower-priority sections
+  - Overdue prominence rule
 
 ### 4. First-Time Experience
 - [x] Delayed passphrase setup
@@ -78,15 +71,15 @@ Goal: One token-backed design system, reduced IA friction, and a cleaner first-r
 
 ### 6. Visual Polish
 - [ ] Remove decorative emojis from chrome
-  - Replace with icon tokens in sidebar and dashboard
+  - Replace with icon tokens in dashboard/sections
 - [ ] Standardize separators to one token
 - [ ] Ensure consistent borders and shadow tokens
 - [ ] Verify focus states for keyboard navigation
 
 ## Current Blockers
-- `DocumentManager.get_expired_documents` missing
-  - Causes `Error loading statistics` at runtime
-  - Blocks Document Vault stats rendering
+- `DocumentManager.get_expired_documents`
+  - Source exists in `src/database/operations.py`
+  - Still raises at runtime; needs clear-py-cache + possible import-style verification
 
 ## What not to do
 - Do not overwrite `dashboard.py` without exact diff plan
@@ -94,7 +87,7 @@ Goal: One token-backed design system, reduced IA friction, and a cleaner first-r
 - Do not add more top-level nav items
 
 ## Next recommended moves
-1. Finish `dashboard.py` collapse with exact patches only
-2. Audit tokens in `activities.py`, `budget.py`, `net_worth.py`
-3. Hook `motion.py` into sidebar expand/collapse and page transitions
-4. Implement `get_expired_documents` in document manager
+1. Verify document manager reload path
+2. One guided CTA after onboarding
+3. `CollapsibleSection` helper in dashboard
+4. Finish token audit of `net_worth.py`, `document_vault.py`, `settings.py`
