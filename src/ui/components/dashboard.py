@@ -522,14 +522,14 @@ class DashboardWidget(QWidget):
         )[:10]
         if not recent:
             empty = QLabel("No recent activity yet.")
-            empty.setStyleSheet("color: #8b949e; font-size: 11px;")
+            empty.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 11px;")
             self.feed_layout.addWidget(empty)
             return
 
         for act in recent:
             status_icon = "✅" if act.is_completed else ("⚠️" if act.next_due_date and act.next_due_date < datetime.now() else "📌")
             ts = act.updated_at.strftime("%b %d, %H:%M")
-            lbl = QLabel(f"{status_icon}  <b>{act.title}</b>  —  <span style='color:#8b949e;'>{ts}</span>")
+            lbl = QLabel(f"{status_icon}  <b>{act.title}</b>  —  <span style='color:{token('color.text.secondary')};'>{ts}</span>")
             lbl.setTextFormat(Qt.TextFormat.RichText)
             lbl.setFont(QFont("Segoe UI", 10))
             lbl.setStyleSheet("padding: 4px 0;")
@@ -570,19 +570,14 @@ class DashboardWidget(QWidget):
             status_item = QTableWidgetItem(status_text)
             try:
                 if activity.is_completed:
-                    icon = IconManager.get_icon('check', size=16, color='#3fb950')
+                    icon = IconManager.get_icon('check', size=16, color=token('color.semantic.success'))
                     status_item.setIcon(icon)
-                    status_item.setForeground(QColor('#3fb950'))
-                    bg = QColor(35, 150, 80)
-                    bg.setAlpha(30)
-                    status_item.setBackground(bg)
+                    status_item.setForeground(QColor(token('color.semantic.success')))
+                    bg = QColor(token('color.semantic.success'))
                 else:
-                    icon = IconManager.get_icon('warning', size=16, color='#f59e0b')
+                    icon = IconManager.get_icon('warning', size=16, color=token('color.semantic.warning'))
                     status_item.setIcon(icon)
-                    status_item.setForeground(QColor('#f59e0b'))
-                    bg = QColor(245, 158, 11)
-                    bg.setAlpha(22)
-                    status_item.setBackground(bg)
+                    status_item.setForeground(QColor(token('color.semantic.warning')))
             except Exception:
                 # Fallback: color only
                 if activity.is_completed:
@@ -626,14 +621,14 @@ class DashboardWidget(QWidget):
             # Status
             status_item = QTableWidgetItem("Overdue")
             try:
-                icon = IconManager.get_icon('error', size=16, color='#f85149')
+                icon = IconManager.get_icon('error', size=16, color=token('color.semantic.error'))
                 status_item.setIcon(icon)
-                status_item.setForeground(QColor('#f85149'))
+                status_item.setForeground(QColor(token('color.semantic.error')))
                 bg = QColor(248, 81, 73)
                 bg.setAlpha(28)
                 status_item.setBackground(bg)
             except Exception:
-                status_item.setForeground(QColor('#f85149'))
+                status_item.setForeground(QColor(token('color.semantic.error')))
             self.overdue_table.setItem(row, 4, status_item)
     
     def _populate_connected_apps(self):
