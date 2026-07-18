@@ -16,6 +16,7 @@ from PyQt6.QtGui import QFont, QColor, QCursor
 from src.database.config import get_session
 from src.database.operations import ActivityManager
 from src.ui.components.premium_button import PremiumButton
+from src.ui.styles.tokens import token, spacing
 
 # One dot color per activity category
 CATEGORY_COLORS: dict[str, str] = {
@@ -52,14 +53,14 @@ class DayCell(QFrame):
         num = QLabel(str(self.day_date.day))
         if self.is_today:
             num.setStyleSheet(
-                "color: #fff; background-color: #2563eb; "
+                f"color: #fff; background-color: {token('color.accent.primary')}; "
                 "border-radius: 11px; padding: 2px 6px; font-weight: 700;")
             num.setFont(QFont("Segoe UI", 11, QFont.Weight.Bold))
         elif self.is_other_month:
-            num.setStyleSheet("color: #3d4550;")
+            num.setStyleSheet(f"color: {token('color.text.tertiary')};")
             num.setFont(QFont("Segoe UI", 11))
         else:
-            num.setStyleSheet("color: #c9d1d9;")
+            num.setStyleSheet(f"color: {token('color.text.primary')};")
             num.setFont(QFont("Segoe UI", 11))
         layout.addWidget(num, 0, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
 
@@ -83,7 +84,7 @@ class DayCell(QFrame):
             if len(self.activities) > 5:
                 more = QLabel(f"+{len(self.activities) - 5}")
                 more.setFont(QFont("Segoe UI", 7))
-                more.setStyleSheet("color: #6b7280;")
+                more.setStyleSheet(f"color: {token('color.text.tertiary')};")
                 dots_layout.addWidget(more)
 
             dots_layout.addStretch()
@@ -93,12 +94,19 @@ class DayCell(QFrame):
         self.setLayout(layout)
 
         # Frame style
-        base_bg     = "#0d1117" if self.is_other_month else "#161b22"
-        border      = ("1px solid #2563eb" if self.is_today
-                       else ("1px solid #161b22" if self.is_other_month
-                             else "1px solid #21262d"))
-        hover_bg    = ("rgba(37,99,235,0.08)" if not self.is_other_month else base_bg)
-        hover_border = ("#2563eb" if not self.is_other_month else "#161b22")
+        base_bg     = token("color.bg.primary") if self.is_other_month else token("color.bg.secondary")
+        if self.is_today:
+            border      = f"1px solid {token('color.accent.primary')}"
+            hover_border = f"1px solid {token('color.text.primary')}"
+            hover_bg    = base_bg
+        elif self.is_other_month:
+            border      = f"1px solid {token('color.bg.primary')}"
+            hover_border = border
+            hover_bg    = base_bg
+        else:
+            border      = f"1px solid {token('color.border.light')}"
+            hover_border = border
+            hover_bg    = f"{token('color.bg.hover')}"
 
         self.setStyleSheet(f"""
             QFrame {{
@@ -168,7 +176,7 @@ class CalendarViewWidget(QWidget):
 
         self.month_label = QLabel()
         self.month_label.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))
-        self.month_label.setStyleSheet("color: #e6edf3;")
+        self.month_label.setStyleSheet(f"color: {token('color.text.primary')};")
         self.month_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.month_label.setMinimumWidth(200)
 
@@ -213,7 +221,7 @@ class CalendarViewWidget(QWidget):
             lbl = QLabel(name)
             lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl.setFont(QFont("Segoe UI", 10, QFont.Weight.Bold))
-            lbl.setStyleSheet("color: #58a6ff; padding: 4px;")
+            lbl.setStyleSheet(f"color: {token('color.accent.primary')}; padding: 4px;")
             dow_layout.addWidget(lbl, 1)
         cal_v.addWidget(dow_frame)
 
@@ -238,23 +246,23 @@ class CalendarViewWidget(QWidget):
 
         self.detail_date_lbl = QLabel("Select a date")
         self.detail_date_lbl.setFont(QFont("Segoe UI", 12, QFont.Weight.Bold))
-        self.detail_date_lbl.setStyleSheet("color: #e6edf3;")
+        self.detail_date_lbl.setStyleSheet(f"color: {token('color.text.primary')};")
         self.detail_date_lbl.setWordWrap(True)
         detail_v.addWidget(self.detail_date_lbl)
 
         sep = QFrame()
         sep.setFixedHeight(1)
-        sep.setStyleSheet("background-color: #30363d;")
+        sep.setStyleSheet(f"background-color: {token('color.border.default')};")
         detail_v.addWidget(sep)
 
         self.detail_list = QListWidget()
-        self.detail_list.setStyleSheet("""
-            QListWidget { background-color: transparent; border: none; }
-            QListWidget::item {
-                background-color: #21262d; border-radius: 6px;
-                padding: 8px; margin-bottom: 4px; color: #c9d1d9; font-size: 11px;
-            }
-            QListWidget::item:hover { background-color: #30363d; }
+        self.detail_list.setStyleSheet(f"""
+            QListWidget {{ background-color: transparent; border: none; }}
+            QListWidget::item {{
+                background-color: {token('color.bg.tertiary')}; border-radius: 6px;
+                padding: 8px; margin-bottom: 4px; color: {token('color.text.primary')}; font-size: 11px;
+            }}
+            QListWidget::item:hover {{ background-color: {token('color.border.default')}; }}
         """)
         detail_v.addWidget(self.detail_list)
 

@@ -27,9 +27,9 @@ from src.database.config import get_session
 from src.database.operations import ActivityManager
 from src.database.models import RecurrenceType, CategoryType, Activity
 from src.ui.components.premium_button import PremiumButton
-from src.ui.styles.icon_manager import IconManager
-from src.core.ai_engine import NexusAI
 from src.ui.components.ai_insights_panel import AIInsightsPanel
+from src.ui.styles.tokens import token, spacing
+from src.core.ai_engine import NexusAI
 
 
 class ActivitiesWidget(QWidget):
@@ -162,7 +162,7 @@ class ActivitiesWidget(QWidget):
         # Info bar showing count
         self.info_label = QLabel("Showing 0 activities")
         self.info_label.setFont(QFont("Segoe UI", 9))
-        self.info_label.setStyleSheet("color: #9aa4b2;")
+        self.info_label.setStyleSheet(f"color: {token('color.text.tertiary')};")
         main_layout.addWidget(self.info_label)
         
         # Activities table
@@ -172,36 +172,36 @@ class ActivitiesWidget(QWidget):
             "✓", "Title", "Category", "Recurrence", "Next Due", "Days Left", "Status", "Edit", "Delete"
         ])
         self.table.setAlternatingRowColors(True)
-        self.table.setStyleSheet("""
-            QTableWidget {
-                background-color: #161b22;
-                alternate-background-color: #1c2128;
-                gridline-color: #30363d;
-                border: 1px solid #30363d;
+        self.table.setStyleSheet(f"""
+            QTableWidget {{
+                background-color: {token("color.bg.secondary")};
+                alternate-background-color: {token("color.bg.tertiary")};
+                gridline-color: {token("color.border.default")};
+                border: 1px solid {token("color.border.default")};
                 border-radius: 8px;
                 font-size: 12px;
-            }
-            QTableWidget::item {
+            }}
+            QTableWidget::item {{
                 padding: 4px 8px;
                 border: none;
-            }
-            QTableWidget::item:hover {
-                background-color: rgba(88, 166, 255, 0.06);
-            }
-            QTableWidget::item:selected {
-                background-color: rgba(88, 166, 255, 0.15);
-                color: #e6edf3;
-            }
-            QHeaderView::section {
-                background-color: #1c2128;
-                color: #c9d1d9;
+            }}
+            QTableWidget::item:hover {{
+                background-color: {token("color.accent.primary")};
+            }}
+            QTableWidget::item:selected {{
+                background-color: {token("color.accent.primary")};
+                color: {token("color.text.primary")};
+            }}
+            QHeaderView::section {{
+                background-color: {token("color.bg.tertiary")};
+                color: {token("color.text.primary")};
                 padding: 10px 8px;
                 border: none;
-                border-bottom: 2px solid #30363d;
-                font-weight: 700;
+                border-bottom: 2px solid {token("color.border.default")};
+                font-weight: {token("type.weight.bold")};
                 font-size: 11px;
                 letter-spacing: 0.5px;
-            }
+            }}
         """)
         header = self.table.horizontalHeader()
         header.setStretchLastSection(False)
@@ -225,7 +225,7 @@ class ActivitiesWidget(QWidget):
         # ── AI Activity Insights ──────────────────────────────────────────
         sep_ai = QFrame()
         sep_ai.setFixedHeight(1)
-        sep_ai.setStyleSheet("background-color: #30363d;")
+        sep_ai.setStyleSheet(f"background-color: {token('color.border.default')};")
         main_layout.addWidget(sep_ai)
         self.activity_ai_panel = AIInsightsPanel()
         main_layout.addWidget(self.activity_ai_panel)
