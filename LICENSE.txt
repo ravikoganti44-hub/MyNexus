@@ -1,0 +1,181 @@
+﻿END USER LICENSE AGREEMENT (EULA)
+MyNexus - Personal Finance & Activity Manager
+================================================================================
+
+COPYRIGHT NOTICE
+
+    Copyright (C) 2026 Sesank Koganti. All Rights Reserved.
+    "MyNexus" and the MyNexus logo are proprietary to Sesank Koganti.
+
+IMPORTANT - READ CAREFULLY BEFORE INSTALLING OR USING THIS SOFTWARE
+
+This End User License Agreement ("Agreement") is a legally binding agreement
+between you ("User" or "Licensee") and Sesank Koganti ("Author", "Licensor").
+By installing, copying, or otherwise using MyNexus ("Software"), you agree to
+be bound by the terms of this Agreement. If you do not agree to these terms,
+do not install or use the Software.
+
+--------------------------------------------------------------------------------
+1.  GRANT OF LICENSE
+--------------------------------------------------------------------------------
+
+    The Author grants you a limited, non-exclusive, non-transferable,
+    non-sublicensable, revocable personal license to install and use one (1)
+    copy of the Software solely for your own personal, non-commercial purposes
+    on devices you own or control.
+
+--------------------------------------------------------------------------------
+2.  RESTRICTIONS
+--------------------------------------------------------------------------------
+
+    You may NOT, and you may not permit any third party to:
+
+    (a) Copy, reproduce, republish, upload, post, transmit, or distribute the
+        Software or any portion thereof without prior written consent from the
+        Author;
+
+    (b) Modify, translate, adapt, merge, or create derivative works based on
+        the Software;
+
+    (c) Reverse engineer, decompile, disassemble, decrypt, or attempt to derive
+        the source code of the Software, except to the limited extent expressly
+        permitted by applicable law;
+
+    (d) Sell, rent, lease, sublicense, assign, or otherwise transfer your
+        rights under this Agreement to any third party;
+
+    (e) Remove, alter, or obscure any proprietary notice (including any notice
+        of copyright or trademark) of the Author;
+
+    (f) Use the Software for any commercial purpose, including but not limited
+        to offering it as a service, embedding it in a commercial product, or
+        monetising it in any form;
+
+    (g) Use the Software in any manner that violates applicable local, state,
+        national, or international law.
+
+--------------------------------------------------------------------------------
+3.  INTELLECTUAL PROPERTY RIGHTS
+--------------------------------------------------------------------------------
+
+    The Software, including all source code, object code, interfaces, content,
+    documentation, graphics, icons, and any other materials, is the exclusive
+    intellectual property of Sesank Koganti and is protected by applicable
+    copyright, trade secret, and other intellectual property laws. Nothing in
+    this Agreement transfers any ownership rights to you. All rights not
+    expressly granted herein are reserved by the Author.
+
+--------------------------------------------------------------------------------
+4.  USER DATA & PRIVACY
+--------------------------------------------------------------------------------
+
+    All data you enter into the Software (activities, connected app credentials,
+    documents, integration settings) is stored exclusively on your local device.
+    The Software does not transmit, upload, or share your personal data with the
+    Author or any third party. You are solely responsible for the security and
+    backup of your data.
+
+--------------------------------------------------------------------------------
+5.  DISCLAIMER OF WARRANTIES
+--------------------------------------------------------------------------------
+
+    THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF
+    ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE. TO THE FULLEST
+    EXTENT PERMITTED BY APPLICABLE LAW, THE AUTHOR EXPRESSLY DISCLAIMS ALL
+    WARRANTIES, INCLUDING BUT NOT LIMITED TO:
+
+    (a) IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
+        TITLE, AND NON-INFRINGEMENT;
+
+    (b) THAT THE SOFTWARE WILL MEET YOUR REQUIREMENTS, OPERATE WITHOUT
+        INTERRUPTION, BE ERROR-FREE, OR BE FREE OF VIRUSES OR OTHER HARMFUL
+        COMPONENTS;
+
+    (c) THE ACCURACY, RELIABILITY, COMPLETENESS, OR TIMELINESS OF ANY
+        INFORMATION PROVIDED BY THE SOFTWARE.
+
+    YOU ASSUME ALL RISK ARISING FROM YOUR USE OF OR RELIANCE ON THE SOFTWARE.
+
+--------------------------------------------------------------------------------
+6.  LIMITATION OF LIABILITY
+--------------------------------------------------------------------------------
+
+    TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL
+    SESANK KOGANTI, HIS AFFILIATES, LICENSORS, SERVICE PROVIDERS, EMPLOYEES,
+    AGENTS, OFFICERS, OR DIRECTORS BE LIABLE FOR ANY:
+
+    (a) INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, PUNITIVE, OR EXEMPLARY
+        DAMAGES;
+
+    (b) LOSS OF PROFITS, REVENUE, DATA, BUSINESS, GOODWILL, OR ANTICIPATED
+        SAVINGS;
+
+    (c) DAMAGES ARISING FROM UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR DATA;
+
+    (d) DAMAGES ARISING FROM ANY THIRD-PARTY CONTENT OR SERVICES ACCESSED
+        THROUGH THE SOFTWARE;
+
+    WHETHER BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT
+    LIABILITY, OR ANY OTHER LEGAL THEORY, EVEN IF THE AUTHOR HAS BEEN ADVISED
+    OF THE POSSIBILITY OF SUCH DAMAGES AND EVEN IF A REMEDY FAILS OF ITS
+    ESSENTIAL PURPOSE.
+
+    IN JURISDICTIONS WHERE EXCLUSION OR LIMITATION OF LIABILITY FOR
+    CONSEQUENTIAL OR INCIDENTAL DAMAGES IS NOT PERMITTED, THE AUTHOR'S
+    LIABILITY SHALL BE LIMITED TO THE MAXIMUM EXTENT PERMITTED BY LAW.
+
+--------------------------------------------------------------------------------
+7.  INDEMNIFICATION
+--------------------------------------------------------------------------------
+
+    You agree to defend, indemnify, and hold harmless Sesank Koganti and his
+    affiliates from and against any and all claims, damages, obligations,
+    losses, liabilities, costs, debt, and expenses (including attorney's fees)
+    arising from: (i) your use of the Software; (ii) your violation of this
+    Agreement; (iii) your violation of any third-party rights, including
+    privacy or intellectual property rights; or (iv) any claim that your use
+    of the Software caused damage to a third party.
+
+--------------------------------------------------------------------------------
+8.  TERMINATION
+--------------------------------------------------------------------------------
+
+    This Agreement is effective until terminated. Your rights under this
+    Agreement will terminate automatically, without notice, if you fail to
+    comply with any term of this Agreement. Upon termination, you must cease
+    all use of the Software and destroy all copies, full or partial.
+
+--------------------------------------------------------------------------------
+9.  GOVERNING LAW & DISPUTE RESOLUTION
+--------------------------------------------------------------------------------
+
+    This Agreement shall be governed by and construed in accordance with the
+    laws of the United States of America and the State of the Author's
+    residence, without regard to conflict-of-law principles. Any dispute
+    arising out of or related to this Agreement shall first be attempted to be
+    resolved through good-faith negotiation. If unresolved, disputes shall be
+    subject to binding arbitration or the exclusive jurisdiction of courts in
+    the Author's state of residence.
+
+--------------------------------------------------------------------------------
+10. ENTIRE AGREEMENT & SEVERABILITY
+--------------------------------------------------------------------------------
+
+    This Agreement constitutes the entire agreement between you and the Author
+    regarding the Software and supersedes all prior or contemporaneous
+    communications. If any provision of this Agreement is held invalid or
+    unenforceable, it shall be modified to the minimum extent necessary to make
+    it enforceable, and the remaining provisions shall continue in full force.
+
+--------------------------------------------------------------------------------
+11. CONTACT
+--------------------------------------------------------------------------------
+
+    For permissions, licensing inquiries, or legal notices, contact:
+
+        Sesank Koganti
+        Project: MyNexus - https://mynexus.app
+
+================================================================================
+Copyright (C) 2026 Sesank Koganti. All Rights Reserved.
+================================================================================

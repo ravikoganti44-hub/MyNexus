@@ -1,0 +1,3 @@
+Exporting node types to C:\ProJ_connect\development\MyNexus\n8n_nodes.json...
+Found 867 node types
+Successfully exported 867 node types to C:\ProJ_connect\development\MyNexus\n8n_nodes.json

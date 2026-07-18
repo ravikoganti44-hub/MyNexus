@@ -1,0 +1,8 @@
+MyNexus Version: 1.0.0 
+ 
+For installation see START-HERE.txt 
+ 
+System Requirements 
+OS: Windows 10 or later, 64-bit 
+RAM: 1 GB minimum 
+Disk Space: 100 MB 

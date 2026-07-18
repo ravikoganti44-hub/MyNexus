@@ -1,0 +1,92 @@
+[
+  {
+    "name": "EB1 Guidance Summary (Free)",
+    "active": false,
+    "nodes": [
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 200]
+    },
+    {
+      "parameters": {
+        "url": "https://www.uscis.gov/working-in-the-united-states/permanent-workers/employment-based-immigration-first-preference-eb-1",
+        "method": "GET",
+        "responseFormat": "string",
+        "options": {
+          "followRedirect": true
+        }
+      },
+      "name": "Fetch EB1 Guidance",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [450, 200]
+    },
+    {
+      "parameters": {
+        "html": "={{$node[\"Fetch EB1 Guidance\"].json[\"body\"]}}",
+        "extractionValues": [
+          {
+            "name": "pageText",
+            "type": "css",
+            "value": "body",
+            "attribute": "text"
+          }
+        ]
+      },
+      "name": "Extract EB1 Text",
+      "type": "n8n-nodes-base.htmlExtract",
+      "typeVersion": 1,
+      "position": [650, 200]
+    },
+    {
+      "parameters": {
+        "functionCode": "const rawText = $node[\\\"Extract EB1 Text\\\"].json.pageText || '';\nconst text = rawText.replace(/\\s+/g, ' ').trim();\nconst summary = [];\n\nsummary.push('Source: USCIS EB-1 official guidance page.');\nsummary.push('URL: https://www.uscis.gov/working-in-the-united-states/permanent-workers/employment-based-immigration-first-preference-eb-1');\nsummary.push('');\nsummary.push('EB-1 has three main categories:');\nsummary.push('- EB-1A: Extraordinary Ability. No employer sponsorship needed; self-petition is allowed.');\nsummary.push('- EB-1B: Outstanding Professors and Researchers. Requires employer sponsorship and evidence of international recognition.');\nsummary.push('- EB-1C: Multinational Managers or Executives. Requires current employment with a qualifying multinational employer and transfer to the U.S. affiliate.');\nsummary.push('');\nsummary.push('Common evidence and requirements:');\nsummary.push('- Documentation of awards, publications, memberships, and citations.');\nsummary.push('- Letters from experts or employers supporting the petition.');\nsummary.push('- Proof of sustained national or international acclaim, or qualifying managerial/executive experience.');\nsummary.push('- For EB-1B/EB-1C, a U.S. employer must file Form I-140.');\nsummary.push('');\nsummary.push('Next steps:');\nsummary.push('- Review the USCIS EB-1 guidance page for the specific category that matches your profile.');\nsummary.push('- Collect the supporting documents listed in the guidance page.');\nsummary.push('- Talk to an immigration attorney or authorized representative if you need help choosing the right EB-1 category.');\n\nreturn [{ json: { pageText: text, summary: summary.join('\\n') } }];"
+      },
+      "name": "Summarize EB1 Guidance (Free)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [850, 200]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch EB1 Guidance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch EB1 Guidance": {
+      "main": [
+        [
+          {
+            "node": "Extract EB1 Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract EB1 Text": {
+      "main": [
+        [
+          {
+            "node": "Summarize EB1 Guidance (Free)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+    "settings": {},
+    "id": "2"
+  }
+]

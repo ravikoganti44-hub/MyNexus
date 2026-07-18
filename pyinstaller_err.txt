@@ -1,0 +1,23 @@
+194 INFO: PyInstaller: 6.19.0, contrib hooks: 2026.3
+196 INFO: Python: 3.13.3
+225 INFO: Platform: Windows-11-10.0.26200-SP0
+226 INFO: Python environment: C:\python313
+230 INFO: Module search paths (PYTHONPATH):
+['C:\\ProJ_connect\\development\\MyNexus',
+ 'C:\\python313\\python313.zip',
+ 'C:\\python313\\DLLs',
+ 'C:\\python313\\Lib',
+ 'C:\\python313',
+ 'C:\\Users\\owner\\AppData\\Roaming\\Python\\Python313\\site-packages',
+ 'C:\\Users\\owner\\AppData\\Roaming\\Python\\Python313\\site-packages\\win32',
+ 'C:\\Users\\owner\\AppData\\Roaming\\Python\\Python313\\site-packages\\win32\\lib',
+ 'C:\\Users\\owner\\AppData\\Roaming\\Python\\Python313\\site-packages\\Pythonwin',
+ 'C:\\python313\\Lib\\site-packages',
+ 'C:\\ProJ_connect\\development\\MyNexus']
+694 INFO: Appending 'datas' from .spec
+725 INFO: checking Analysis
+798 INFO: checking PYZ
+844 INFO: checking PKG
+876 INFO: Bootloader C:\Users\owner\AppData\Roaming\Python\Python313\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+876 INFO: checking EXE
+891 INFO: Build complete! The results are available in: C:\ProJ_connect\development\MyNexus\dist

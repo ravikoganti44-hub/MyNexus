@@ -1,0 +1,21 @@
+  
+MyNexus Installer Guide 
+ 
+How to Install 
+=============== 
+ 
+Option A (Recommended) 
+1. Right-click Install-MyNexus.ps1 
+2. Select "Run with PowerShell" 
+3. Click Yes when prompted for admin 
+ 
+Option B (Alternative) 
+1. Right-click Install-MyNexus.bat 
+2. Select "Run as administrator" 
+ 
+Data Location 
+=============== 
+Your financial data will be stored at 
+C:\Users\[YourUsername]\AppData\Roaming\MyNexus\data\ 
+ 
+For more information, see INSTALLATION.md 

@@ -1,0 +1,13 @@
+{
+  "notifications_enabled": true,
+  "sound_enabled": true,
+  "notification_duration": 5,
+  "notification_position": "top-right",
+  "auto_refresh_interval": 30,
+  "theme": "dark",
+  "show_weekend": true,
+  "time_format": "24h",
+  "check_updates": true,
+  "backup_enabled": true,
+  "backup_interval": 7
+}
