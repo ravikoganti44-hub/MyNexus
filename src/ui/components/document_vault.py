@@ -21,6 +21,7 @@ from PyQt6.QtCore import Qt, pyqtSignal, QSize, QDateTime, QTimer
 from PyQt6.QtGui import QIcon, QFont, QColor, QPixmap
 
 from src.ui.styles.icon_manager import IconManager
+from src.ui.styles.tokens import token
 from src.database.config import get_session
 from src.database.operations import DocumentManager
 from src.database.models import Document, DocumentCategory, DocumentType

@@ -23,6 +23,7 @@ from src.database.config import get_session
 from src.database.operations import IntegrationManager
 from src.ui.components.premium_button import PremiumButton
 from src.ui.styles.tokens import token
+from src.ui.styles.icon_manager import IconManager
 from config.settings import APP_NAME
 
 
