@@ -18,9 +18,21 @@ from src.ui.components.premium_button import PremiumButton
 from src.ui.styles.icon_manager import IconManager
 from src.ui.components.ai_insights_panel import AIInsightsPanel
 from src.ui.styles.tokens import token, spacing
+from src.ui.styles.motion import duration as motion_duration
 from src.core.ai_engine import NexusAI
 from collections import Counter
 from datetime import datetime, timedelta, date as _date
+
+
+_ICON_FOR_STAT = {
+    "Total Activities": "dashboard",
+    "Due This Week": "calendar_view",
+    "Overdue": "error",
+    "Completed Today": "check",
+}
+
+def _stat_icon(name: str, fallback: str) -> str:
+    return _ICON_FOR_STAT.get(name, fallback)
 
 
 class DashboardWidget(QWidget):

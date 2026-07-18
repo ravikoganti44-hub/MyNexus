@@ -5,10 +5,11 @@ from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QPushButton, QSpacerItem, QSizePolicy,
     QFrame, QHBoxLayout
 )
-from PyQt6.QtCore import Qt, pyqtSignal, QSize
+from PyQt6.QtCore import Qt, pyqtSignal, QSize, QPropertyAnimation, QEasingCurve
 from PyQt6.QtGui import QFont, QColor
 from src.ui.styles.icon_manager import IconManager
 from src.ui.styles.tokens import token, spacing
+from src.ui.styles.motion import duration as _motion_duration, easing as _motion_easing
 from config.settings import APP_NAME, APP_TAGLINE, APP_VERSION
 
 
@@ -227,18 +228,30 @@ class SidebarWidget(QWidget):
         
         self.setLayout(layout)
 
+    def _animate_width_to(self, target_width: int):
+        """Animated sidebar width change."""
+        if not hasattr(self, "_width_anim"):
+            self._width_anim = QPropertyAnimation(self, b"maximumWidth", self)
+            self._width_anim.setEasingCurve(QEasingCurve(QEasingCurve.Type.OutCubic))
+        else:
+            self._width_anim.stop()
+        self._width_anim.setDuration(_motion_duration("base"))
+        self._width_anim.setStartValue(self.maximumWidth())
+        self._width_anim.setEndValue(target_width)
+        self._width_anim.finished.connect(lambda: self.setFixedWidth(target_width))
+        self._width_anim.start()
+
     def collapse(self):
         """Collapse sidebar to icons-only"""
         if self._collapsed:
             return
         self._collapsed = True
-        self.setFixedWidth(self.COLLAPSED_WIDTH)
+        self._animate_width_to(self.COLLAPSED_WIDTH)
         for btn, text in self._buttons:
-            # show only icon
             try:
                 btn.setText("")
                 btn.setToolTip(text)
-            except:
+            except Exception:
                 pass
 
     def expand(self):
@@ -246,10 +259,10 @@ class SidebarWidget(QWidget):
         if not self._collapsed:
             return
         self._collapsed = False
-        self.setFixedWidth(self.EXPANDED_WIDTH)
+        self._animate_width_to(self.EXPANDED_WIDTH)
         for btn, text in self._buttons:
             try:
                 btn.setText(text)
                 btn.setToolTip("")
-            except:
+            except Exception:
                 pass
