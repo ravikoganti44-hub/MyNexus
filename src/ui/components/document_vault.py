@@ -601,7 +601,10 @@ class DocumentVaultWidget(QWidget):
             self.expiring_docs_value.setText(str(len(expiring)))
             
             # Expired documents
-            expired = DocumentManager.get_expired_documents(session)
+            try:
+                expired = DocumentManager.get_expired_documents(session)
+            except Exception:
+                expired = []
             self.expired_docs_value.setText(str(len(expired)))
             
             # Display expiring documents list
