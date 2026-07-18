@@ -12,6 +12,7 @@ from PyQt6.QtCore import Qt, pyqtSignal, QPropertyAnimation, QEasingCurve
 from PyQt6.QtGui import QFont, QColor
 
 from src.core.ai_engine import Insight
+from src.ui.styles.tokens import token
 
 
 # ---------------------------------------------------------------------------
@@ -31,19 +32,21 @@ class _InsightCard(QFrame):
     def __init__(self, insight: Insight, parent=None):
         super().__init__(parent)
         self.insight = insight
-        border_clr = self._PRIORITY_BORDER.get(insight.priority, "#30363d")
+        border_clr = token("color.semantic.high" if insight.priority == "high"
+            else "color.semantic.medium" if insight.priority == "medium"
+            else "color.semantic.low")
 
         self.setObjectName("insightCard")
         self.setStyleSheet(f"""
             QFrame#insightCard {{
-                background-color: #161b22;
+                background-color: {token("color.bg.secondary")};
                 border: 1px solid {border_clr};
                 border-left: 4px solid {border_clr};
                 border-radius: 10px;
                 padding: 0;
             }}
             QFrame#insightCard:hover {{
-                background-color: #1c2128;
+                background-color: {token("color.bg.tertiary")};
             }}
         """)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -61,7 +64,7 @@ class _InsightCard(QFrame):
 
         title_lbl = QLabel(insight.title)
         title_lbl.setFont(QFont("Segoe UI", 11, QFont.Weight.Bold))
-        title_lbl.setStyleSheet("color: #e6edf3; border: none; background: transparent;")
+        title_lbl.setStyleSheet(f"color: {token('color.text.primary')}; border: none; background: transparent;")
         title_lbl.setWordWrap(True)
         top.addWidget(title_lbl, 1)
 
@@ -83,7 +86,7 @@ class _InsightCard(QFrame):
         # Row 2: description
         desc = QLabel(insight.description)
         desc.setFont(QFont("Segoe UI", 9))
-        desc.setStyleSheet("color: #8b949e; border: none; background: transparent;")
+        desc.setStyleSheet(f"color: {token('color.text.secondary')}; border: none; background: transparent;")
         desc.setWordWrap(True)
         layout.addWidget(desc)
 
@@ -141,7 +144,7 @@ class AIInsightsPanel(QWidget):
         hdr.addWidget(icon)
         title = QLabel("AI Insights")
         title.setFont(QFont("Segoe UI", 15, QFont.Weight.Bold))
-        title.setStyleSheet("color: #a78bfa;")
+        title.setStyleSheet(f"color: {token('color.accent.primary')};")
         hdr.addWidget(title)
 
         ai_badge = QLabel("SMART")

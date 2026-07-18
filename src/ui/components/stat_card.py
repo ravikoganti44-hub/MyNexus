@@ -9,10 +9,13 @@ from PyQt6.QtWidgets import QGraphicsDropShadowEffect
 from PyQt6.QtCore import QPropertyAnimation
 
 
+from src.ui.styles.tokens import token as _tok
+
+
 class StatCard(QFrame):
     """Premium stat card widget"""
     
-    def __init__(self, title: str, value: str, icon_text: str = "", color: str = "#58a6ff"):
+    def __init__(self, title: str, value: str, icon_text: str = "", color: str = _tok("color.accent.primary")):
         super().__init__()
         self.color = color
         self.setObjectName("statCard")
@@ -21,11 +24,9 @@ class StatCard(QFrame):
     def _setup_ui(self, title: str, value: str, icon_text: str):
         """Setup stat card UI"""
         layout = QVBoxLayout()
-        # Slightly tighter padding for compact stat presentation
         layout.setContentsMargins(12, 12, 12, 12)
         layout.setSpacing(6)
         
-        # Icon and title row
         header_layout = QHBoxLayout()
         
         if icon_text:
@@ -36,19 +37,17 @@ class StatCard(QFrame):
         
         title_label = QLabel(title)
         title_label.setFont(QFont("Segoe UI", 10, QFont.Weight.Medium))
-        title_label.setStyleSheet("color: #a0adb8;")
+        title_label.setStyleSheet(f"color: {_tok('color.text.secondary')};")
         header_layout.addWidget(title_label)
         header_layout.addStretch()
         
         layout.addLayout(header_layout)
         
-        # Value
         value_label = QLabel(value)
         value_label.setFont(QFont("Segoe UI", 28, QFont.Weight.Bold))
         value_label.setStyleSheet(f"color: {self.color};")
         layout.addWidget(value_label)
         
-        # Bottom border accent
         border_frame = QFrame()
         border_frame.setFixedHeight(3)
         border_frame.setStyleSheet(f"background-color: {self.color}; border-radius: 1px;")
@@ -56,16 +55,13 @@ class StatCard(QFrame):
         
         self.setLayout(layout)
         
-        # Store references for updates
         self.value_label = value_label
         self.title_label = title_label
     
     def set_value(self, value: str):
-        """Update the value displayed"""
         self.value_label.setText(value)
     
     def set_color(self, color: str):
-        """Update the color accent"""
         self.color = color
         self.value_label.setStyleSheet(f"color: {color};")
 

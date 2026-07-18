@@ -11,7 +11,7 @@ from PyQt6.QtGui import QFont, QColor
 import json
 import os
 from src.ui.components.premium_button import PremiumButton
-from src.ui.styles.icon_manager import IconManager
+from src.ui.styles.tokens import token
 
 
 class SettingsWidget(QWidget):
@@ -377,7 +377,7 @@ class SettingsWidget(QWidget):
         layout.addRow(lock_label)
 
         lock_info = QLabel("App locks after 15 minutes of inactivity when passphrase is set.")
-        lock_info.setStyleSheet("color: #8b949e; font-size: 11px;")
+        lock_info.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 11px;")
         lock_info.setWordWrap(True)
         layout.addRow("", lock_info)
 
@@ -394,12 +394,12 @@ class SettingsWidget(QWidget):
         from config.settings import APP_NAME, APP_VERSION
         name_lbl = QLabel(f"🌐  {APP_NAME}")
         name_lbl.setFont(QFont("Segoe UI", 18, QFont.Weight.Bold))
-        name_lbl.setStyleSheet("color: #58a6ff;")
+        name_lbl.setStyleSheet(f"color: {token('color.accent.primary')};")
         layout.addWidget(name_lbl)
 
         ver_lbl = QLabel(f"Version {APP_VERSION}")
         ver_lbl.setFont(QFont("Segoe UI", 11))
-        ver_lbl.setStyleSheet("color: #8b949e;")
+        ver_lbl.setStyleSheet(f"color: {token('color.text.secondary')};")
         layout.addWidget(ver_lbl)
 
         desc = QLabel(
