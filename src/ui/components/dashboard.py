@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
     QTableWidget, QTableWidgetItem, QScrollArea, QProgressBar, QCalendarWidget,
     QTabWidget, QGridLayout, QSpacerItem, QSizePolicy
 )
-from PyQt6.QtCore import Qt, pyqtSlot, QDate, QSize, pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSlot, QDate, QSize, pyqtSignal, QPropertyAnimation, QEasingCurve
 from PyQt6.QtGui import QFont, QColor, QPixmap, QImage, QBrush
 from PyQt6.QtGui import QFontMetrics
 
@@ -66,9 +66,18 @@ class CollapsibleSection(QWidget):
         header.setCursor(Qt.CursorShape.PointingHandCursor)
         header.mousePressEvent = self._toggle
 
+        self._anim = QPropertyAnimation(self._widget, b"maximumHeight")
+        self._anim.setDuration(int(motion_duration("base")))
+        self._anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+
     def _toggle(self, event=None):
         self._collapsed = not self._collapsed
-        self._widget.setVisible(not self._collapsed)
+        start = self._widget.maximumHeight()
+        end = 0 if self._collapsed else self._widget.sizeHint().height()
+        self._anim.stop()
+        self._anim.setStartValue(start)
+        self._anim.setEndValue(end)
+        self._anim.start()
         self.chevron.setText("▼" if not self._collapsed else "▶")
 
 
