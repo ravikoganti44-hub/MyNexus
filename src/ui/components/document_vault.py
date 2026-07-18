@@ -62,7 +62,7 @@ class DocumentVaultWidget(QWidget):
         # Header
         header_layout = QHBoxLayout()
         header_label = QLabel("📁 Document Vault")
-        header_label.setFont(QFont("Segoe UI", 18, QFont.Weight.Bold))
+        header_label.setFont(QFont("Segoe UI", int(token("type.scale.h2").replace("px","")), QFont.Weight.Bold))
         header_label.setObjectName("pageTitle")
         header_layout.addWidget(header_label)
         header_layout.addStretch()

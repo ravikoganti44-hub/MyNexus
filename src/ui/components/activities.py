@@ -653,7 +653,7 @@ class ActivitiesWidget(QWidget):
             dlg.setGeometry(300, 300, 480, 380)
             layout = QVBoxLayout()
             title = QLabel(activity.title)
-            title.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
+            title.setFont(QFont("Segoe UI", int(token("type.scale.h2").replace("px","")), QFont.Weight.Bold))
             layout.addWidget(title)
 
             desc = QLabel(activity.description or "No description")

@@ -134,7 +134,7 @@ class BudgetTrackerWidget(QWidget):
         main.addWidget(self._section_sep())
         cat_title = QLabel("📊 Spending by Category")
         cat_title.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        cat_title.setStyleSheet("color: #58a6ff;")
+        cat_title.setStyleSheet(f"color: {token('color.accent.primary')};")
         main.addWidget(cat_title)
 
         self.category_frame = QFrame()
@@ -148,7 +148,7 @@ class BudgetTrackerWidget(QWidget):
         main.addWidget(self._section_sep())
         exp_title = QLabel("📝 Expense Entries")
         exp_title.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        exp_title.setStyleSheet("color: #58a6ff;")
+        exp_title.setStyleSheet(f"color: {token('color.accent.primary')};")
         main.addWidget(exp_title)
 
         self.expenses_table = QTableWidget()
