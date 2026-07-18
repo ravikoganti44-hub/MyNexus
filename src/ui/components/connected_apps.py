@@ -517,11 +517,11 @@ class TableApplicationItemWidget(QFrame):
         """Apply professional table row styling with better visibility"""
         # Alternating row colors - more visible
         if self.index % 2 == 0:
-            bg_color = "#161b22"  # Slightly lighter for contrast
-            hover_bg = "#1d2330"
+            bg_color = token("color.bg.secondary")
+            hover_bg = token("color.bg.tertiary")
         else:
-            bg_color = "#0f1419"  # Base dark color
-            hover_bg = "#161b22"
+            bg_color = token("color.bg.primary")
+            hover_bg = token("color.bg.secondary")
         
         # Improved visibility with better contrast
         self.setStyleSheet(f"""
@@ -1176,17 +1176,17 @@ class ConnectedApplicationDialog(QDialog):
         layout.setSpacing(12)
         layout.setContentsMargins(20, 20, 20, 20)
 
-        self.setStyleSheet("""
-            QDialog { background-color: #0d1117; color: #e6eef8; }
-            QLabel { color: #c7d2e0; font-size: 12px; }
-            QLineEdit, QTextEdit, QComboBox {
-                background-color: #161b22; color: #e6eef8;
-                border: 1px solid #30363d; border-radius: 6px;
+        self.setStyleSheet(f"""
+            QDialog {{ background-color: {token("color.bg.primary")}; color: {token("color.text.primary")}; }}
+            QLabel {{ color: {token("color.text.secondary")}; font-size: 12px; }}
+            QLineEdit, QTextEdit, QComboBox {{
+                background-color: {token("color.bg.secondary")}; color: {token("color.text.primary")};
+                border: 1px solid {token("color.border.default")}; border-radius: 6px;
                 padding: 6px 10px; font-size: 12px;
-            }
-            QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
-                border: 1px solid #58a6ff;
-            }
+            }}
+            QLineEdit:focus, QTextEdit:focus, QComboBox:focus {{
+                border: 1px solid {token("color.accent.primary")};
+            }}
         """)
 
         def row(label, widget):
@@ -1236,8 +1236,8 @@ class ConnectedApplicationDialog(QDialog):
         toggle_vis_btn.setFixedSize(32, 28)
         toggle_vis_btn.setToolTip("Show/Hide password")
         toggle_vis_btn.setStyleSheet(
-            "QPushButton { background: #161b22; border: 1px solid #30363d; border-radius:4px; font-size:13px; }"
-            "QPushButton:hover { background: #21262d; }"
+            f"QPushButton {{ background: {token('color.bg.secondary')}; border: 1px solid {token('color.border.default')}; border-radius:4px; font-size:13px; }}"
+            f"QPushButton:hover {{ background: {token('color.bg.tertiary')}; }}"
         )
         toggle_vis_btn.clicked.connect(lambda: self.password_edit.setEchoMode(
             QLineEdit.EchoMode.Normal if self.password_edit.echoMode() == QLineEdit.EchoMode.Password
@@ -1247,9 +1247,9 @@ class ConnectedApplicationDialog(QDialog):
         gen_btn = QPushButton("🔑 Generate")
         gen_btn.setFixedHeight(28)
         gen_btn.setStyleSheet(
-            "QPushButton { background: rgba(63,185,80,0.12); color: #3fb950; border: 1px solid rgba(63,185,80,0.4); "
+            f"QPushButton {{ background: rgba(63,185,80,0.12); color: {token('color.semantic.success')}; border: 1px solid rgba(63,185,80,0.4); "
             "border-radius:4px; padding: 0 8px; font-size:11px; font-weight:600; }"
-            "QPushButton:hover { background: rgba(63,185,80,0.25); }"
+            f"QPushButton:hover {{ background: rgba(63,185,80,0.25); }}"
         )
         gen_btn.clicked.connect(self._generate_password)
         pwd_layout.addWidget(gen_btn)
@@ -1430,7 +1430,7 @@ class ConnectedAppsWidget(QWidget):
         header_frame.setStyleSheet(f"""
             QFrame {{
                 background-color: transparent;
-                border-bottom: 1px solid #30363d;
+                border-bottom: 1px solid {token("color.border.default")};
                 padding-bottom: 10px;
                 border-radius: 0px;
             }}
@@ -1692,7 +1692,7 @@ class ConnectedAppsWidget(QWidget):
                 border: none;
             }}
             QScrollBar:vertical {{
-                background-color: #0d1117;
+                background-color: {token("color.bg.primary")};
                 width: 12px;
                 border-radius: 6px;
             }}
