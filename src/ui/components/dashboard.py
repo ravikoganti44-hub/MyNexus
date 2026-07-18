@@ -174,10 +174,10 @@ class DashboardWidget(QWidget):
         stats_layout.setSpacing(spacing("space.gap.md"))
         
         # Create stat cards with icons and colors
-        self.stat_total = StatCard("Total Activities", "0", "📊", token("color.accent.primary"))
-        self.stat_due = StatCard("Due This Week", "0", "📅", token("color.semantic.warning"))
-        self.stat_overdue = StatCard("Overdue", "0", "⚠️", token("color.semantic.error"))
-        self.stat_completed = StatCard("Completed Today", "0", "✓", token("color.semantic.success"))
+        self.stat_total = StatCard("Total Activities", "0", "📊", token("color.accent.primary"), icon_name="dashboard")
+        self.stat_due = StatCard("Due This Week", "0", "📅", token("color.semantic.warning"), icon_name="calendar_view")
+        self.stat_overdue = StatCard("Overdue", "0", "⚠️", token("color.semantic.error"), icon_name="alert")
+        self.stat_completed = StatCard("Completed Today", "0", "✓", token("color.semantic.success"), icon_name="check")
         
         # add placeholders; we'll arrange in _arrange_stats()
         stats_layout.addWidget(self.stat_total, 0, 0)

@@ -16,22 +16,23 @@ from src.database.operations import ConnectedApplicationManager
 from src.database.config import get_session
 from src.ui.components.premium_button import PremiumButton
 from src.ui.styles.icon_manager import IconManager
+from src.ui.styles.tokens import token
 from src.core.ai_engine import NexusAI
 from src.ui.components.ai_insights_panel import AIInsightsPanel
 
 logger = logging.getLogger(__name__)
 
-# Premium color scheme with extended palette
+# Semantic token-backed aliases for the legacy color scheme
 PREMIUM_COLORS = {
-    "bg_card": "#1a1a2e",
-    "bg_card_hover": "#252541",
-    "accent_primary": "#5b8def",
-    "accent_secondary": "#6dd3b0",
-    "text_primary": "#e6eef8",
-    "text_secondary": "#b7c3d9",
-    "danger": "#ff6b6b",
-    "success": "#21c997",
-    "muted": "#8b94a6",
+    "bg_card":       token("color.bg.secondary"),
+    "bg_card_hover": token("color.bg.tertiary"),
+    "accent_primary":   token("color.accent.primary"),
+    "accent_secondary": token("color.accent.secondary"),
+    "text_primary":   token("color.text.primary"),
+    "text_secondary": token("color.text.secondary"),
+    "danger":  token("color.semantic.error"),
+    "success": token("color.semantic.success"),
+    "muted":   token("color.text.muted"),
 }
 
 # Category color mapping for app types
@@ -78,7 +79,7 @@ class ApplicationCardWidget(QFrame):
         self.setStyleSheet(f"""
             QFrame {{
                 background-color: {PREMIUM_COLORS['bg_card']};
-                border: 2px solid #2a2a3e;
+                border: 2px solid {token("color.border.default")};
                 border-radius: 14px;
                 padding: 0px;
             }}
@@ -151,7 +152,7 @@ class ApplicationCardWidget(QFrame):
         
         # Divider
         divider = QFrame()
-        divider.setStyleSheet(f"background-color: #30363d; border: none;")
+        divider.setStyleSheet(f"background-color: {token('color.border.default')}; border: none;")
         divider.setFixedHeight(1)
         content_layout.addWidget(divider)
         
@@ -254,7 +255,7 @@ class ApplicationCardWidget(QFrame):
         # Notes section (if available)
         if self.app.notes:
             divider2 = QFrame()
-            divider2.setStyleSheet(f"background-color: #30363d; border: none;")
+            divider2.setStyleSheet(f"background-color: {token('color.border.default')}; border: none;")
             divider2.setFixedHeight(1)
             content_layout.addWidget(divider2)
             
@@ -376,7 +377,7 @@ class CompactApplicationCardWidget(QFrame):
         self.setStyleSheet(f"""
             QFrame {{
                 background-color: {PREMIUM_COLORS['bg_card']};
-                border: 1px solid #2a2a3e;
+                border: 1px solid {token("color.border.default")};
                 border-radius: 8px;
             }}
             QFrame:hover {{
@@ -706,7 +707,7 @@ class TableApplicationItemWidget(QFrame):
     def create_separator(self) -> QFrame:
         """Create a column separator line"""
         sep = QFrame()
-        sep.setStyleSheet(f"background-color: #21262d;")
+        sep.setStyleSheet(f"background-color: {token('color.bg.tertiary')};")
         sep.setFixedWidth(1)
         sep.setMinimumHeight(40)
         sep.setMaximumHeight(60)
@@ -786,7 +787,7 @@ class ListApplicationItemWidget(QFrame):
         self.setStyleSheet(f"""
             QFrame {{
                 background-color: {PREMIUM_COLORS['bg_card']};
-                border: 1px solid #2a2a3e;
+                border: 1px solid {token("color.border.default")};
                 border-radius: 6px;
                 padding: 0px;
             }}
@@ -909,7 +910,7 @@ class ListApplicationItemWidget(QFrame):
         self.setStyleSheet(f"""
             QFrame {{
                 background-color: {PREMIUM_COLORS['bg_card']};
-                border: 2px solid #2a2a3e;
+                border: 2px solid {token("color.border.default")};
                 border-radius: 14px;
                 padding: 0px;
             }}
@@ -982,7 +983,7 @@ class ListApplicationItemWidget(QFrame):
         
         # Divider
         divider = QFrame()
-        divider.setStyleSheet(f"background-color: #30363d; border: none;")
+        divider.setStyleSheet(f"background-color: {token('color.border.default')}; border: none;")
         divider.setFixedHeight(1)
         content_layout.addWidget(divider)
         
@@ -1048,7 +1049,7 @@ class ListApplicationItemWidget(QFrame):
         # Notes section (if available)
         if self.app.notes:
             divider2 = QFrame()
-            divider2.setStyleSheet(f"background-color: #30363d; border: none;")
+            divider2.setStyleSheet(f"background-color: {token('color.border.default')}; border: none;")
             divider2.setFixedHeight(1)
             content_layout.addWidget(divider2)
             
@@ -1718,7 +1719,7 @@ class ConnectedAppsWidget(QWidget):
         # ── AI Security Insights ──────────────────────────────────────────
         sep_ai = QFrame()
         sep_ai.setFixedHeight(1)
-        sep_ai.setStyleSheet("background-color: #30363d;")
+        sep_ai.setStyleSheet(f"background-color: {token('color.border.default')};")
         main_layout.addWidget(sep_ai)
         self.security_ai_panel = AIInsightsPanel()
         main_layout.addWidget(self.security_ai_panel)
@@ -2094,7 +2095,7 @@ class ConnectedAppsWidget(QWidget):
             # Create separator between columns
             if col_text != "#":
                 sep = QFrame()
-                sep.setStyleSheet(f"background-color: #21262d; min-width: 1px;")
+                sep.setStyleSheet(f"background-color: {token('color.bg.tertiary')}; min-width: 1px;")
                 sep.setFixedWidth(1)
                 sep.setMinimumHeight(30)
                 header_layout.addWidget(sep)
