@@ -720,7 +720,7 @@ class TableApplicationItemWidget(QFrame):
         self.copy_btn.setStyleSheet(f"""
             QPushButton {{
                 background-color: {PREMIUM_COLORS['success']};
-                color: #ffffff;
+                color: {token("color.text.inverse")};
                 border: none;
                 border-radius: 5px;
                 font-weight: 600;
@@ -1278,8 +1278,8 @@ class ConnectedApplicationDialog(QDialog):
         for em in self.EMOJI_SUGGESTIONS:
             btn = QPushButton(em)
             btn.setFixedSize(32, 28)
-            btn.setStyleSheet("QPushButton { background: #161b22; border: 1px solid #30363d; border-radius:4px; font-size:14px; }"
-                              "QPushButton:hover { background: #21262d; }")
+            btn.setStyleSheet(f"QPushButton {{ background: {token('color.bg.secondary')}; border: 1px solid {token('color.border.default')}; border-radius:4px; font-size:14px; }}"
+                              f"QPushButton:hover {{ background: {token('color.bg.tertiary')}; }}")
             btn.clicked.connect(lambda _, e=em: self.emoji_edit.setText(e))
             emoji_row.addWidget(btn)
         emoji_row.addStretch()
@@ -1487,7 +1487,7 @@ class ConnectedAppsWidget(QWidget):
             QFrame {{
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                     stop:0 rgba(26, 26, 46, 0.92), stop:1 rgba(13, 17, 23, 0.78));
-                border: 2px solid #30363d;
+                border: 2px solid {token("color.border.default")};
                 border-radius: 10px;
                 padding: 10px;
             }}
@@ -1508,9 +1508,9 @@ class ConnectedAppsWidget(QWidget):
         self.search_input.setMinimumWidth(260)
         self.search_input.setStyleSheet(f"""
             QLineEdit {{
-                background-color: #1a1a2e;
+                background-color: {token("color.bg.secondary")};
                 color: {PREMIUM_COLORS['text_primary']};
-                border: 2px solid #30363d;
+                border: 2px solid {token("color.border.default")};
                 border-radius: 10px;
                 padding: 7px 12px;
                 font-size: 11px;
@@ -1518,7 +1518,7 @@ class ConnectedAppsWidget(QWidget):
             }}
             QLineEdit:focus {{
                 border: 2px solid {PREMIUM_COLORS['accent_primary']};
-                background-color: #242e42;
+                background-color: {token("color.bg.secondary")};
             }}
         """)
         self.search_input.textChanged.connect(self.on_search_changed)
@@ -1537,7 +1537,7 @@ class ConnectedAppsWidget(QWidget):
         filter_group_frame.setStyleSheet(f"""
             QFrame {{
                 background-color: rgba(26, 26, 46, 0.8);
-                border: 2px solid #30363d;
+                border: 2px solid {token("color.border.default")};
                 border-radius: 10px;
                 padding: 1px;
             }}
@@ -1561,9 +1561,9 @@ class ConnectedAppsWidget(QWidget):
             self.category_combo.addItem(cat_key.replace("_", " ").title(), cat_key)
         self.category_combo.setStyleSheet(f"""
             QComboBox {{
-                background-color: #0d1117;
+                background-color: {token("color.bg.secondary")};
                 color: {PREMIUM_COLORS['text_primary']};
-                border: 1px solid #30363d;
+                border: 1px solid {token("color.border.default")};
                 border-radius: 8px;
                 padding: 5px 10px;
                 font-size: 11px;
@@ -1571,7 +1571,7 @@ class ConnectedAppsWidget(QWidget):
             }}
             QComboBox:focus {{
                 border: 2px solid {PREMIUM_COLORS['accent_primary']};
-                background-color: #1a1a2e;
+                background-color: {token("color.bg.secondary")};
             }}
             QComboBox::drop-down {{
                 border: none;
@@ -1582,7 +1582,7 @@ class ConnectedAppsWidget(QWidget):
         filter_group_layout.addWidget(self.category_combo)
 
         sep = QFrame()
-        sep.setStyleSheet("background-color: #30363d;")
+        sep.setStyleSheet(f"background-color: {token('color.border.default')};")
         sep.setFixedWidth(1)
         sep.setFixedHeight(18)
         filter_group_layout.addWidget(sep)
@@ -1599,9 +1599,9 @@ class ConnectedAppsWidget(QWidget):
         self.sort_combo.addItems(["Name (A-Z)", "Recently Used", "Date Added"])
         self.sort_combo.setStyleSheet(f"""
             QComboBox {{
-                background-color: #0d1117;
+                background-color: {token("color.bg.secondary")};
                 color: {PREMIUM_COLORS['text_primary']};
-                border: 1px solid #30363d;
+                border: 1px solid {token("color.border.default")};
                 border-radius: 8px;
                 padding: 5px 10px;
                 font-size: 11px;
@@ -1609,7 +1609,7 @@ class ConnectedAppsWidget(QWidget):
             }}
             QComboBox:focus {{
                 border: 2px solid {PREMIUM_COLORS['accent_primary']};
-                background-color: #1a1a2e;
+                background-color: {token("color.bg.secondary")};
             }}
             QComboBox::drop-down {{
                 border: none;
@@ -1625,13 +1625,13 @@ class ConnectedAppsWidget(QWidget):
         # View mode selector - compact segmented control
         view_group_frame = QFrame()
         view_group_frame.setFixedHeight(34)
-        view_group_frame.setStyleSheet("""
-            QFrame {
-                background-color: #0d1117;
-                border: 2px solid #30363d;
+        view_group_frame.setStyleSheet(f"""
+            QFrame {{
+                background-color: {token("color.bg.secondary")};
+                border: 1px solid {token("color.border.default")};
                 border-radius: 8px;
                 padding: 1px;
-            }
+            }}
         """)
         view_group_layout = QHBoxLayout()
         view_group_layout.setContentsMargins(3, 0, 3, 0)
@@ -1811,29 +1811,29 @@ class ConnectedAppsWidget(QWidget):
             return f"""
                 QPushButton {{
                     background-color: {PREMIUM_COLORS['accent_primary']};
-                    color: #ffffff;
+                    color: {token("color.text.inverse")};
                     border: none;
                     border-radius: 6px;
                     padding: 8px 12px;
                     font-weight: 600;
                     font-size: 11px;
                 }}
-                QPushButton:hover {{ background-color: #7ab3ff; color: #ffffff; }}
+                QPushButton:hover {{ background-color: {token("color.accent.hover")}; color: {token("color.text.inverse")}; }}
             """
         else:
             return f"""
                 QPushButton {{
                     background-color: transparent;
                     color: {PREMIUM_COLORS['text_secondary']};
-                    border: 1px solid #30363d;
+                    border: 1px solid {token("color.border.default")};
                     border-radius: 6px;
                     padding: 8px 12px;
                     font-weight: 500;
                     font-size: 11px;
                 }}
                 QPushButton:hover {{
-                    background-color: #1a2332;
-                    border: 1px solid {PREMIUM_COLORS['accent_primary']};
+                    background-color: {token("color.bg.tertiary")};
+                    border: 1px solid {token("color.border.default")};
                     color: {PREMIUM_COLORS['text_primary']};
                 }}
             """
@@ -1844,7 +1844,7 @@ class ConnectedAppsWidget(QWidget):
             return f"""
                 QPushButton {{
                     background-color: {PREMIUM_COLORS['accent_primary']};
-                    color: #ffffff;
+                    color: {token("color.text.inverse")};
                     border: 1px solid {PREMIUM_COLORS['accent_primary']};
                     border-radius: 4px;
                     padding: 4px 10px;
@@ -1852,13 +1852,13 @@ class ConnectedAppsWidget(QWidget):
                     font-weight: 700;
                 }}
                 QPushButton:hover {{
-                    background-color: #7ab3ff;
-                    border: 1px solid #7ab3ff;
-                    color: #ffffff;
+                    background-color: {token("color.accent.hover")};
+                    border: 1px solid {token("color.accent.hover")};
+                    color: {token("color.text.inverse")};
                 }}
                 QPushButton:pressed {{
-                    background-color: #3d82d0;
-                    color: #ffffff;
+                    background-color: {token("color.accent.pressed")};
+                    color: {token("color.text.inverse")};
                 }}
             """
         else:
@@ -1891,7 +1891,7 @@ class ConnectedAppsWidget(QWidget):
                 btn.setStyleSheet(f"""
                     QPushButton {{
                         background-color: {PREMIUM_COLORS['accent_primary']};
-                        color: #ffffff;
+                        color: {token("color.text.inverse")};
                         border: 1px solid {PREMIUM_COLORS['accent_primary']};
                         border-radius: 6px;
                         padding: 4px 10px;
@@ -1899,8 +1899,8 @@ class ConnectedAppsWidget(QWidget):
                         font-weight: 700;
                     }}
                     QPushButton:hover {{
-                        background-color: #7ab3ff;
-                        color: #ffffff;
+                        background-color: {token("color.accent.hover")};
+                        color: {token("color.text.inverse")};
                     }}
                 """)
             else:
@@ -2046,7 +2046,7 @@ class ConnectedAppsWidget(QWidget):
         table_container.setStyleSheet(f"""
             QFrame {{
                 background-color: transparent;
-                border: 2px solid #30363d;
+                border: 2px solid {token("color.border.default")};
                 border-radius: 10px;
                 padding: 0px;
             }}
@@ -2062,11 +2062,11 @@ class ConnectedAppsWidget(QWidget):
             QFrame {{
                 background: qlineargradient(
                     x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #1a2332,
-                    stop:1 #0f1419
+                    stop:0 {token("color.bg.secondary")},
+                    stop:1 {token("color.bg.primary")}
                 );
                 border: none;
-                border-bottom: 2px solid #30363d;
+                border-bottom: 2px solid {token("color.border.default")};
                 border-top-left-radius: 8px;
                 border-top-right-radius: 8px;
                 padding: 0px;
@@ -2143,12 +2143,12 @@ class ConnectedAppsWidget(QWidget):
                 border: none;
             }}
             QScrollBar:vertical {{
-                background-color: #0d1117;
+                background-color: {token("color.bg.secondary")};
                 width: 10px;
                 border-radius: 5px;
             }}
             QScrollBar::handle:vertical {{
-                background-color: #30363d;
+                background-color: {token("color.bg.tertiary")};
                 border-radius: 5px;
                 min-height: 40px;
             }}

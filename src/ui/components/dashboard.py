@@ -590,9 +590,9 @@ class DashboardWidget(QWidget):
             except Exception:
                 # Fallback: color only
                 if activity.is_completed:
-                    status_item.setForeground(QColor('#3fb950'))
+                    status_item.setForeground(QColor(token('color.semantic.success')))
                 else:
-                    status_item.setForeground(QColor('#f59e0b'))
+                    status_item.setForeground(QColor(token('color.semantic.warning')))
 
             self.due_table.setItem(row, 4, status_item)
 
@@ -624,7 +624,7 @@ class DashboardWidget(QWidget):
             # Days overdue
             days_overdue = (now - activity.next_due_date).days
             days_item = QTableWidgetItem(str(days_overdue))
-            days_item.setForeground(QColor("#f85149"))
+            days_item.setForeground(QColor(token('color.semantic.error')))
             self.overdue_table.setItem(row, 3, days_item)
             
             # Status
@@ -656,14 +656,14 @@ class DashboardWidget(QWidget):
                 # Enhanced empty state with icon and helper text
                 empty_layout = QHBoxLayout()
                 try:
-                    icon = IconManager.get_icon("connected_apps", size=28, color="#8b949e")
+                    icon = IconManager.get_icon("connected_apps", size=28, color=token("color.text.tertiary"))
                     icon_lbl = QLabel()
                     icon_lbl.setPixmap(icon.pixmap(28, 28))
                     empty_layout.addWidget(icon_lbl)
                 except:
                     pass
                 no_apps_label = QLabel("No connected applications. Add one to get started.")
-                no_apps_label.setStyleSheet("color: #8b949e; font-size: 13px;")
+                no_apps_label.setStyleSheet(f"color: {token('color.text.tertiary')}; font-size: 13px;")
                 empty_layout.addWidget(no_apps_label)
                 empty_widget = QWidget()
                 empty_widget.setLayout(empty_layout)
