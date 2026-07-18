@@ -1,5 +1,7 @@
 """
 Onboarding wizard for first-time users and master passphrase dialog.
+Passphrase setup is optional and offered at the end of onboarding,
+not forced on first launch.
 """
 from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
@@ -9,9 +11,43 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QFont, QColor, QIcon
 
+from src.ui.styles.tokens import token as _tok
+from src.ui.styles.tokens import spacing as _sp
+
 from src.core.encryption import (
     is_passphrase_set, verify_passphrase, save_key_check, init_encryption
 )
+
+
+def _apply_token_style(widget, palette):
+    """Apply token-backed stylesheet to a generic dialog/wizard container."""
+    widget.setStyleSheet(f"""
+        QDialog, QWidget {{
+            background-color: {palette["bg.primary"]};
+            color: {palette["text.primary"]};
+        }}
+        QLineEdit {{
+            background-color: {palette["bg.secondary"]};
+            color: {palette["text.primary"]};
+            border: 1px solid {palette["border.default"]};
+            border-radius: {palette["radius.md"]};
+            padding: 8px 12px;
+            font-size: 13px;
+        }}
+        QLineEdit:focus {{ border-color: {palette["accent.primary"]}; }}
+        QCheckBox {{ color: {palette["text.secondary"]}; font-size: 10px; }}
+    """)
+
+_PALETTE = {
+    "bg.primary": _tok("color.bg.primary"),
+    "bg.secondary": _tok("color.bg.secondary"),
+    "text.primary": _tok("color.text.primary"),
+    "text.secondary": _tok("color.text.secondary"),
+    "border.default": _tok("color.border.default"),
+    "radius.md": _tok("radius.md"),
+    "accent.primary": _tok("color.accent.primary"),
+    "accent.secondary": _tok("color.accent.secondary"),
+}
 
 
 class MasterPassphraseDialog(QDialog):
@@ -22,36 +58,34 @@ class MasterPassphraseDialog(QDialog):
         self._first_time = first_time
         self._passphrase: str | None = None
         self.setWindowTitle("MyNexus — Unlock")
-        self.setFixedSize(440, 320 if first_time else 240)
-        self.setStyleSheet(self._get_style())
+        self.setFixedSize(460, 320 if first_time else 240)
+        _apply_token_style(self, _PALETTE)
         self._setup_ui()
 
-    # ── public accessors ────────────────────────────────────────────────
     @property
     def passphrase(self) -> str | None:
         return self._passphrase
 
-    # ── UI ──────────────────────────────────────────────────────────────
     def _setup_ui(self):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(32, 28, 32, 24)
-        layout.setSpacing(16)
+        layout.setSpacing(_sp("space.gap.sm"))
 
         # Title
         title = QLabel("Create Master Passphrase" if self._first_time else "Unlock MyNexus")
         title.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title.setStyleSheet("color: #58a6ff;")
+        title.setStyleSheet(f"color: {_PALETTE['accent.primary']};")
         layout.addWidget(title)
 
         if self._first_time:
             hint = QLabel(
                 "Choose a strong passphrase to protect your passwords and "
-                "sensitive data. You will need this every time you open MyNexus."
+                "sensitive data. You can also enable this later from Settings → Security."
             )
             hint.setWordWrap(True)
             hint.setFont(QFont("Segoe UI", 9))
-            hint.setStyleSheet("color: #b0bbc9;")
+            hint.setStyleSheet(f"color: {_PALETTE['text.secondary']};")
             layout.addWidget(hint)
 
         # Passphrase input
@@ -72,7 +106,6 @@ class MasterPassphraseDialog(QDialog):
 
         # Show password toggle
         show_cb = QCheckBox("Show passphrase")
-        show_cb.setStyleSheet("color: #6b7280; font-size: 10px;")
         show_cb.toggled.connect(self._toggle_vis)
         layout.addWidget(show_cb)
 
@@ -84,9 +117,9 @@ class MasterPassphraseDialog(QDialog):
         submit.setFixedSize(120, 36)
         submit.setCursor(Qt.CursorShape.PointingHandCursor)
         submit.setStyleSheet(
-            "QPushButton { background-color: #58a6ff; color: #fff; border: none; "
-            "border-radius: 8px; font-weight: bold; } "
-            "QPushButton:hover { background-color: #79c0ff; }"
+            f"QPushButton {{ background-color: {_PALETTE['accent.primary']}; color: #fff; border: none; "
+            f"border-radius: {_PALETTE['radius.md']}; font-weight: bold; }} "
+            f"QPushButton:hover {{ background-color: {_PALETTE['accent.secondary']}; }}"
         )
         submit.clicked.connect(self._on_submit)
         btn_row.addWidget(submit)
@@ -96,9 +129,9 @@ class MasterPassphraseDialog(QDialog):
             skip.setFixedSize(80, 36)
             skip.setCursor(Qt.CursorShape.PointingHandCursor)
             skip.setStyleSheet(
-                "QPushButton { background-color: transparent; color: #6b7280; "
-                "border: 1px solid #30363d; border-radius: 8px; } "
-                "QPushButton:hover { background-color: #21262d; }"
+                f"QPushButton {{ background-color: transparent; color: {_PALETTE['text.secondary']}; "
+                f"border: 1px solid {_PALETTE['border.default']}; border-radius: {_PALETTE['radius.md']}; }} "
+                f"QPushButton:hover {{ background-color: {_PALETTE['bg.secondary']}; }}"
             )
             skip.clicked.connect(self.reject)
             btn_row.addWidget(skip)
@@ -137,20 +170,6 @@ class MasterPassphraseDialog(QDialog):
                 self._input.clear()
                 self._input.setFocus()
 
-    def _get_style(self) -> str:
-        return """
-            QDialog { background-color: #0d1117; }
-            QLineEdit {
-                background-color: #161b22;
-                color: #ffffff;
-                border: 1px solid #30363d;
-                border-radius: 8px;
-                padding: 8px 12px;
-                font-size: 13px;
-            }
-            QLineEdit:focus { border-color: #58a6ff; }
-        """
-
 
 class OnboardingWizard(QDialog):
     """Multi-step welcome wizard for first-time users."""
@@ -158,8 +177,14 @@ class OnboardingWizard(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Welcome to MyNexus")
-        self.setFixedSize(600, 460)
-        self.setStyleSheet(self._style())
+        self.setFixedSize(620, 480)
+        _apply_token_style(self, _PALETTE)
+        self.setStyleSheet(f"""
+            QDialog, QWidget {{
+                background-color: {_PALETTE['bg.primary']};
+                color: {_PALETTE['text.primary']};
+            }}
+        """)
         self._step = 0
         self._setup_ui()
 
@@ -176,12 +201,14 @@ class OnboardingWizard(QDialog):
         # Bottom navigation
         nav = QFrame()
         nav.setFixedHeight(56)
-        nav.setStyleSheet("background: #161b22; border-top: 1px solid #21262d;")
+        nav.setStyleSheet(
+            f"background: {_PALETTE['bg.secondary']}; border-top: 1px solid {_PALETTE['border.default']};"
+        )
         nav_layout = QHBoxLayout(nav)
         nav_layout.setContentsMargins(24, 0, 24, 0)
 
         self._dots = QLabel()
-        self._dots.setStyleSheet("color: #58a6ff; font-size: 18px;")
+        self._dots.setStyleSheet(f"color: {_PALETTE['accent.primary']}; font-size: 18px;")
         nav_layout.addWidget(self._dots)
         nav_layout.addStretch()
 
@@ -189,8 +216,9 @@ class OnboardingWizard(QDialog):
         self._back_btn.setFixedSize(80, 34)
         self._back_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self._back_btn.setStyleSheet(
-            "QPushButton { background: transparent; color: #6b7280; border: 1px solid #30363d; border-radius: 8px; }"
-            "QPushButton:hover { background: #21262d; }"
+            f"QPushButton {{ background: transparent; color: {_PALETTE['text.secondary']}; "
+            f"border: 1px solid {_PALETTE['border.default']}; border-radius: {_PALETTE['radius.md']}; }}"
+            f"QPushButton:hover {{ background: {_PALETTE['bg.secondary']}; }}"
         )
         self._back_btn.clicked.connect(self._go_back)
         nav_layout.addWidget(self._back_btn)
@@ -199,8 +227,9 @@ class OnboardingWizard(QDialog):
         self._next_btn.setFixedSize(100, 34)
         self._next_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self._next_btn.setStyleSheet(
-            "QPushButton { background: #58a6ff; color: #fff; border: none; border-radius: 8px; font-weight: bold; }"
-            "QPushButton:hover { background: #79c0ff; }"
+            f"QPushButton {{ background: {_PALETTE['accent.primary']}; color: #fff; border: none; "
+            f"border-radius: {_PALETTE['radius.md']}; font-weight: bold; }} "
+            f"QPushButton:hover {{ background: {_PALETTE['accent.secondary']}; }}"
         )
         self._next_btn.clicked.connect(self._go_next)
         nav_layout.addWidget(self._next_btn)
@@ -208,36 +237,43 @@ class OnboardingWizard(QDialog):
         layout.addWidget(nav)
         self._update_nav()
 
+    def _section_title(self, text, size=24):
+        lbl = QLabel(text)
+        lbl.setFont(QFont("Segoe UI", size, QFont.Weight.Bold))
+        lbl.setStyleSheet(f"color: {_PALETTE['accent.primary']};")
+        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        return lbl
+
+    def _body_label(self, text, color="text.secondary", size=11, wrap=True):
+        lbl = QLabel(text)
+        lbl.setFont(QFont("Segoe UI", size))
+        lbl.setStyleSheet(f"color: {_PALETTE[color]};")
+        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        if wrap:
+            lbl.setWordWrap(True)
+        return lbl
+
     # ── Pages ───────────────────────────────────────────────────────────
     def _welcome_page(self) -> QWidget:
         page = QWidget()
         layout = QVBoxLayout(page)
         layout.setContentsMargins(48, 48, 48, 24)
-        layout.setSpacing(16)
+        layout.setSpacing(_sp("space.gap.md"))
         layout.addStretch()
 
-        icon = QLabel("🚀")
-        icon.setFont(QFont("Segoe UI Emoji", 48))
+        icon = QLabel()
         icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        icon.setFixedHeight(64)
+        icon.setStyleSheet(f"font-size: 48px; color: {_PALETTE['accent.primary']};")
+        icon.setText("N")
+        icon.setFont(QFont("Segoe UI", 48, QFont.Weight.Bold))
         layout.addWidget(icon)
 
-        title = QLabel("Welcome to MyNexus")
-        title.setFont(QFont("Segoe UI", 24, QFont.Weight.Bold))
-        title.setStyleSheet("color: #58a6ff;")
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(title)
-
-        desc = QLabel(
-            "Your all-in-one personal organizer.\n"
-            "Manage activities, budgets, documents, credentials,\n"
-            "net worth, and more — all in one secure place."
-        )
-        desc.setFont(QFont("Segoe UI", 11))
-        desc.setStyleSheet("color: #b0bbc9;")
-        desc.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        desc.setWordWrap(True)
-        layout.addWidget(desc)
-
+        layout.addWidget(self._section_title("Welcome to MyNexus"))
+        layout.addWidget(self._body_label(
+            "Your private personal OS for Windows.\n"
+            "Tasks, money, documents, credentials — offline and encrypted by default."
+        ))
         layout.addStretch()
         return page
 
@@ -245,38 +281,39 @@ class OnboardingWizard(QDialog):
         page = QWidget()
         layout = QVBoxLayout(page)
         layout.setContentsMargins(48, 36, 48, 24)
-        layout.setSpacing(12)
+        layout.setSpacing(_sp("space.gap.sm"))
 
-        title = QLabel("What you can do")
-        title.setFont(QFont("Segoe UI", 18, QFont.Weight.Bold))
-        title.setStyleSheet("color: #ffffff;")
-        layout.addWidget(title)
+        layout.addWidget(QLabel("What you can do"))
+        layout.itemAt(layout.count()-1).widget().setFont(QFont("Segoe UI", 18, QFont.Weight.Bold))
+        layout.itemAt(layout.count()-1).widget().setStyleSheet(f"color: {_PALETTE['text.primary']};")
 
         features = [
-            ("📋", "Activities & Reminders", "Never miss a payment or deadline"),
-            ("🔐", "Credential Vault", "Store app passwords encrypted & safe"),
-            ("📁", "Document Vault", "Organize passports, tax docs, certificates"),
-            ("💰", "Budget Tracker", "Monthly spending with category limits"),
-            ("📈", "Net Worth Dashboard", "Track wealth, FIRE progress, analytics"),
-            ("📅", "Calendar View", "Visual overview of upcoming activities"),
+            ("Activities & Reminders", "Never miss a payment or deadline"),
+            ("Credential Vault", "Encrypted local storage for logins"),
+            ("Document Vault", "Track expiry on passports, tax docs, certificates"),
+            ("Budget Tracker", "Spending limits by category"),
+            ("Net Worth", "Wealth, FIRE progress, and cash buffer"),
+            ("Calendar", "Visual month overview with due dates"),
         ]
-        for emoji, name, desc in features:
+        for name, desc in features:
             row = QHBoxLayout()
-            row.setSpacing(12)
-            lbl_emoji = QLabel(emoji)
-            lbl_emoji.setFont(QFont("Segoe UI Emoji", 18))
-            lbl_emoji.setFixedWidth(36)
-            row.addWidget(lbl_emoji)
+            row.setSpacing(_sp("space.3"))
+            dot = QLabel("•")
+            dot.setFixedWidth(12)
+            dot.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            dot.setStyleSheet(f"color: {_PALETTE['accent.primary']};")
+            row.addWidget(dot)
+
             col = QVBoxLayout()
             col.setSpacing(2)
-            lbl_name = QLabel(name)
-            lbl_name.setFont(QFont("Segoe UI", 11, QFont.Weight.Bold))
-            lbl_name.setStyleSheet("color: #e8eefb;")
-            col.addWidget(lbl_name)
-            lbl_desc = QLabel(desc)
-            lbl_desc.setFont(QFont("Segoe UI", 9))
-            lbl_desc.setStyleSheet("color: #6b7280;")
-            col.addWidget(lbl_desc)
+            n = QLabel(name)
+            n.setFont(QFont("Segoe UI", 11, QFont.Weight.Bold))
+            n.setStyleSheet(f"color: {_PALETTE['text.primary']};")
+            col.addWidget(n)
+            d = QLabel(desc)
+            d.setFont(QFont("Segoe UI", 9))
+            d.setStyleSheet(f"color: {_PALETTE['text.secondary']};")
+            col.addWidget(d)
             row.addLayout(col, 1)
             layout.addLayout(row)
 
@@ -287,35 +324,25 @@ class OnboardingWizard(QDialog):
         page = QWidget()
         layout = QVBoxLayout(page)
         layout.setContentsMargins(48, 48, 48, 24)
-        layout.setSpacing(16)
+        layout.setSpacing(_sp("space.gap.md"))
         layout.addStretch()
 
-        icon = QLabel("✅")
-        icon.setFont(QFont("Segoe UI Emoji", 48))
+        icon = QLabel("✓")
         icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        icon.setFixedHeight(64)
+        icon.setFont(QFont("Segoe UI", 52, QFont.Weight.Bold))
+        icon.setStyleSheet(f"color: {_PALETTE['text.primary']};")
         layout.addWidget(icon)
 
-        title = QLabel("You're all set!")
-        title.setFont(QFont("Segoe UI", 22, QFont.Weight.Bold))
-        title.setStyleSheet("color: #3fb950;")
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(title)
-
-        desc = QLabel(
-            "Start by adding your first activity or exploring\n"
-            "the Dashboard. You can access Settings at any time\n"
-            "to customize your experience."
-        )
-        desc.setFont(QFont("Segoe UI", 11))
-        desc.setStyleSheet("color: #b0bbc9;")
-        desc.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        desc.setWordWrap(True)
-        layout.addWidget(desc)
-
+        layout.addWidget(self._section_title("You're all set"))
+        layout.addWidget(self._body_label(
+            "Open Dashboard to add your first activity, "
+            "or enable security later in Settings → Security."
+        ))
         layout.addStretch()
         return page
 
-    # ── Navigation ──────────────────────────────────────────────────────
+    # ── Navigation helpers ──────────────────────────────────────────────
     def _update_nav(self):
         total = self._stack.count()
         dots = "  ".join("●" if i == self._step else "○" for i in range(total))
@@ -336,9 +363,3 @@ class OnboardingWizard(QDialog):
             self._step -= 1
             self._stack.setCurrentIndex(self._step)
             self._update_nav()
-
-    def _style(self) -> str:
-        return """
-            QDialog { background-color: #0d1117; }
-            QWidget { background: transparent; color: #ffffff; }
-        """
