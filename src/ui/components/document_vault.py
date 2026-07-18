@@ -29,6 +29,15 @@ from src.core.ai_engine import NexusAI
 from src.ui.components.ai_insights_panel import AIInsightsPanel
 
 
+def _tok_hex(path: str) -> str:
+    return token(path).lstrip("#")
+
+
+_tok = token
+def _tok_rgba(path: str, alpha: float) -> str:
+    return _tok_hex(path)
+
+
 class DocumentVaultWidget(QWidget):
     """Main Document Vault widget"""
     
@@ -421,20 +430,16 @@ class DocumentVaultWidget(QWidget):
         preview_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         preview_btn.setToolTip("Open document in viewer")
         preview_btn.setFont(QFont("Segoe UI", 8, QFont.Weight.DemiBold))
-        preview_btn.setStyleSheet("""
-            QPushButton {
-                background-color: rgba(56, 139, 253, 0.15);
-                color: #6ab0ff;
-                border: 1px solid rgba(56, 139, 253, 0.45);
-                border-radius: 5px;
-                padding: 0 4px;
-            }
-            QPushButton:hover {
-                background-color: rgba(56, 139, 253, 0.30);
-                color: #aad4ff;
-                border: 1px solid rgba(56, 139, 253, 0.75);
-            }
-            QPushButton:pressed { background-color: rgba(56, 139, 253, 0.45); }
+        preview_btn.setStyleSheet(f"""
+            QPushButton {{
+                background-color: {_tok_rgba('color.accent.primary', 0.15)}; color: {_tok('color.accent.primary')};
+                border: 1px solid {_tok_rgba('color.accent.primary', 0.45)}; border-radius: 5px; padding: 0 4px;
+            }}
+            QPushButton:hover {{
+                background-color: {_tok_rgba('color.accent.primary', 0.30)}; color: {_tok('color.accent.secondary')};
+                border-color: {_tok_rgba('color.accent.secondary', 0.75)};
+            }}
+            QPushButton:pressed {{ background-color: {_tok_rgba('color.accent.primary', 0.45)}; }}
         """)
         preview_btn.clicked.connect(functools.partial(self._preview_document, doc_id))
         layout.addWidget(preview_btn)
@@ -445,29 +450,25 @@ class DocumentVaultWidget(QWidget):
         details_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         details_btn.setToolTip("View document details")
         details_btn.setFont(QFont("Segoe UI", 8, QFont.Weight.DemiBold))
-        details_btn.setStyleSheet("""
-            QPushButton {
-                background-color: rgba(45, 194, 168, 0.12);
-                color: #4dd9bb;
-                border: 1px solid rgba(45, 194, 168, 0.40);
-                border-radius: 5px;
-                padding: 0 4px;
-            }
-            QPushButton:hover {
-                background-color: rgba(45, 194, 168, 0.25);
-                color: #88ebd6;
-                border: 1px solid rgba(45, 194, 168, 0.70);
-            }
-            QPushButton:pressed { background-color: rgba(45, 194, 168, 0.40); }
+        details_btn.setStyleSheet(f"""
+            QPushButton {{
+                background-color: {_tok_rgba('color.semantic.success', 0.12)}; color: {_tok('color.semantic.success')};
+                border: 1px solid {_tok_rgba('color.semantic.success', 0.40)}; border-radius: 5px; padding: 0 4px;
+            }}
+            QPushButton:hover {{
+                background-color: {_tok_rgba('color.semantic.success', 0.25)}; color: {_tok('color.semantic.success')};
+                border-color: {_tok_rgba('color.semantic.success', 0.70)};
+            }}
+            QPushButton:pressed {{ background-color: {_tok_rgba('color.semantic.success', 0.40)}; }}
         """)
         details_btn.clicked.connect(functools.partial(self._view_document_details, doc_id))
         layout.addWidget(details_btn)
 
         # Favorite button — gold, changes state
         fav_text = "★" if is_favorite else "☆"
-        fav_color = "#f5c518" if is_favorite else "#888ea8"
-        fav_bg = "rgba(245,197,24,0.15)" if is_favorite else "rgba(136,142,168,0.08)"
-        fav_border = "rgba(245,197,24,0.50)" if is_favorite else "rgba(136,142,168,0.30)"
+        fav_color = _tok("color.semantic.warning") if is_favorite else _tok("color.text.muted")
+        fav_bg = _tok_rgba('color.semantic.warning', 0.15) if is_favorite else _tok_rgba('color.text.muted', 0.08)
+        fav_border = _tok_rgba('color.semantic.warning', 0.50) if is_favorite else _tok_rgba('color.text.muted', 0.30)
         fav_btn = QPushButton(fav_text)
         fav_btn.setFixedSize(30, 26)
         fav_btn.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -482,11 +483,11 @@ class DocumentVaultWidget(QWidget):
                 padding: 0;
             }}
             QPushButton:hover {{
-                background-color: rgba(245,197,24,0.25);
-                color: #f5c518;
-                border: 1px solid rgba(245,197,24,0.65);
+                background-color: {_tok_rgba('color.semantic.warning', 0.25)};
+                color: {_tok('color.semantic.warning')};
+                border: 1px solid {_tok_rgba('color.semantic.warning', 0.65)};
             }}
-            QPushButton:pressed {{ background-color: rgba(245,197,24,0.40); }}
+            QPushButton:pressed {{ background-color: {_tok_rgba('color.semantic.warning', 0.40)}; }}
         """)
         fav_btn.clicked.connect(functools.partial(self._toggle_favorite, doc_id))
         layout.addWidget(fav_btn)
@@ -497,20 +498,16 @@ class DocumentVaultWidget(QWidget):
         delete_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         delete_btn.setToolTip("Delete document")
         delete_btn.setFont(QFont("Segoe UI", 8, QFont.Weight.DemiBold))
-        delete_btn.setStyleSheet("""
-            QPushButton {
-                background-color: rgba(255, 59, 48, 0.10);
-                color: #ff6b6b;
-                border: 1px solid rgba(255, 59, 48, 0.40);
-                border-radius: 5px;
-                padding: 0 2px;
-            }
-            QPushButton:hover {
-                background-color: rgba(255, 59, 48, 0.25);
-                color: #ff9999;
-                border: 1px solid rgba(255, 59, 48, 0.70);
-            }
-            QPushButton:pressed { background-color: rgba(255, 59, 48, 0.45); }
+        delete_btn.setStyleSheet(f"""
+            QPushButton {{
+                background-color: {_tok_rgba('color.semantic.error', 0.10)}; color: {_tok('color.semantic.error')};
+                border: 1px solid {_tok_rgba('color.semantic.error', 0.40)}; border-radius: 5px; padding: 0 2px;
+            }}
+            QPushButton:hover {{
+                background-color: {_tok_rgba('color.semantic.error', 0.25)}; color: {_tok('color.semantic.error')};
+                border: 1px solid {_tok_rgba('color.semantic.error', 0.70)};
+            }}
+            QPushButton:pressed {{ background-color: {_tok_rgba('color.semantic.error', 0.45)}; }}
         """)
         delete_btn.clicked.connect(functools.partial(self._delete_document, doc_id))
         layout.addWidget(delete_btn)
@@ -533,20 +530,20 @@ class DocumentVaultWidget(QWidget):
             
             # Category
             category_item = QTableWidgetItem(doc.category.value.replace('_', ' ').title())
-            category_item.setForeground(QColor("#8aaefc"))
+            category_item.setForeground(QColor(token("color.accent.primary")))
             self.documents_table.setItem(row, 1, category_item)
             
             # Type + Date
             date_str = doc.created_at.strftime("%Y-%m-%d") if doc.created_at else ""
             type_str = doc.file_type.value.upper() if doc.file_type else "Unknown"
             type_item = QTableWidgetItem(f"{type_str} · {date_str}")
-            type_item.setForeground(QColor("#aeb9ca"))
+            type_item.setForeground(QColor(token("color.text.secondary")))
             self.documents_table.setItem(row, 2, type_item)
             
             # Reference / Sub-category
             ref = doc.reference_number or doc.sub_category or ""
             ref_item = QTableWidgetItem(ref)
-            ref_item.setForeground(QColor("#aeb9ca"))
+            ref_item.setForeground(QColor(token("color.text.secondary")))
             self.documents_table.setItem(row, 3, ref_item)
             
             # Actions column
@@ -573,12 +570,12 @@ class DocumentVaultWidget(QWidget):
                 self.favorites_table.setItem(row, 0, name_item)
                 
                 category_item = QTableWidgetItem(doc.category.value.replace('_', ' ').title())
-                category_item.setForeground(QColor("#8aaefc"))
+                category_item.setForeground(QColor(token("color.accent.primary")))
                 self.favorites_table.setItem(row, 1, category_item)
                 
                 date_str = doc.created_at.strftime("%Y-%m-%d") if doc.created_at else ""
                 date_item = QTableWidgetItem(date_str)
-                date_item.setForeground(QColor("#aeb9ca"))
+                date_item.setForeground(QColor(token("color.text.secondary")))
                 self.favorites_table.setItem(row, 2, date_item)
                 
                 action_widget = self._make_action_widget(doc.id, doc.is_favorite)

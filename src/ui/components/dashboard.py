@@ -65,10 +65,19 @@ class CollapsibleSection(QWidget):
 
         header.setCursor(Qt.CursorShape.PointingHandCursor)
         header.mousePressEvent = self._toggle
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.installEventFilter(self)
 
         self._anim = QPropertyAnimation(self._widget, b"maximumHeight")
         self._anim.setDuration(int(motion_duration("base")))
         self._anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+
+    def eventFilter(self, obj, event):
+        if obj is self and event.type() == event.Type.KeyPress:
+            if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Space, Qt.Key.Key_Enter):
+                self._toggle()
+                return True
+        return super().eventFilter(obj, event)
 
     def _toggle(self, event=None):
         self._collapsed = not self._collapsed
@@ -236,7 +245,7 @@ class DashboardWidget(QWidget):
         # Apps will be populated here
         self.connected_apps_widget = apps_layout
         apps_frame.setLayout(apps_layout)
-        main_layout.addWidget(apps_frame)
+        main_layout.addWidget(CollapsibleSection("Connected Applications", apps_frame))
 
         main_layout.addWidget(_sep())
         

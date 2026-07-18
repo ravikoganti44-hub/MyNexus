@@ -29,9 +29,10 @@ _DARK: dict[str, object] = {
     "color.bg.overlay":   "rgba(22, 27, 34, 0.88)",
     # Text
     "color.text.primary":   "#e6edf3",
-    "color.text.secondary": "#b0bbc9",
-    "color.text.tertiary":  "#6b7280",
+    "color.text.secondary": "#c9d1d9",
+    "color.text.tertiary":  "#8b949e",
     "color.text.inverse":   "#0d1117",
+    "color.text.muted":     "#6e7681",
     # Accent
     "color.accent.primary":   "#58a6ff",
     "color.accent.secondary": "#79c0ff",
