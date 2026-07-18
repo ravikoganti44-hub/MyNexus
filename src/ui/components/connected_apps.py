@@ -1710,6 +1710,13 @@ class ConnectedAppsWidget(QWidget):
         self.cards_container = QWidget()
         self.card_layout = QGridLayout()
         self.card_layout.setSpacing(20)
+        
+        # Pagination state
+        self._page = 0
+        self._page_size = 8
+        self._filtered_apps = []
+        self._build_pager()
+        main_layout.addWidget(self._pager_widget)
         self.card_layout.setContentsMargins(0, 0, 0, 0)
         self.cards_container.setLayout(self.card_layout)
         
@@ -1768,6 +1775,137 @@ class ConnectedAppsWidget(QWidget):
     def on_sort_changed(self, index):
         """Handle sort order changes"""
         self.refresh_apps()
+
+    def _build_pager(self):
+        self._pager_widget = QWidget()
+        p = QHBoxLayout(self._pager_widget)
+        p.setContentsMargins(0, 8, 0, 0)
+        p.setSpacing(8)
+
+        self._prev_btn = PremiumButton("◀ Prev", style=PremiumButton.Style.SECONDARY, icon_name="calendar_view")
+        self._prev_btn.clicked.connect(self._prev_page)
+        p.addWidget(self._prev_btn)
+
+        self._page_label = QLabel("Page 1")
+        self._page_label.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 11px;")
+        p.addWidget(self._page_label)
+
+        self._next_btn = PremiumButton("Next ▶", style=PremiumButton.Style.PRIMARY, icon_name="dashboard")
+        self._next_btn.clicked.connect(self._next_page)
+        p.addWidget(self._next_btn)
+
+        self._update_pager()
+
+    def _update_pager(self):
+        total_pages = max(1, (len(self._filtered_apps) + self._page_size - 1) // self._page_size)
+        self._page = min(self._page, total_pages - 1)
+        self._page_label.setText(f"Page {self._page + 1} / {total_pages}")
+        self._prev_btn.setEnabled(self._page > 0)
+        self._next_btn.setEnabled(self._page < total_pages - 1)
+
+    def _prev_page(self):
+        if self._page > 0:
+            self._page -= 1
+            self._render_page()
+
+    def _next_page(self):
+        total_pages = max(1, (len(self._filtered_apps) + self._page_size - 1) // self._page_size)
+        if self._page < total_pages - 1:
+            self._page += 1
+            self._render_page()
+
+    def _render_page(self):
+        self._update_pager()
+        start = self._page * self._page_size
+        page_apps = self._filtered_apps[start:start + self._page_size]
+
+        if self.current_view == self.VIEW_CARD:
+            self.render_card_view(page_apps)
+        elif self.current_view == self.VIEW_LIST:
+            self.render_list_view(page_apps)
+        elif self.current_view == self.VIEW_GRID:
+            self.render_grid_view(page_apps)
+        elif self.current_view == self.VIEW_COMPACT:
+            self.render_compact_view(page_apps)
+
+    def refresh_apps(self):
+        """Refresh the applications display based on current view mode"""
+        # Clear existing items
+        while self.card_layout.count():
+            widget = self.card_layout.takeAt(0).widget()
+            if widget:
+                widget.deleteLater()
+        
+        # Handle database errors (Issue #2)
+        try:
+            apps = ConnectedApplicationManager.get_all_connected_apps(self.session, active_only=True)
+            if apps is None:
+                self.empty_label.setText("⚠️ Error loading applications. Please check your database connection and try again.")
+                self.empty_label.show()
+                self.card_layout.addWidget(self.empty_label, 0, 0)
+                return
+        except Exception as e:
+            logger.error(f"Error fetching applications: {e}")
+            self.empty_label.setText(f"⚠️ Error loading applications: {str(e)[:100]}")
+            self.empty_label.show()
+            self.card_layout.addWidget(self.empty_label, 0, 0)
+            return
+        
+        # Apply filters
+        filtered_apps = []
+        for app in apps:
+            # Filter by category
+            if self.selected_category != "all" and app.app_type != self.selected_category:
+                continue
+            
+            # Filter by search query
+            if self.search_query:
+                search_matches = (
+                    self.search_query in app.name.lower() or
+                    self.search_query in (app.app_name or "").lower() or
+                    self.search_query in (app.account_holder or "").lower() or
+                    self.search_query in (app.account_number or "").lower()
+                )
+                if not search_matches:
+                    continue
+            
+            filtered_apps.append(app)
+        
+        # Apply sorting
+        sort_index = self.sort_combo.currentIndex()
+        if sort_index == 0:  # Name A-Z
+            filtered_apps.sort(key=lambda x: x.name.lower())
+        elif sort_index == 1:  # Recently used
+            filtered_apps.sort(key=lambda x: x.last_accessed or datetime.min, reverse=True)
+        elif sort_index == 2:  # Date added
+            filtered_apps.sort(key=lambda x: x.created_at or datetime.min, reverse=True)
+        
+        # Update stats
+        self.total_stat.setText(str(len(apps)))
+        self.secured_stat.setText(str(len(filtered_apps)))
+        self._filtered_apps = filtered_apps
+        
+        if not filtered_apps:
+            if self.search_query or self.selected_category != "all":
+                self.empty_label.setText("🔍 No applications match your search or filter criteria.\n\nTry adjusting your search or filters.")
+            else:
+                self.empty_label.setText("📭 No connected applications yet.\n\nClick 'Add Application' to get started!")
+            self.empty_label.show()
+            self.card_layout.addWidget(self.empty_label, 0, 0)
+            self._page = 0
+            self._update_pager()
+            return
+        
+        self.empty_label.hide()
+        self._page = 0
+        self._render_page()
+        
+        # ── AI Security Insights refresh ──────────────────────────────
+        try:
+            security_insights = NexusAI.analyse_security(self.session)
+            self.security_ai_panel.set_insights(security_insights)
+        except Exception:
+            pass
 
     def _export_apps(self):
         """Export connected applications to JSON."""
