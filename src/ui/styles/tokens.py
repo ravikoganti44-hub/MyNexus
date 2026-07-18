@@ -36,11 +36,17 @@ _DARK: dict[str, object] = {
     "color.accent.primary":   "#58a6ff",
     "color.accent.secondary": "#79c0ff",
     "color.accent.light":     "#8b5cf6",
+    "color.accent.bold":      "#2563eb",
+    "color.accent.hover":     "#3b82f6",
+    "color.accent.pressed":   "#1d4ed8",
     # Semantic
     "color.semantic.success": "#3fb950",
     "color.semantic.warning": "#d29922",
     "color.semantic.error":   "#f85149",
     "color.semantic.info":    "#79c0ff",
+    "color.semantic.high":    "#dc2626",
+    "color.semantic.hover":   "#ef4444",
+    "color.semantic.pressed": "#b91c1c",
     # Borders
     "color.border.default": "#30363d",
     "color.border.light":   "#444c56",
