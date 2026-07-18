@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, pyqtSignal, QSize
 from PyQt6.QtGui import QFont, QColor
 from src.ui.styles.icon_manager import IconManager
+from src.ui.styles.tokens import token, spacing
 from config.settings import APP_NAME, APP_TAGLINE, APP_VERSION
 
 
@@ -39,72 +40,55 @@ class SidebarWidget(QWidget):
         
         # Set icon
         try:
-            icon = IconManager.get_icon(icon_name, size=20, color="#8aaefc")
+            icon = IconManager.get_icon(icon_name, size=20, color=token("color.accent.primary"))
             btn.setIcon(icon)
-        except:
+        except Exception:
             pass
         
         btn.clicked.connect(lambda: self._on_button_clicked(btn, page_index))
-        # store for collapse/expand behavior
         self._buttons.append((btn, text))
-        
-        # Apply stylesheet for icon buttons
-        btn.setStyleSheet("""
-            QPushButton#navButton {
+        return btn
+    
+    def _nav_base_style(self) -> str:
+        return f"""
+            QPushButton#navButton {{
                 background-color: transparent;
-                color: #aeb9ca;
+                color: {token("color.text.secondary")};
                 border: 1px solid transparent;
-                border-radius: 10px;
+                border-radius: {token("radius.md")};
                 padding: 8px 12px;
                 text-align: left;
-                font-weight: 500;
-            }
-            QPushButton#navButton:hover {
-                background-color: rgba(138, 174, 252, 0.08);
-                border: 1px solid rgba(138, 174, 252, 0.14);
-                color: #e8eefb;
-            }
-        """)
-        
-        return btn
+                font-weight: {token("type.weight.medium")};
+            }}
+            QPushButton#navButton:hover {{
+                background-color: {token("color.bg.hover")};
+                border: 1px solid {token("color.border.light")};
+                color: {token("color.text.primary")};
+            }}
+        """
+
+    def _active_style(self) -> str:
+        return f"""
+            QPushButton#navButton {{
+                background-color: {token("color.accent.primary")};
+                color: {token("color.text.inverse")};
+                border: 1px solid {token("color.accent.primary")};
+                border-radius: {token("radius.md")};
+                padding: 8px 12px;
+                text-align: left;
+                font-weight: {token("type.weight.bold")};
+            }}
+            QPushButton#navButton:hover {{
+                background-color: {token("color.accent.secondary")};
+            }}
+        """
     
     def _on_button_clicked(self, button: QPushButton, page_index: int):
         """Handle button click"""
-        # Update previous button style
         if self.current_button:
-            self.current_button.setStyleSheet("""
-                QPushButton#navButton {
-                    background-color: transparent;
-                    color: #aeb9ca;
-                    border: 1px solid transparent;
-                    border-radius: 10px;
-                    padding: 8px 12px;
-                    text-align: left;
-                    font-weight: 500;
-                }
-                QPushButton#navButton:hover {
-                    background-color: rgba(138, 174, 252, 0.08);
-                    border: 1px solid rgba(138, 174, 252, 0.14);
-                    color: #e8eefb;
-                }
-            """)
+            self.current_button.setStyleSheet(self._nav_base_style())
         
-        # Highlight current button
-        button.setStyleSheet("""
-            QPushButton#navButton {
-                background-color: rgba(138, 174, 252, 0.12);
-                color: #f4f8ff;
-                border: 1px solid rgba(138, 174, 252, 0.24);
-                border-radius: 10px;
-                padding: 8px 12px;
-                text-align: left;
-                font-weight: 700;
-            }
-            QPushButton#navButton:hover {
-                background-color: rgba(138, 174, 252, 0.16);
-            }
-        """)
-        
+        button.setStyleSheet(self._active_style())
         self.current_button = button
         self.page_changed.emit(page_index)
     
@@ -130,7 +114,7 @@ class SidebarWidget(QWidget):
         badge.setObjectName("brandBadge")
         badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
         badge.setFixedSize(36, 36)
-        badge_icon = IconManager.get_icon("my_nexus", size=24, color="#eef4ff")
+        badge_icon = IconManager.get_icon("my_nexus", size=24, color=token("color.text.inverse"))
         badge_pixmap = badge_icon.pixmap(24, 24)
         if not badge_pixmap.isNull():
             badge.setPixmap(badge_pixmap)
@@ -159,7 +143,6 @@ class SidebarWidget(QWidget):
         brand_row.addLayout(brand_text_layout, 1)
         header_layout.addLayout(brand_row)
 
-        # Subtitle below the brand row so it doesn't get clipped
         subtitle = QLabel(APP_TAGLINE)
         subtitle.setFont(QFont("Segoe UI", 8))
         subtitle.setObjectName("subtitleLabel")
@@ -172,7 +155,7 @@ class SidebarWidget(QWidget):
         # Separator
         separator = QFrame()
         separator.setFixedHeight(1)
-        separator.setStyleSheet(f"background-color: #30363d;")
+        separator.setStyleSheet(f"background-color: {token('color.border.default')};")
         layout.addWidget(separator)
         
         # Navigation section label
@@ -182,12 +165,12 @@ class SidebarWidget(QWidget):
         nav_label.setContentsMargins(12, 0, 0, 0)
         layout.addWidget(nav_label)
 
-        # ── Nav buttons in a tight sub-layout (4px gap instead of 12px) ──────
+        # ── Nav buttons in a tight sub-layout ──────
         nav_widget = QWidget()
         nav_widget.setStyleSheet("background: transparent;")
         nav_layout = QVBoxLayout(nav_widget)
         nav_layout.setContentsMargins(0, 0, 0, 0)
-        nav_layout.setSpacing(4)
+        nav_layout.setSpacing(spacing("space.2"))
 
         btn_dashboard = self._create_nav_button("dashboard", "Dashboard", 0)
         nav_layout.addWidget(btn_dashboard)
@@ -226,8 +209,7 @@ class SidebarWidget(QWidget):
         
         # Footer separator
         footer_separator = QFrame()
-        footer_separator.setFixedHeight(1)
-        footer_separator.setStyleSheet(f"background-color: #30363d;")
+        footer_separator.setStyleSheet(f"background-color: {token('color.border.default')};")
         layout.addWidget(footer_separator)
         
         # Footer meta

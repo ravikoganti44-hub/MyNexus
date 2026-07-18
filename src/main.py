@@ -310,9 +310,11 @@ class MainWindow(QMainWindow):
 
 
 def _show_onboarding_if_needed():
-    """Show onboarding wizard and passphrase setup for first-time users."""
-    from src.ui.components.onboarding import OnboardingWizard, MasterPassphraseDialog
-    from src.core.encryption import is_passphrase_set
+    """Show onboarding wizard for first-time users.
+    Passphrase setup is no longer forced on first launch.
+    Users can set it later from Settings > Security.
+    """
+    from src.ui.components.onboarding import OnboardingWizard
 
     onboarding_flag = os.path.join(os.path.expanduser("~"), ".mynexus", ".onboarded")
     if not os.path.exists(onboarding_flag):
@@ -321,14 +323,6 @@ def _show_onboarding_if_needed():
         os.makedirs(os.path.dirname(onboarding_flag), exist_ok=True)
         with open(onboarding_flag, "w") as f:
             f.write("1")
-
-    # Master passphrase
-    if not is_passphrase_set():
-        dlg = MasterPassphraseDialog(first_time=True)
-        dlg.exec()  # user can close; encryption will be off
-    else:
-        dlg = MasterPassphraseDialog(first_time=False)
-        dlg.exec()  # user can skip; encryption will be off
 
 
 def main():

@@ -17,6 +17,7 @@ from src.ui.components.stat_card import StatCard
 from src.ui.components.premium_button import PremiumButton
 from src.ui.styles.icon_manager import IconManager
 from src.ui.components.ai_insights_panel import AIInsightsPanel
+from src.ui.styles.tokens import token, spacing
 from src.core.ai_engine import NexusAI
 from collections import Counter
 from datetime import datetime, timedelta, date as _date
@@ -41,24 +42,24 @@ class DashboardWidget(QWidget):
         # Create scroll area
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
-        scroll_area.setStyleSheet("""
-            QScrollArea {
-                background-color: #0d1117;
+        scroll_area.setStyleSheet(f"""
+            QScrollArea {{
+                background-color: {token("color.bg.primary")};
                 border: none;
-            }
-            QScrollBar:vertical {
-                background-color: #0d1117;
+            }}
+            QScrollBar:vertical {{
+                background-color: {token("color.bg.primary")};
                 width: 12px;
                 border: none;
-            }
-            QScrollBar::handle:vertical {
-                background-color: #30363d;
+            }}
+            QScrollBar::handle:vertical {{
+                background-color: {token("color.border.default")};
                 border-radius: 6px;
                 min-height: 50px;
-            }
-            QScrollBar::handle:vertical:hover {
-                background-color: #484f58;
-            }
+            }}
+            QScrollBar::handle:vertical:hover {{
+                background-color: {token("color.border.light")};
+            }}
         """)
         
         # Create container widget for scroll area
@@ -87,7 +88,7 @@ class DashboardWidget(QWidget):
         search_hint.setFont(QFont("Segoe UI", 9))
         search_hint.setFixedHeight(32)
         search_hint.setStyleSheet(
-            "background: #161b22; color: #6b7280; border: 1px solid #21262d; "
+            f"background: {token('color.bg.secondary')}; color: {token('color.text.tertiary')}; border: 1px solid {token('color.border.default')}; "
             "border-radius: 8px; padding: 0 12px;"
         )
         main_layout.addWidget(search_hint)
@@ -96,21 +97,20 @@ class DashboardWidget(QWidget):
         self.ai_greeting = QLabel("")
         self.ai_greeting.setFont(QFont("Segoe UI", 13, QFont.Weight.DemiBold))
         self.ai_greeting.setStyleSheet(
-            "color: #a78bfa; padding: 6px 0;"
+            f"color: {token('color.accent.light')}; padding: 6px 0;"
         )
         self.ai_greeting.setWordWrap(True)
         main_layout.addWidget(self.ai_greeting)
         
         # Stats row with premium cards
-        # Use a grid layout for stats so we can adapt columns on resize
         stats_layout = QGridLayout()
-        stats_layout.setSpacing(16)
+        stats_layout.setSpacing(spacing("space.gap.md"))
         
         # Create stat cards with icons and colors
-        self.stat_total = StatCard("Total Activities", "0", "📊", "#58a6ff")
-        self.stat_due = StatCard("Due This Week", "0", "📅", "#f59e0b")
-        self.stat_overdue = StatCard("Overdue", "0", "⚠️", "#f85149")
-        self.stat_completed = StatCard("Completed Today", "0", "✓", "#3fb950")
+        self.stat_total = StatCard("Total Activities", "0", "📊", token("color.accent.primary"))
+        self.stat_due = StatCard("Due This Week", "0", "📅", token("color.semantic.warning"))
+        self.stat_overdue = StatCard("Overdue", "0", "⚠️", token("color.semantic.error"))
+        self.stat_completed = StatCard("Completed Today", "0", "✓", token("color.semantic.success"))
         
         # add placeholders; we'll arrange in _arrange_stats()
         stats_layout.addWidget(self.stat_total, 0, 0)
@@ -120,16 +120,22 @@ class DashboardWidget(QWidget):
         
         main_layout.addLayout(stats_layout)
         
-        # Section separator
-        sep1 = QFrame()
-        sep1.setFixedHeight(1)
-        sep1.setStyleSheet("background-color: #30363d;")
-        main_layout.addWidget(sep1)
+        def _sep():
+            sep = QFrame()
+            sep.setFixedHeight(1)
+            sep.setStyleSheet(f"background-color: {token('color.border.default')};")
+            return sep
+        
+        def _section_title(text: str) -> QLabel:
+            lbl = QLabel(text)
+            lbl.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
+            lbl.setStyleSheet(f"color: {token('color.text.primary')};")
+            return lbl
+        
+        main_layout.addWidget(_sep())
         
         # Due Soon section
-        due_title = QLabel("📅 Due This Week")
-        due_title.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        due_title.setStyleSheet("color: #58a6ff;")
+        due_title = _section_title("Due This Week")
         main_layout.addWidget(due_title)
         
         # Table for due activities
@@ -142,16 +148,10 @@ class DashboardWidget(QWidget):
         self._style_table(self.due_table)
         main_layout.addWidget(self.due_table, 1)
         
-        # Section separator
-        sep2 = QFrame()
-        sep2.setFixedHeight(1)
-        sep2.setStyleSheet("background-color: #30363d;")
-        main_layout.addWidget(sep2)
+        main_layout.addWidget(_sep())
         
         # Overdue section
-        overdue_title = QLabel("⚠️ Overdue Activities")
-        overdue_title.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        overdue_title.setStyleSheet("color: #f85149;")
+        overdue_title = _section_title("Overdue Activities")
         main_layout.addWidget(overdue_title)
         
         # Table for overdue activities
@@ -165,9 +165,7 @@ class DashboardWidget(QWidget):
         main_layout.addWidget(self.overdue_table, 1)
         
         # Connected Applications quick access
-        apps_title = QLabel("🔐 Connected Applications")
-        apps_title.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        apps_title.setStyleSheet("color: #58a6ff;")
+        apps_title = _section_title("Connected Applications")
         main_layout.addWidget(apps_title)
         
         # Apps frame
@@ -182,17 +180,9 @@ class DashboardWidget(QWidget):
         apps_frame.setLayout(apps_layout)
         main_layout.addWidget(apps_frame)
 
-        # ── Streak & Gamification Bar ─────────────────────────────────────
-        sep_streak = QFrame()
-        sep_streak.setFixedHeight(1)
-        sep_streak.setStyleSheet("background-color: #30363d;")
-        main_layout.addWidget(sep_streak)
-
-        streak_title = QLabel("🔥 Activity Streaks")
-        streak_title.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        streak_title.setStyleSheet("color: #f59e0b;")
-        main_layout.addWidget(streak_title)
-
+        main_layout.addWidget(_sep())
+        
+        # Streak indicator
         streak_frame = QFrame()
         streak_frame.setObjectName("card")
         streak_inner = QHBoxLayout(streak_frame)
@@ -201,30 +191,25 @@ class DashboardWidget(QWidget):
 
         self.streak_current_label = QLabel("0 days")
         self.streak_current_label.setFont(QFont("Segoe UI", 22, QFont.Weight.Bold))
-        self.streak_current_label.setStyleSheet("color: #f59e0b;")
+        self.streak_current_label.setStyleSheet(f"color: {token('color.semantic.warning')};")
         streak_inner.addWidget(self.streak_current_label)
 
         streak_desc = QLabel("Current streak — consecutive days with at least one completed activity")
         streak_desc.setFont(QFont("Segoe UI", 10))
-        streak_desc.setStyleSheet("color: #8b949e;")
+        streak_desc.setStyleSheet(f"color: {token('color.text.secondary')};")
         streak_desc.setWordWrap(True)
         streak_inner.addWidget(streak_desc, 1)
 
         self.streak_best_label = QLabel("Best: 0 days")
         self.streak_best_label.setFont(QFont("Segoe UI", 11, QFont.Weight.Bold))
-        self.streak_best_label.setStyleSheet("color: #3fb950;")
+        self.streak_best_label.setStyleSheet(f"color: {token('color.semantic.success')};")
         streak_inner.addWidget(self.streak_best_label)
         main_layout.addWidget(streak_frame)
 
-        # ── Weekly Summary ─────────────────────────────────────────────────
-        sep_weekly = QFrame()
-        sep_weekly.setFixedHeight(1)
-        sep_weekly.setStyleSheet("background-color: #30363d;")
-        main_layout.addWidget(sep_weekly)
+        main_layout.addWidget(_sep())
 
-        weekly_title = QLabel("📊 This Week at a Glance")
-        weekly_title.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        weekly_title.setStyleSheet("color: #58a6ff;")
+        # Weekly Summary
+        weekly_title = _section_title("This Week at a Glance")
         main_layout.addWidget(weekly_title)
 
         weekly_frame = QFrame()
@@ -235,38 +220,33 @@ class DashboardWidget(QWidget):
 
         self.weekly_completed = QLabel("0")
         self.weekly_completed.setFont(QFont("Segoe UI", 20, QFont.Weight.Bold))
-        self.weekly_completed.setStyleSheet("color: #3fb950;")
+        self.weekly_completed.setStyleSheet(f"color: {token('color.semantic.success')};")
         wc_label = QLabel("Completed this week")
-        wc_label.setStyleSheet("color: #8b949e; font-size: 10px;")
+        wc_label.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 10px;")
         weekly_grid.addWidget(self.weekly_completed, 0, 0, Qt.AlignmentFlag.AlignCenter)
         weekly_grid.addWidget(wc_label, 1, 0, Qt.AlignmentFlag.AlignCenter)
 
         self.weekly_new = QLabel("0")
         self.weekly_new.setFont(QFont("Segoe UI", 20, QFont.Weight.Bold))
-        self.weekly_new.setStyleSheet("color: #58a6ff;")
+        self.weekly_new.setStyleSheet(f"color: {token('color.accent.primary')};")
         wn_label = QLabel("New activities")
-        wn_label.setStyleSheet("color: #8b949e; font-size: 10px;")
+        wn_label.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 10px;")
         weekly_grid.addWidget(self.weekly_new, 0, 1, Qt.AlignmentFlag.AlignCenter)
         weekly_grid.addWidget(wn_label, 1, 1, Qt.AlignmentFlag.AlignCenter)
 
         self.weekly_overdue = QLabel("0")
         self.weekly_overdue.setFont(QFont("Segoe UI", 20, QFont.Weight.Bold))
-        self.weekly_overdue.setStyleSheet("color: #f85149;")
+        self.weekly_overdue.setStyleSheet(f"color: {token('color.semantic.error')};")
         wo_label = QLabel("Became overdue")
-        wo_label.setStyleSheet("color: #8b949e; font-size: 10px;")
+        wo_label.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 10px;")
         weekly_grid.addWidget(self.weekly_overdue, 0, 2, Qt.AlignmentFlag.AlignCenter)
         weekly_grid.addWidget(wo_label, 1, 2, Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(weekly_frame)
 
-        # ── Recent Activity Feed ───────────────────────────────────────────
-        sep_feed = QFrame()
-        sep_feed.setFixedHeight(1)
-        sep_feed.setStyleSheet("background-color: #30363d;")
-        main_layout.addWidget(sep_feed)
+        main_layout.addWidget(_sep())
 
-        feed_title = QLabel("🕑 Recent Activity")
-        feed_title.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        feed_title.setStyleSheet("color: #58a6ff;")
+        # Recent Activity Feed
+        feed_title = _section_title("Recent Activity")
         main_layout.addWidget(feed_title)
 
         self.feed_frame = QFrame()
@@ -276,12 +256,9 @@ class DashboardWidget(QWidget):
         self.feed_layout.setSpacing(6)
         main_layout.addWidget(self.feed_frame)
 
-        # ── AI Insights Panel ──────────────────────────────────────────────
-        sep_ai = QFrame()
-        sep_ai.setFixedHeight(1)
-        sep_ai.setStyleSheet("background-color: #30363d;")
-        main_layout.addWidget(sep_ai)
+        main_layout.addWidget(_sep())
 
+        # AI Insights Panel
         self.ai_panel = AIInsightsPanel()
         self.ai_panel.insight_action.connect(self._on_insight_action)
         main_layout.addWidget(self.ai_panel)
@@ -302,31 +279,31 @@ class DashboardWidget(QWidget):
         table.setSelectionMode(table.SelectionMode.SingleSelection)
         table.setSelectionBehavior(table.SelectionBehavior.SelectRows)
         table.setWordWrap(False)
-        table.setStyleSheet("""
-            QTableWidget {
-                background-color: #161b22;
-                alternate-background-color: #21262d;
-                gridline-color: #30363d;
-                border: 1px solid #30363d;
+        table.setStyleSheet(f"""
+            QTableWidget {{
+                background-color: {token("color.bg.secondary")};
+                alternate-background-color: {token("color.bg.tertiary")};
+                gridline-color: {token("color.border.default")};
+                border: 1px solid {token("color.border.default")};
                 border-radius: 8px;
-            }
-            QTableWidget::item {
-                padding: 12px 10px; /* slightly increased vertical padding for readability */
+            }}
+            QTableWidget::item {{
+                padding: 12px 10px;
                 border: none;
-            }
-            QTableWidget::item:selected {
-                background-color: rgba(88, 166, 255, 0.12);
-                color: #58a6ff;
-            }
-            QHeaderView::section {
-                background-color: #171a20;
-                color: #c7d2e0; /* brighter header text for contrast */
+            }}
+            QTableWidget::item:selected {{
+                background-color: {token("color.accent.primary")};
+                color: {token("color.text.primary")};
+            }}
+            QHeaderView::section {{
+                background-color: {token("color.bg.tertiary")};
+                color: {token("color.text.primary")};
                 padding: 10px 8px;
                 border: none;
-                border-bottom: 1px solid #30363d;
-                font-weight: bold;
+                border-bottom: 2px solid {token("color.border.default")};
+                font-weight: {token("type.weight.bold")};
                 font-size: 12px;
-            }
+            }}
         """)
 
     def resizeEvent(self, event):
