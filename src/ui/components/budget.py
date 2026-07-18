@@ -16,8 +16,9 @@ from src.database.config import get_session
 from src.database.operations import BudgetManager
 from src.ui.components.premium_button import PremiumButton
 from src.ui.components.stat_card import StatCard
-from src.core.ai_engine import NexusAI
 from src.ui.components.ai_insights_panel import AIInsightsPanel
+from src.ui.styles.tokens import token, spacing
+from src.core.ai_engine import NexusAI
 
 BUDGET_CATEGORIES = [
     "Housing", "Food & Groceries", "Transportation", "Utilities",
@@ -48,7 +49,7 @@ class BudgetTrackerWidget(QWidget):
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("QScrollArea { background: #0d1117; border: none; }")
+        scroll.setStyleSheet(f"""QScrollArea {{ background-color: {token("color.bg.primary")}; border: none; }}""")
 
         content = QWidget()
         main = QVBoxLayout()
@@ -105,7 +106,7 @@ class BudgetTrackerWidget(QWidget):
 
         self.month_label = QLabel()
         self.month_label.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        self.month_label.setStyleSheet("color: #e6edf3;")
+        self.month_label.setStyleSheet(f"color: {token('color.text.primary')};")
         self.month_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.month_label.setMinimumWidth(160)
 
@@ -211,7 +212,7 @@ class BudgetTrackerWidget(QWidget):
     def _section_sep() -> QFrame:
         sep = QFrame()
         sep.setFixedHeight(1)
-        sep.setStyleSheet("background-color: #30363d;")
+        sep.setStyleSheet(f"background-color: {token('color.border.default')};")
         return sep
 
     @staticmethod

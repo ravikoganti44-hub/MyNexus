@@ -11,6 +11,7 @@ from PyQt6.QtGui import QFont, QColor
 
 from src.database.config import get_session
 from src.database.operations import NotificationManager
+from src.ui.styles.tokens import token
 
 
 class NotificationBell(QPushButton):
@@ -65,8 +66,8 @@ class NotificationPanel(QFrame):
         super().__init__(parent, Qt.WindowType.Popup)
         self.setFixedSize(360, 380)
         self.setStyleSheet(
-            "NotificationPanel { background: #161b22; border: 1px solid #30363d; "
-            "border-radius: 12px; }"
+            f"NotificationPanel {{ background-color: {token('color.bg.secondary')}; border: 1px solid {token('color.border.default')}; "
+            f"border-radius: 12px; }}"
         )
         self._setup_ui()
 

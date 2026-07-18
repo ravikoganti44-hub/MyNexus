@@ -177,30 +177,21 @@ class ActivitiesWidget(QWidget):
                 background-color: {token("color.bg.secondary")};
                 alternate-background-color: {token("color.bg.tertiary")};
                 gridline-color: {token("color.border.default")};
-                border: 1px solid {token("color.border.default")};
-                border-radius: 8px;
-                font-size: 12px;
+                border: 1px solid {token("color.border.default")}; border-radius: 8px;
             }}
             QTableWidget::item {{
-                padding: 4px 8px;
-                border: none;
+                padding: 4px 8px; border: none; color: {token("color.text.primary")};
             }}
             QTableWidget::item:hover {{
                 background-color: {token("color.accent.primary")};
             }}
             QTableWidget::item:selected {{
-                background-color: {token("color.accent.primary")};
-                color: {token("color.text.primary")};
+                background-color: {token("color.accent.primary")}; color: {token("color.text.primary")};
             }}
             QHeaderView::section {{
-                background-color: {token("color.bg.tertiary")};
-                color: {token("color.text.primary")};
-                padding: 10px 8px;
-                border: none;
-                border-bottom: 2px solid {token("color.border.default")};
-                font-weight: {token("type.weight.bold")};
-                font-size: 11px;
-                letter-spacing: 0.5px;
+                background: {token("color.bg.tertiary")}; color: {token("color.text.secondary")}; padding: 10px 8px;
+                border: none; border-bottom: 2px solid {token("color.border.default")};
+                font-weight: {token("type.weight.bold")}; font-size: 11px; text-transform: uppercase;
             }}
         """)
         header = self.table.horizontalHeader()
