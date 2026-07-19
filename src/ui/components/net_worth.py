@@ -331,8 +331,9 @@ class _SnapshotDialog(QDialog):
         self.setMinimumWidth(580)
         self.setMinimumHeight(560)
         self.setStyleSheet(
-            f"QDialog{{background-color:{_CARD};}}"
-            f"QLabel{{color:{_TEXT};}}")
+            f"QDialog{{background-color:{token('color.bg.secondary')};}}"
+            f"QLabel{{color:{token('color.text.primary')};}}"
+        )
         self._build()
         if existing_data:
             self._load(existing_data)
@@ -346,7 +347,7 @@ class _SnapshotDialog(QDialog):
         root.setSpacing(12)
 
         hdr = QLabel("Edit Snapshot" if self.existing else "New Net Worth Snapshot")
-        hdr.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
+        hdr.setFont(QFont("Segoe UI", int(token("type.scale.h2").replace("px","")), QFont.Weight.Bold))
         hdr.setStyleSheet(f"color:{_BLUE};")
         root.addWidget(hdr)
 

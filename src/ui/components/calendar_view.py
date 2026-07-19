@@ -175,7 +175,7 @@ class CalendarViewWidget(QWidget):
         self.prev_btn.clicked.connect(self._prev_month)
 
         self.month_label = QLabel()
-        self.month_label.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))
+        self.month_label.setFont(QFont("Segoe UI", int(token("type.scale.h2").replace("px","")), QFont.Weight.Bold))
         self.month_label.setStyleSheet(f"color: {token('color.text.primary')};")
         self.month_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.month_label.setMinimumWidth(200)

@@ -475,8 +475,8 @@ class BudgetTrackerWidget(QWidget):
         dialog.setWindowTitle("Set Monthly Budget Limits")
         dialog.setMinimumWidth(480)
         dialog.setStyleSheet(
-            "QDialog { background-color: #161b22; }"
-            "QLabel  { color: #c9d1d9; }"
+            f"QDialog{{background-color:{token('color.bg.secondary')};}}"
+            f"QLabel{{color:{token('color.text.primary')};}}"
         )
 
         layout = QVBoxLayout()
@@ -486,7 +486,7 @@ class BudgetTrackerWidget(QWidget):
         month_name = datetime(self.current_year, self.current_month, 1).strftime("%B %Y")
         hdr = QLabel(f"Budget Limits for {month_name}")
         hdr.setFont(QFont("Segoe UI", 13, QFont.Weight.Bold))
-        hdr.setStyleSheet("color: #58a6ff;")
+        hdr.setStyleSheet(f"color: {token('color.accent.primary')};")
         layout.addWidget(hdr)
 
         # Load existing limits
@@ -511,8 +511,9 @@ class BudgetTrackerWidget(QWidget):
             spin.setDecimals(0)
             spin.setValue(existing.get(cat, 0.0))
             spin.setStyleSheet(
-                "QDoubleSpinBox { background: #21262d; color: #e6edf3; "
-                "border: 1px solid #30363d; border-radius: 6px; padding: 4px 8px; }")
+                f"QDoubleSpinBox {{ background: {token('color.bg.tertiary')}; color: {token('color.text.primary')}; "
+                f"border: 1px solid {token('color.border.default')}; border-radius: 6px; padding: 4px 8px; }}"
+            )
             spin.setMinimumWidth(130)
             spin_map[cat] = spin
             row.addWidget(lbl)
@@ -550,8 +551,8 @@ class BudgetTrackerWidget(QWidget):
         dialog.setWindowTitle("Add Expense")
         dialog.setMinimumWidth(420)
         dialog.setStyleSheet(
-            "QDialog { background-color: #161b22; }"
-            "QLabel  { color: #c9d1d9; }"
+            f"QDialog{{background-color:{token('color.bg.secondary')};}}"
+            f"QLabel{{color:{token('color.text.primary')};}}"
         )
 
         layout = QVBoxLayout()
@@ -560,7 +561,7 @@ class BudgetTrackerWidget(QWidget):
 
         hdr = QLabel("New Expense Entry")
         hdr.setFont(QFont("Segoe UI", 13, QFont.Weight.Bold))
-        hdr.setStyleSheet("color: #58a6ff;")
+        hdr.setStyleSheet(f"color: {token('color.accent.primary')};")
         layout.addWidget(hdr)
 
         form = QFormLayout()

@@ -195,7 +195,7 @@ class DashboardWidget(QWidget):
         
         def _section_title(text: str) -> QLabel:
             lbl = QLabel(text)
-            lbl.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
+            lbl.setFont(QFont("Segoe UI", int(token("type.scale.h2").replace("px","")), QFont.Weight.Bold))
             lbl.setStyleSheet(f"color: {token('color.text.primary')};")
             return lbl
         
