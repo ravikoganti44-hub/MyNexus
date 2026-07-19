@@ -150,6 +150,7 @@ class DashboardWidget(QWidget):
         header_layout.addWidget(refresh_btn)
         main_layout.addLayout(header_layout)
 
+        main_layout.addSpacing(6)
         # Quick-search hint bar
         search_hint = QLabel("  🔍  Press  Ctrl+K  to search across all your data")
         search_hint.setFont(QFont("Segoe UI", 9))
@@ -171,7 +172,8 @@ class DashboardWidget(QWidget):
         
         # Stats row with premium cards
         stats_layout = QGridLayout()
-        stats_layout.setSpacing(spacing("space.gap.md"))
+        stats_layout.setSpacing(spacing("space.gap.sm"))
+        stats_layout.setContentsMargins(0, 0, 0, 0)
         
         # Create stat cards with icons and colors
         self.stat_total = StatCard("Total Activities", "0", "📊", token("color.accent.primary"), icon_name="dashboard")

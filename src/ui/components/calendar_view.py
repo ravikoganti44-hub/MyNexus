@@ -149,11 +149,13 @@ class CalendarViewWidget(QWidget):
 
         # ── Header ──────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
+        hdr.setContentsMargins(0, 0, 0, 0)
+        hdr.setSpacing(12)
         title = QLabel("Calendar View")
         title.setFont(QFont("Segoe UI", 22, QFont.Weight.Bold))
         title.setObjectName("titleLabel")
         hdr.addWidget(title)
-        hdr.addStretch()
+        hdr.addStretch(1)
 
         today_btn = PremiumButton("Today", style=PremiumButton.Style.SECONDARY,
                                   icon_name="calendar")
@@ -169,7 +171,8 @@ class CalendarViewWidget(QWidget):
 
         # ── Month navigation + legend ────────────────────────────────────────
         nav = QHBoxLayout()
-        nav.setSpacing(8)
+        nav.setContentsMargins(0, 0, 0, 0)
+        nav.setSpacing(10)
 
         self.prev_btn = QPushButton("←")
         self.prev_btn.setFixedSize(36, 36)
@@ -187,7 +190,7 @@ class CalendarViewWidget(QWidget):
         self.month_label.setFont(QFont("Segoe UI", int(token("type.scale.h2").replace("px","")), QFont.Weight.Bold))
         self.month_label.setStyleSheet(f"color: {token('color.text.primary')};")
         self.month_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.month_label.setMinimumWidth(200)
+        self.month_label.setMinimumWidth(220)
 
         self.next_btn = QPushButton("→")
         self.next_btn.setFixedSize(36, 36)
@@ -202,9 +205,11 @@ class CalendarViewWidget(QWidget):
         self.next_btn.clicked.connect(self._next_month)
 
         nav.addWidget(self.prev_btn)
-        nav.addWidget(self.month_label)
+        nav.addSpacing(6)
+        nav.addWidget(self.month_label, 0, Qt.AlignmentFlag.AlignCenter)
+        nav.addSpacing(6)
         nav.addWidget(self.next_btn)
-        nav.addSpacing(24)
+        nav.addSpacing(28)
 
         # Legend dots
         for cat, color in CATEGORY_COLORS.items():
@@ -212,11 +217,11 @@ class CalendarViewWidget(QWidget):
             dot.setFixedSize(9, 9)
             dot.setStyleSheet(f"background-color: {color}; border-radius: 4px;")
             lbl = QLabel(cat.title())
-            lbl.setFont(QFont("Segoe UI", 9))
-            lbl.setStyleSheet(f"color: {token('color.text.tertiary')}; font-size: 11px;")
+            lbl.setFont(QFont("Segoe UI", 9, QFont.Weight.Medium))
+            lbl.setStyleSheet(f"color: {token('color.text.secondary')};")
             nav.addWidget(dot)
             nav.addWidget(lbl)
-            nav.addSpacing(6)
+            nav.addSpacing(8)
 
         nav.addStretch()
         main.addLayout(nav)
