@@ -811,8 +811,10 @@ class NetWorthWidget(QWidget):
         tgt_row = QHBoxLayout()
         tgt_lbl = QLabel("Target Net Worth:")
         tgt_lbl.setFixedWidth(160)
-        fs = ("background:#21262d;color:#e6edf3;"
-              "border:1px solid #30363d;border-radius:6px;padding:6px 8px;")
+        fs = (
+            f"background:{token('color.bg.tertiary')};color:{token('color.text.primary')};"
+            f"border:1px solid {token('color.border.default')};border-radius:6px;padding:6px 8px;"
+        )
         self._goal_spin = QDoubleSpinBox()
         self._goal_spin.setPrefix("$")
         self._goal_spin.setRange(0, 99_999_999)
@@ -977,7 +979,7 @@ class NetWorthWidget(QWidget):
         if not latest:
             for layout in (self.assets_v, self.liab_v):
                 empty = QLabel("No data yet.")
-                empty.setStyleSheet(f"color:#4b5563;font-size:12px;")
+                empty.setStyleSheet(f"color: {token('color.text.tertiary')}; font-size: 12px;")
                 layout.addWidget(empty)
             return
 
