@@ -739,12 +739,11 @@ class NetWorthWidget(QWidget):
         self.history_table.setMinimumHeight(240)
         self.history_table.setStyleSheet(f"""
             QTableWidget {{
-                background-color:{_CARD}; alternate-background-color:#21262d;
+                background-color:{_CARD}; alternate-background-color:{token('color.bg.tertiary')};
                 gridline-color:{_BORDER}; border:none; border-radius:8px;
             }}
             QTableWidget::item {{ padding:8px; color:{_TEXT}; }}
-            QHeaderView::section {{
-                background:#1c2128; color:{_MUTED}; padding:10px 8px;
+            QHeaderView::section {{ background:{token('color.bg.tertiary')}; color:{_MUTED}; padding:10px 8px;
                 border:none; border-bottom:2px solid {_BORDER};
                 font-weight:700; font-size:11px;
             }}
