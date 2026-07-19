@@ -5,16 +5,15 @@ import sys
 import os
 
 # Add project root to path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+from PyQt6.QtCore import Qt, QTimer, QEvent, QPropertyAnimation
+from PyQt6.QtGui import QIcon, QFont, QColor, QShortcut, QKeySequence
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QStackedWidget,
-    QSplitter, QStatusBar, QFrame, QLabel, QGraphicsDropShadowEffect
+    QSplitter, QStatusBar, QFrame, QLabel, QGraphicsDropShadowEffect,
+    QSystemTrayIcon, QMenu, QGraphicsOpacityEffect
 )
-from PyQt6.QtCore import Qt, QTimer, QEvent
-from PyQt6.QtGui import QIcon, QFont, QColor, QShortcut, QKeySequence
 
-FLUENT_CHROME = False  # frameless title bar + QSizeGrip resize
+FLUENT_CHROME = True  # frameless title bar + QSizeGrip resize
 
 from src.ui.components.dashboard import DashboardWidget
 from src.ui.components.activities import ActivitiesWidget
@@ -88,6 +87,9 @@ class MainWindow(QMainWindow):
         
         # Start reminder engine
         self.reminder_engine.start()
+        
+        # Tray icon
+        self._init_tray()
     
     def _setup_ui(self):
         """Setup user interface"""
@@ -195,6 +197,19 @@ class MainWindow(QMainWindow):
         status_layout.addWidget(search_hint)
 
         shell_layout.addWidget(status_frame)
+        
+        # Frameless chrome
+        if FLUENT_CHROME:
+            try:
+                from src.ui.components.window_chrome import TitleBar, QSizeGrip
+                self._title_bar = TitleBar(self, self)
+                shell_layout.insertWidget(0, self._title_bar)
+                grip = QSizeGrip(self)
+                grip.setFixedSize(12, 12)
+                shell_layout.addWidget(grip, 0, Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignRight)
+            except Exception:
+                pass
+
         main_layout.addWidget(self.shell_frame, 1)
 
     def _refresh_current_page_layout(self):
@@ -204,19 +219,52 @@ class MainWindow(QMainWindow):
             QTimer.singleShot(0, current_page.refresh_layout)
     
     def _on_page_changed(self, page_index: int):
-        """Handle page change"""
-        self.pages.setCurrentIndex(page_index)
-        self._refresh_current_page_layout()
-        page_names = ["Dashboard", "Activities", "Integrations", "Connected Apps",
-                       "Document Vault", "Budget Tracker", "Calendar View", "Net Worth", "Settings"]
-        if 0 <= page_index < len(page_names):
-            page_name = page_names[page_index]
-            self.window_status_label.setText(f"Viewing: {page_name}")
+        """Handle page change with lightweight motion.
+        
+        Strategy:
+        - Fade out old page -> switch index -> fade in new page.
+        - No geometry or visibility-based animation.
+        """
+        previous = self.pages.currentWidget()
+        new = self.pages.widget(page_index)
+        if previous is None or previous is new:
+            self.pages.setCurrentIndex(page_index)
+            self._refresh_current_page_layout()
+            if 0 <= page_index < len(page_names):
+                self.window_status_label.setText(f"Viewing: {page_names[page_index]}")
+            return
+
+        old_effect = QGraphicsOpacityEffect(previous)
+        old_effect.setOpacity(1.0)
+        previous.setGraphicsEffect(old_effect)
+        new_effect = QGraphicsOpacityEffect(new)
+        new_effect.setOpacity(0.0)
+        new.setGraphicsEffect(new_effect)
+
+        fade_out = QPropertyAnimation(old_effect, b"opacity", self)
+        fade_out.setDuration(140)
+        fade_out.setStartValue(1.0)
+        fade_out.setEndValue(0.0)
+
+        fade_in = QPropertyAnimation(new_effect, b"opacity", self)
+        fade_in.setDuration(140)
+        fade_in.setStartValue(0.0)
+        fade_in.setEndValue(1.0)
+
+        def switch_start():
+            self.pages.setCurrentIndex(page_index)
+            self._refresh_current_page_layout()
+            if 0 <= page_index < len(page_names):
+                self.window_status_label.setText(f"Viewing: {page_names[page_index]}")
+            fade_in.start()
+
+        fade_out.finished.connect(switch_start)
+        fade_out.start()
 
     def resizeEvent(self, event):
         """Handle responsive layout changes on resize"""
+        result = super().resizeEvent(event)
         width = self.width()
-        # Collapse sidebar on narrow widths
         try:
             if width < 1024:
                 self.sidebar.collapse()
@@ -224,7 +272,6 @@ class MainWindow(QMainWindow):
                 self.sidebar.expand()
         except Exception:
             pass
-        result = super().resizeEvent(event)
         self._refresh_current_page_layout()
         return result
 
@@ -266,6 +313,78 @@ class MainWindow(QMainWindow):
             # User dismissed — close app
             self.close()
     
+    # ── Tray ─────────────────────────────────────────────────────
+    def _init_tray(self):
+        tray_icon = IconManager.get_icon("my_nexus", size=32, color=_main_token("color.accent.primary"))
+        tray = QSystemTrayIcon(self)
+        tray.setIcon(tray_icon)
+
+        menu = QMenu(self)
+        restore_action = menu.addAction("Restore")
+        restore_action.triggered.connect(self._restore_window)
+        quit_action = menu.addAction("Quit")
+        quit_action.triggered.connect(self.close)
+
+        tray.setContextMenu(menu)
+        tray.activated.connect(self._tray_activated)
+        tray.show()
+        self._tray = tray
+
+    def _tray_activated(self, reason):
+        if reason in (QSystemTrayIcon.ActivationReason.DoubleClick, QSystemTrayIcon.ActivationReason.Trigger):
+            self._restore_window()
+
+    def _restore_window(self):
+        if self.isMinimized() or self.isMaximized():
+            self.showNormal()
+        self.show()
+        self.raise_()
+        self.activateWindow()
+
+    def _on_page_changed(self, page_index: int):
+        """Handle page change with lightweight motion.
+        
+        Strategy:
+        - Fade out old page -> switch index -> fade in new page.
+        - No geometry or visibility-based animation.
+        """
+        previous = self.pages.currentWidget()
+        new = self.pages.widget(page_index)
+        if previous is None or previous is new:
+            self.pages.setCurrentIndex(page_index)
+            self._refresh_current_page_layout()
+            return
+
+        old_effect = QGraphicsOpacityEffect(previous)
+        old_effect.setOpacity(1.0)
+        previous.setGraphicsEffect(old_effect)
+        new_effect = QGraphicsOpacityEffect(new)
+        new_effect.setOpacity(0.0)
+        new.setGraphicsEffect(new_effect)
+
+        fade_out = QPropertyAnimation(old_effect, b"opacity", self)
+        fade_out.setDuration(140)
+        fade_out.setStartValue(1.0)
+        fade_out.setEndValue(0.0)
+
+        fade_in = QPropertyAnimation(new_effect, b"opacity", self)
+        fade_in.setDuration(140)
+        fade_in.setStartValue(0.0)
+        fade_in.setEndValue(1.0)
+
+        def switch_start():
+            self.pages.setCurrentIndex(page_index)
+            self._refresh_current_page_layout()
+            fade_in.start()
+
+        fade_out.finished.connect(switch_start)
+        fade_out.start()
+
+        page_names = ["Dashboard", "Activities", "Integrations", "Connected Apps",
+                       "Document Vault", "Budget Tracker", "Calendar View", "Net Worth", "Settings"]
+        if 0 <= page_index < len(page_names):
+            self.window_status_label.setText(f"Viewing: {page_names[page_index]}")
+
     def closeEvent(self, event):
         """Handle window close event"""
         # Auto-backup on close

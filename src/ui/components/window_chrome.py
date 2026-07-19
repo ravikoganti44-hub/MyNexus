@@ -9,7 +9,7 @@ Provides:
 from __future__ import annotations
 
 from PyQt6.QtWidgets import (
-    QWidget, QHBoxLayout, QPushButton, QLabel, QSizeGrip
+    QWidget, QHBoxLayout, QPushButton, QLabel, QSizeGrip, QSystemTrayIcon, QMenu, QApplication
 )
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QMouseEvent
