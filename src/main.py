@@ -14,6 +14,8 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QTimer, QEvent
 from PyQt6.QtGui import QIcon, QFont, QColor, QShortcut, QKeySequence
 
+FLUENT_CHROME = False  # change to True to enable frameless title bar + QSizeGrip resize
+
 from src.ui.components.dashboard import DashboardWidget
 from src.ui.components.activities import ActivitiesWidget
 from src.ui.components.integrations import IntegrationsWidget
@@ -46,10 +48,12 @@ class MainWindow(QMainWindow):
         # Initialize database
         init_db()
         
-        # Setup window
+        # Window chrome
         self.setWindowTitle(APP_TITLE)
         self.setGeometry(100, 100, 1400, 900)
         self.setWindowIcon(IconManager.get_icon("my_nexus", size=64, color=_main_token("color.accent.primary")))
+        if FLUENT_CHROME:
+            self.setWindowFlags(self.windowFlags() | Qt.WindowType.FramelessWindowHint)
         
         # Premium hover lift for the main window (implemented in global stylesheet)
         
