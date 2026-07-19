@@ -64,41 +64,54 @@ class TitleBar(QWidget):
             layout.addWidget(btn)
 
     def mouseDoubleClickEvent(self, event: QMouseEvent):  # noqa: N802
-        if event.button() == Qt.MouseButton.LeftButton and self._parent_window:
-            if self._parent_window.isMaximized():
-                self._parent_window.showNormal()
-            else:
-                self._parent_window.showMaximized()
+        if event.button() == Qt.MouseButton.LeftButton and self._parent_window and not getattr(self, "_busy", False):
+            self._busy = True
+            try:
+                if self._parent_window.isMaximized():
+                    self._parent_window.showNormal()
+                else:
+                    self._parent_window.showMaximized()
+            finally:
+                self._busy = False
         return super().mouseDoubleClickEvent(event)
 
     def mousePressEvent(self, event: QMouseEvent):  # noqa: N802
-        if event.button() == Qt.MouseButton.LeftButton and self._parent_window:
-            self._start = event.globalPosition().toPoint() - self._parent_window.frameGeometry().topLeft()
-            if event.position().y() <= 8:
-                self._parent_window.windowHandle().startSystemResize(Qt.Edge.TopEdge)
-            else:
-                event.accept()
+        if event.button() == Qt.MouseButton.LeftButton and self._parent_window and not getattr(self, "_busy", False):
+            self._busy = True
+            try:
+                self._start = event.globalPosition().toPoint() - self._parent_window.frameGeometry().topLeft()
+                if event.position().y() <= 8:
+                    self._parent_window.windowHandle().startSystemResize(Qt.Edge.TopEdge)
+                else:
+                    event.accept()
+            finally:
+                self._busy = False
             return
         return super().mousePressEvent(event)
 
     def mouseMoveEvent(self, event: QMouseEvent):  # noqa: N802
-        if getattr(self, "_start", None) and self._parent_window:
-            self._parent_window.move(
-                event.globalPosition().toPoint() - self._start
-            )
-            event.accept()
+        if getattr(self, "_start", None) and self._parent_window and not getattr(self, "_busy", False):
+            self._busy = True
+            try:
+                self._parent_window.move(
+                    event.globalPosition().toPoint() - self._start
+                )
+                event.accept()
+            finally:
+                self._busy = False
             return
         return super().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event: QMouseEvent):  # noqa: N802
         self._start = None
+        self._busy = False
         return super().mouseReleaseEvent(event)
 
 
 class FramelessFluentWindow(QWidget):
     """Mixing frameless window chrome onto a QMainWindow."""
 
-    def __init__(self, main_window):
+    def __init__(self, main_window, content_widget):
         super().__init__()
         self._main = main_window
 
@@ -113,7 +126,7 @@ class FramelessFluentWindow(QWidget):
         host_layout = QVBoxLayout(host)
         host_layout.setContentsMargins(0, 0, 0, 0)
         host_layout.setSpacing(0)
-        host_layout.addWidget(main_window.centralWidget())
+        host_layout.addWidget(content_widget)
         sb = main_window.statusBar()
         if sb is not None:
             sb.setParent(host)
