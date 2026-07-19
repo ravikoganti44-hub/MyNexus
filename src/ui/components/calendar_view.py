@@ -195,7 +195,7 @@ class CalendarViewWidget(QWidget):
             dot.setStyleSheet(f"background-color: {color}; border-radius: 4px;")
             lbl = QLabel(cat.title())
             lbl.setFont(QFont("Segoe UI", 9))
-            lbl.setStyleSheet("color: #6b7280;")
+            lbl.setStyleSheet(f"color: {token('color.text.tertiary')}; font-size: 11px;")
             nav.addWidget(dot)
             nav.addWidget(lbl)
             nav.addSpacing(6)
@@ -268,7 +268,7 @@ class CalendarViewWidget(QWidget):
 
         self.detail_empty_lbl = QLabel("No activities\ndue on this date.")
         self.detail_empty_lbl.setFont(QFont("Segoe UI", 10))
-        self.detail_empty_lbl.setStyleSheet("color: #4b5563;")
+        self.detail_empty_lbl.setStyleSheet(f"color: {token('color.text.tertiary')};")
         self.detail_empty_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.detail_empty_lbl.setWordWrap(True)
         detail_v.addWidget(self.detail_empty_lbl)

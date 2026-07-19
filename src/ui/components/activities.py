@@ -446,7 +446,7 @@ class ActivitiesWidget(QWidget):
         scope_lbl = QLabel(
             f"Current view: {filtered_count} activit{'y' if filtered_count == 1 else 'ies'} "
             f"(of {all_count} total)")
-        scope_lbl.setStyleSheet("color: #6b7280; font-size: 11px;")
+        scope_lbl.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 11px;")
         layout.addWidget(scope_lbl)
 
         csv_filtered_btn = PremiumButton(

@@ -28,9 +28,9 @@ class _InsightCard(QFrame):
     action_clicked = pyqtSignal(str, dict)   # (action_label, action_data)
 
     _PRIORITY_BORDER = {
-        "high":   "#f85149",
-        "medium": "#f59e0b",
-        "low":    "#3fb950",
+        "high":   token("color.semantic.high"),
+        "medium": token("color.semantic.warning"),
+        "low":    token("color.semantic.success"),
     }
 
     def __init__(self, insight: Insight, parent=None):
