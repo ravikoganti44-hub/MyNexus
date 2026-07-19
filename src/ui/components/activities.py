@@ -327,14 +327,14 @@ class ActivitiesWidget(QWidget):
                 
                 # Color code by urgency
                 if days_left < 0:
-                    days_item.setBackground(QColor("#ef4444"))
-                    days_item.setForeground(QColor("#fff"))
+                    days_item.setBackground(QColor(token("color.semantic.high")))
+                    days_item.setForeground(QColor(token("color.text.inverse")))
                 elif days_left == 0:
-                    days_item.setBackground(QColor("#f59e0b"))
-                    days_item.setForeground(QColor("#fff"))
+                    days_item.setBackground(QColor(token("color.semantic.warning")))
+                    days_item.setForeground(QColor(token("color.text.inverse")))
                 elif days_left <= 3:
-                    days_item.setBackground(QColor("#fbbf24"))
-                    days_item.setForeground(QColor("#1a1a1a"))
+                    days_item.setBackground(QColor(token("color.semantic.warning")))
+                    days_item.setForeground(QColor(token("color.text.primary")))
                 
                 self.table.setItem(row, 5, days_item)
             else:
@@ -344,9 +344,9 @@ class ActivitiesWidget(QWidget):
             status = "✓ Completed" if activity.is_completed else "⏳ Pending"
             status_item = QTableWidgetItem(status)
             if activity.is_completed:
-                status_item.setForeground(QColor("#10d981"))
+                status_item.setForeground(QColor(token("color.semantic.success")))
             else:
-                status_item.setForeground(QColor("#94a3b8"))
+                status_item.setForeground(QColor(token("color.text.muted")))
             self.table.setItem(row, 6, status_item)
             
             # Edit button — labeled, blue ghost style

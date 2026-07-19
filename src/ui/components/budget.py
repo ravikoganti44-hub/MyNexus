@@ -292,7 +292,7 @@ class BudgetTrackerWidget(QWidget):
         if not all_cats:
             msg = QLabel(
                 "No budget categories set yet.  Click \"Set Limits\" to define your monthly budget.")
-            msg.setStyleSheet("color: #4b5563; font-size: 13px;")
+            msg.setStyleSheet(f"color: {token('color.text.tertiary')}; font-size: 13px;")
             msg.setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.category_layout.addWidget(msg)
             return
@@ -310,7 +310,7 @@ class BudgetTrackerWidget(QWidget):
 
             cat_lbl = QLabel(cat)
             cat_lbl.setFont(QFont("Segoe UI", 10, QFont.Weight.Medium))
-            cat_lbl.setStyleSheet("color: #c9d1d9;")
+            cat_lbl.setStyleSheet(f"color: {token('color.text.primary')};")
             cat_lbl.setFixedWidth(160)
             row.addWidget(cat_lbl)
 
@@ -358,10 +358,10 @@ class BudgetTrackerWidget(QWidget):
 
             if entry.amount < 0:
                 amt_item = QTableWidgetItem(f"+${abs(entry.amount):,.2f}")
-                amt_item.setForeground(QColor("#3fb950"))
+                amt_item.setForeground(QColor(token("color.semantic.success")))
             else:
                 amt_item = QTableWidgetItem(f"${entry.amount:,.2f}")
-                amt_item.setForeground(QColor("#f59e0b"))
+                amt_item.setForeground(QColor(token("color.semantic.warning")))
             self.expenses_table.setItem(row, 3, amt_item)
 
             self.expenses_table.setItem(row, 4, QTableWidgetItem(entry.notes or ""))
@@ -567,8 +567,10 @@ class BudgetTrackerWidget(QWidget):
         form = QFormLayout()
         form.setSpacing(10)
 
-        field_style = ("background: #21262d; color: #e6edf3; "
-                       "border: 1px solid #30363d; border-radius: 6px; padding: 8px;")
+        field_style = (
+            f"background: {token('color.bg.tertiary')}; color: {token('color.text.primary')}; "
+            f"border: 1px solid {token('color.border.default')}; border-radius: 6px; padding: 8px;"
+        )
 
         title_edit = QLineEdit()
         title_edit.setPlaceholderText("e.g. Grocery run, Rent payment  (🤖 AI auto-categorises)")
@@ -589,7 +591,7 @@ class BudgetTrackerWidget(QWidget):
         # AI auto-category suggestion
         ai_cat_hint = QLabel("")
         ai_cat_hint.setFont(QFont("Segoe UI", 8))
-        ai_cat_hint.setStyleSheet("color: #a78bfa; padding: 0;")
+        ai_cat_hint.setStyleSheet(f"color: {token('color.accent.primary')}; padding: 0;")
 
         def _on_title_changed(text):
             if len(text) >= 3:
