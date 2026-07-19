@@ -5,6 +5,8 @@ from pathlib import Path
 from PyQt6.QtGui import QIcon, QPixmap, QPainter
 from PyQt6.QtCore import Qt, QByteArray, QRectF
 
+from src.ui.styles.tokens import token
+
 try:
     from PyQt6.QtSvg import QSvgRenderer
 except ImportError:  # pragma: no cover - optional dependency in some environments
@@ -103,10 +105,10 @@ class IconManager:
 
 
 # Preload common icons with primary accent color
-ICON_PRIMARY = lambda name: IconManager.get_icon(name, size=24, color="#00d4ff")
-ICON_SECONDARY = lambda name: IconManager.get_icon(name, size=24, color="#00a8cc")
-ICON_SUCCESS = lambda name: IconManager.get_icon(name, size=24, color="#10d981")
-ICON_WARNING = lambda name: IconManager.get_icon(name, size=24, color="#f59e0b")
-ICON_ERROR = lambda name: IconManager.get_icon(name, size=24, color="#ef4444")
-ICON_WHITE = lambda name: IconManager.get_icon(name, size=24, color="#ffffff")
-ICON_GRAY = lambda name: IconManager.get_icon(name, size=24, color="#b0b0b0")
+ICON_PRIMARY = lambda name: IconManager.get_icon(name, size=24, color=token("color.accent.primary"))
+ICON_SECONDARY = lambda name: IconManager.get_icon(name, size=24, color=token("color.accent.secondary"))
+ICON_SUCCESS = lambda name: IconManager.get_icon(name, size=24, color=token("color.semantic.success"))
+ICON_WARNING = lambda name: IconManager.get_icon(name, size=24, color=token("color.semantic.warning"))
+ICON_ERROR = lambda name: IconManager.get_icon(name, size=24, color=token("color.semantic.error"))
+ICON_WHITE = lambda name: IconManager.get_icon(name, size=24, color=token("color.text.inverse"))
+ICON_GRAY = lambda name: IconManager.get_icon(name, size=24, color=token("color.text.muted"))
