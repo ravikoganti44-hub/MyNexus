@@ -117,7 +117,7 @@ class MasterPassphraseDialog(QDialog):
         submit.setFixedSize(120, 36)
         submit.setCursor(Qt.CursorShape.PointingHandCursor)
         submit.setStyleSheet(
-            f"QPushButton {{ background-color: {_PALETTE['accent.primary']}; color: #fff; border: none; "
+            f"QPushButton {{ background-color: {_PALETTE['accent.primary']}; color: {token('color.text.inverse')}; border: none; "
             f"border-radius: {_PALETTE['radius.md']}; font-weight: bold; }} "
             f"QPushButton:hover {{ background-color: {_PALETTE['accent.secondary']}; }}"
         )
@@ -227,7 +227,7 @@ class OnboardingWizard(QDialog):
         self._next_btn.setFixedSize(100, 34)
         self._next_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self._next_btn.setStyleSheet(
-            f"QPushButton {{ background: {_PALETTE['accent.primary']}; color: #fff; border: none; "
+            f"QPushButton {{ background: {_PALETTE['accent.primary']}; color: {token('color.text.inverse')}; border: none; "
             f"border-radius: {_PALETTE['radius.md']}; font-weight: bold; }} "
             f"QPushButton:hover {{ background: {_PALETTE['accent.secondary']}; }}"
         )
@@ -346,7 +346,7 @@ class OnboardingWizard(QDialog):
         add_activity.setCursor(Qt.CursorShape.PointingHandCursor)
         add_activity.setFixedHeight(36)
         add_activity.setStyleSheet(
-            f"QPushButton {{ background: {_PALETTE['accent.primary']}; color: #fff; border: none; "
+            f"QPushButton {{ background: {_PALETTE['accent.primary']}; color: {token('color.text.inverse')}; border: none; "
             f"border-radius: {_PALETTE['radius.md']}; font-weight: bold; }} "
             f"QPushButton:hover {{ background: {_PALETTE['accent.secondary']}; }}"
         )
