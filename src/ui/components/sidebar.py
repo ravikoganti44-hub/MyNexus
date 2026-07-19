@@ -17,9 +17,9 @@ from config.settings import APP_NAME, APP_TAGLINE, APP_VERSION
 class SidebarWidget(QWidget):
     """Sidebar navigation widget with premium design"""
 
-    EXPANDED_WIDTH = 216
+    EXPANDED_WIDTH = 256
     COLLAPSED_WIDTH = 76
-    
+
     page_changed = pyqtSignal(int)
     
     def __init__(self):
@@ -52,21 +52,21 @@ class SidebarWidget(QWidget):
         return btn
     
     def _nav_base_style(self) -> str:
-        return f"""
-            QPushButton#navButton {{
-                background-color: transparent;
-                color: {token("color.text.secondary")};
-                border: 1px solid transparent;
-                border-radius: {token("radius.md")};
-                padding: 8px 12px;
-                text-align: left;
-                font-weight: {token("type.weight.medium")};
-            }}
-            QPushButton#navButton:hover {{
-                background-color: {token("color.bg.hover")};
-                border: 1px solid {token("color.border.light")};
-                color: {token("color.text.primary")};
-            }}
+        return f"""\
+            QPushButton#navButton {{\
+                background-color: transparent;\
+                color: {token("color.text.primary")};\
+                border: 1px solid transparent;\
+                border-radius: {token("radius.md")};\
+                padding: 8px 12px;\
+                text-align: left;\
+                font-weight: {token("type.weight.medium")};\
+            }}\
+            QPushButton#navButton:hover {{\
+                background-color: {token("color.bg.hover")};\
+                border: 1px solid {token("color.border.light")};\
+                color: {token("color.text.primary")};\
+            }}\
         """
 
     def _active_style(self) -> str:

@@ -171,7 +171,16 @@ class CalendarViewWidget(QWidget):
         nav = QHBoxLayout()
         nav.setSpacing(8)
 
-        self.prev_btn = self._nav_arrow("◀")
+        self.prev_btn = QPushButton("←")
+        self.prev_btn.setFixedSize(36, 36)
+        self.prev_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.prev_btn.setStyleSheet(f"""
+            QPushButton {{
+                background: {token("color.bg.secondary")}; color: {token("color.text.primary")};
+                border: 1px solid {token("color.border.default")}; border-radius: 8px; font-size: 16px;
+            }}
+            QPushButton:hover {{ background: {token("color.bg.hover")}; border-color: {token("color.accent.primary")}; }}
+        """)
         self.prev_btn.clicked.connect(self._prev_month)
 
         self.month_label = QLabel()
@@ -180,7 +189,16 @@ class CalendarViewWidget(QWidget):
         self.month_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.month_label.setMinimumWidth(200)
 
-        self.next_btn = self._nav_arrow("▶")
+        self.next_btn = QPushButton("→")
+        self.next_btn.setFixedSize(36, 36)
+        self.next_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.next_btn.setStyleSheet(f"""
+            QPushButton {{
+                background: {token("color.bg.secondary")}; color: {token("color.text.primary")};
+                border: 1px solid {token("color.border.default")}; border-radius: 8px; font-size: 16px;
+            }}
+            QPushButton:hover {{ background: {token("color.bg.hover")}; border-color: {token("color.accent.primary")}; }}
+        """)
         self.next_btn.clicked.connect(self._next_month)
 
         nav.addWidget(self.prev_btn)

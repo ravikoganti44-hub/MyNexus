@@ -340,12 +340,15 @@ class DashboardWidget(QWidget):
     def _style_table(self, table: QTableWidget):
         """Style a table widget with premium design"""
         table.setAlternatingRowColors(True)
-        table.horizontalHeader().setStretchLastSection(True)
+        table.horizontalHeader().setStretchLastSection(False)
+        table.horizontalHeader().setSectionResizeMode(table.horizontalHeader().ResizeMode.ResizeToContents)
+        table.horizontalHeader().setMinimumSectionSize(110)
         table.horizontalHeader().setDefaultAlignment(Qt.AlignmentFlag.AlignLeft)
         table.verticalHeader().setVisible(False)
         table.setSelectionMode(table.SelectionMode.SingleSelection)
         table.setSelectionBehavior(table.SelectionBehavior.SelectRows)
-        table.setWordWrap(False)
+        table.setWordWrap(True)
+        table.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         table.setStyleSheet(f"""
             QTableWidget {{
                 background-color: {token("color.bg.secondary")};
