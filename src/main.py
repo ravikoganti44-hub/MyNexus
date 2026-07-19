@@ -164,6 +164,7 @@ class MainWindow(QMainWindow):
         body_layout.addWidget(self.sidebar)
         body_layout.addWidget(self.pages, 1)
 
+        shell_layout.addWidget(body_frame, 1)
         status_frame = QFrame()
         status_frame.setObjectName("windowStatusBar")
         status_frame.setFixedHeight(34)
@@ -189,7 +190,6 @@ class MainWindow(QMainWindow):
         )
         status_layout.addWidget(search_hint)
 
-        shell_layout.addWidget(body_frame, 1)
         shell_layout.addWidget(status_frame)
         main_layout.addWidget(self.shell_frame, 1)
 
