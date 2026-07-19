@@ -11,6 +11,7 @@ from PyQt6.QtGui import QFont, QColor, QKeyEvent, QShortcut, QKeySequence
 
 from src.database.config import get_session
 from src.database.models import Activity, ConnectedApplication, Document
+from src.ui.styles.tokens import token
 
 
 class QuickSearchDialog(QDialog):
@@ -34,7 +35,7 @@ class QuickSearchDialog(QDialog):
 
         card = QFrame()
         card.setStyleSheet(
-            "QFrame { background: #161b22; border: 1px solid #30363d; border-radius: 14px; }"
+            f"QFrame {{ background: {token('color.bg.secondary')}; border: 1px solid {token('color.border.default')}; border-radius: 14px; }}"
         )
         card_layout = QVBoxLayout(card)
         card_layout.setContentsMargins(16, 16, 16, 12)
@@ -46,9 +47,9 @@ class QuickSearchDialog(QDialog):
         self._input.setMinimumHeight(40)
         self._input.setFont(QFont("Segoe UI", 12))
         self._input.setStyleSheet(
-            "QLineEdit { background: #0d1117; color: #fff; border: 1px solid #30363d; "
-            "border-radius: 10px; padding: 8px 14px; } "
-            "QLineEdit:focus { border-color: #58a6ff; }"
+            f"QLineEdit {{ background: {token('color.bg.tertiary')}; color: {token('color.text.primary')}; border: 1px solid {token('color.border.default')}; "
+            f"border-radius: 10px; padding: 8px 14px; }} "
+            f"QLineEdit:focus {{ border-color: {token('color.accent.primary')}; }}"
         )
         self._input.textChanged.connect(lambda: self._debounce.start())
         card_layout.addWidget(self._input)
@@ -56,16 +57,16 @@ class QuickSearchDialog(QDialog):
         # Hint
         hint = QLabel("Tip: Press Enter to navigate, Esc to close")
         hint.setFont(QFont("Segoe UI", 8))
-        hint.setStyleSheet("color: #6b7280;")
+        hint.setStyleSheet(f"color: {token('color.text.tertiary')};")
         card_layout.addWidget(hint)
 
         # Results
         self._results = QListWidget()
         self._results.setStyleSheet(
-            "QListWidget { background: transparent; border: none; } "
-            "QListWidget::item { background: #21262d; border-radius: 8px; "
-            "margin: 2px 0; padding: 10px 12px; color: #e8eefb; } "
-            "QListWidget::item:selected { background: #30363d; border: 1px solid #58a6ff; }"
+            f"QListWidget {{ background: transparent; border: none; }} "
+            f"QListWidget::item {{ background: {token('color.bg.tertiary')}; border-radius: 8px; "
+            f"margin: 2px 0; padding: 10px 12px; color: {token('color.text.primary')}; }} "
+            f"QListWidget::item:selected {{ background: {token('color.border.default')}; border: 1px solid {token('color.accent.primary')}; }}"
         )
         self._results.setFont(QFont("Segoe UI", 10))
         self._results.itemDoubleClicked.connect(self._on_item_activated)
