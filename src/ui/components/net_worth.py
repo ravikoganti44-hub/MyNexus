@@ -262,8 +262,10 @@ class _CategoryRow(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(8)
 
-        fs = ("background:#21262d; color:#e6edf3; "
-              "border:1px solid #30363d; border-radius:6px; padding:6px 8px;")
+        fs = (
+            f"background:{token('color.bg.tertiary')}; color:{token('color.text.primary')}; "
+            f"border:1px solid {token('color.border.default')}; border-radius:6px; padding:6px 8px;"
+        )
 
         self.name_edit = QLineEdit(name)
         self.name_edit.setPlaceholderText("Category name")
@@ -286,7 +288,7 @@ class _CategoryRow(QWidget):
         remove_btn.setFixedSize(28, 28)
         remove_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         remove_btn.setStyleSheet(
-            "QPushButton{background:transparent;color:#f85149;border:none;"
+            "QPushButton{background:transparent;color:{token('color.semantic.error')};border:none;"
             "font-size:12px;border-radius:4px;}"
             "QPushButton:hover{background:rgba(248,81,73,0.15);}")
         remove_btn.clicked.connect(self._remove_self)
@@ -387,7 +389,7 @@ class _SnapshotDialog(QDialog):
         add_a.setStyleSheet(
             f"QPushButton{{background:transparent;color:{_GREEN};border:none;"
             "font-size:11px;font-weight:600;}}"
-            f"QPushButton:hover{{color:#56d364;}}")
+            f"QPushButton:hover{{color:{token('color.semantic.success')};}}")
         add_a.setCursor(Qt.CursorShape.PointingHandCursor)
         add_a.clicked.connect(
             lambda: self._add_row(self.assets_layout, suggestions=ASSET_CATEGORIES))

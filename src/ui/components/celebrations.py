@@ -25,7 +25,7 @@ class CelebrationOverlay(QWidget):
         banner.setAlignment(Qt.AlignmentFlag.AlignCenter)
         banner.setFont(QFont("Segoe UI", 22, QFont.Weight.Bold))
         banner.setStyleSheet(
-            "color: #f5c518; background: rgba(0,0,0,0.55); border-radius: 12px; padding: 12px 28px;"
+            f"color: {token('color.accent.primary')}; background: rgba(0,0,0,0.55); border-radius: 12px; padding: 12px 28px;"
         )
         banner.adjustSize()
         banner.move((self.width() - banner.width()) // 2, self.height() // 3)
