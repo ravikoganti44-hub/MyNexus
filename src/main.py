@@ -14,7 +14,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QTimer, QEvent
 from PyQt6.QtGui import QIcon, QFont, QColor, QShortcut, QKeySequence
 
-FLUENT_CHROME = True  # frameless title bar + QSizeGrip resize
+FLUENT_CHROME = False  # frameless title bar + QSizeGrip resize
 
 from src.ui.components.dashboard import DashboardWidget
 from src.ui.components.activities import ActivitiesWidget
@@ -196,21 +196,6 @@ class MainWindow(QMainWindow):
 
         shell_layout.addWidget(status_frame)
         main_layout.addWidget(self.shell_frame, 1)
-
-        if FLUENT_CHROME:
-            try:
-                from src.ui.components.window_chrome import FramelessFluentWindow
-                chrome = FramelessFluentWindow(self)
-                chrome.setObjectName("mainWindowChrome")
-                container = QWidget()
-                outer = QVBoxLayout(container)
-                outer.setContentsMargins(0, 0, 0, 0)
-                outer.setSpacing(0)
-                outer.addWidget(chrome)
-                central_widget.setParent(None)
-                self.setCentralWidget(container)
-            except Exception:
-                pass
 
     def _refresh_current_page_layout(self):
         """Refresh active page layout after window geometry changes settle."""
