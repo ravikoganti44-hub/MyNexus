@@ -27,6 +27,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QFont, QCursor, QColor
 
+from src.ui.styles.tokens import token
 from src.ui.components.premium_button import PremiumButton
 
 
@@ -152,12 +153,12 @@ class BrowserPasswordImportDialog(QDialog):
         layout = QVBoxLayout(self)
         layout.setSpacing(12)
         layout.setContentsMargins(20, 20, 20, 20)
-        self.setStyleSheet("""
-            QDialog { background-color: #0d1117; color: #e6eef8; }
-            QLabel { color: #c7d2e0; }
-            QTableWidget { background-color: #161b22; color: #e6eef8; border: 1px solid #30363d; border-radius: 6px; }
-            QHeaderView::section { background: #1c2128; color: #8b949e; padding: 6px; border: none;
-                                   border-bottom: 1px solid #30363d; font-weight: bold; }
+        self.setStyleSheet(f"""
+            QDialog {{ background-color: {token('color.bg.secondary')}; color: {token('color.text.primary')}; }}
+            QLabel {{ color: {token('color.text.primary')}; }}
+            QTableWidget {{ background-color: {token('color.bg.secondary')}; color: {token('color.text.primary')}; border: 1px solid {token('color.border.default')}; border-radius: 6px; }}
+            QHeaderView::section {{ background: {token('color.bg.tertiary')}; color: {token('color.text.secondary')}; padding: 6px; border: none;
+                                   border-bottom: 1px solid {token('color.border.default')}; font-weight: bold; }}
         """)
 
         info = QLabel(
@@ -196,7 +197,7 @@ class BrowserPasswordImportDialog(QDialog):
         layout.addWidget(self.preview_table, 1)
 
         self.count_label = QLabel("0 entries found")
-        self.count_label.setStyleSheet("color: #8b949e; font-size: 11px;")
+        self.count_label.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 11px;")
         layout.addWidget(self.count_label)
 
         # Buttons
@@ -403,12 +404,12 @@ class CalendarImportDialog(QDialog):
         layout = QVBoxLayout(self)
         layout.setSpacing(12)
         layout.setContentsMargins(20, 20, 20, 20)
-        self.setStyleSheet("""
-            QDialog { background-color: #0d1117; color: #e6eef8; }
-            QLabel { color: #c7d2e0; }
-            QTableWidget { background-color: #161b22; color: #e6eef8; border: 1px solid #30363d; border-radius: 6px; }
-            QHeaderView::section { background: #1c2128; color: #8b949e; padding: 6px; border: none;
-                                   border-bottom: 1px solid #30363d; font-weight: bold; }
+        self.setStyleSheet(f"""
+            QDialog {{ background-color: {token('color.bg.secondary')}; color: {token('color.text.primary')}; }}
+            QLabel {{ color: {token('color.text.primary')}; }}
+            QTableWidget {{ background-color: {token('color.bg.secondary')}; color: {token('color.text.primary')}; border: 1px solid {token('color.border.default')}; border-radius: 6px; }}
+            QHeaderView::section {{ background: {token('color.bg.tertiary')}; color: {token('color.text.secondary')}; padding: 6px; border: none;
+                                   border-bottom: 1px solid {token('color.border.default')}; font-weight: bold; }}
         """)
 
         info = QLabel(
@@ -432,7 +433,7 @@ class CalendarImportDialog(QDialog):
         layout.addWidget(self.preview_table, 1)
 
         self.count_label = QLabel("0 events found")
-        self.count_label.setStyleSheet("color: #8b949e; font-size: 11px;")
+        self.count_label.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 11px;")
         layout.addWidget(self.count_label)
 
         btn_row = QHBoxLayout()
@@ -1000,18 +1001,18 @@ class BankStatementImportDialog(QDialog):
         layout = QVBoxLayout(self)
         layout.setSpacing(8)
         layout.setContentsMargins(16, 16, 16, 16)
-        self.setStyleSheet("""
-            QDialog { background-color: #0d1117; color: #e6eef8; }
-            QLabel { color: #c7d2e0; }
-            QTableWidget { background-color: #161b22; color: #e6eef8;
-                           border: 1px solid #30363d; border-radius: 6px; }
-            QHeaderView::section { background: #1c2128; color: #8b949e; padding: 6px;
-                                   border: none; border-bottom: 1px solid #30363d;
-                                   font-weight: bold; }
-            QComboBox { background-color: #161b22; color: #e6eef8;
-                        border: 1px solid #30363d; border-radius: 6px; padding: 4px; }
-            QFrame#mappingFrame { background-color: #161b22; border: 1px solid #30363d;
-                                  border-radius: 8px; padding: 8px; }
+        self.setStyleSheet(f"""
+            QDialog {{ background-color: {token('color.bg.secondary')}; color: {token('color.text.primary')}; }}
+            QLabel {{ color: {token('color.text.primary')}; }}
+            QTableWidget {{ background-color: {token('color.bg.secondary')}; color: {token('color.text.primary')};
+                           border: 1px solid {token('color.border.default')}; border-radius: 6px; }}
+            QHeaderView::section {{ background: {token('color.bg.tertiary')}; color: {token('color.text.secondary')}; padding: 6px;
+                                   border: none; border-bottom: 1px solid {token('color.border.default')};
+                                   font-weight: bold; }}
+            QComboBox {{ background-color: {token('color.bg.secondary')}; color: {token('color.text.primary')};
+                        border: 1px solid {token('color.border.default')}; border-radius: 6px; padding: 4px; }}
+            QFrame#mappingFrame {{ background-color: {token('color.bg.secondary')}; border: 1px solid {token('color.border.default')};
+                                  border-radius: 8px; padding: 8px; }}
         """)
 
         # Title
@@ -1035,7 +1036,7 @@ class BankStatementImportDialog(QDialog):
         browse_btn.clicked.connect(self._browse)
         top.addWidget(browse_btn)
         self.file_label = QLabel("No file loaded")
-        self.file_label.setStyleSheet("color: #8b949e; font-size: 11px; padding-left: 8px;")
+        self.file_label.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 11px; padding-left: 8px;")
         top.addWidget(self.file_label, 1)
         layout.addLayout(top)
 
@@ -1072,7 +1073,7 @@ class BankStatementImportDialog(QDialog):
         filter_row.addWidget(self.filter_combo)
         filter_row.addStretch()
         self.summary_label = QLabel("")
-        self.summary_label.setStyleSheet("color: #8b949e; font-size: 11px;")
+        self.summary_label.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 11px;")
         filter_row.addWidget(self.summary_label)
         layout.addLayout(filter_row)
 
@@ -1089,7 +1090,7 @@ class BankStatementImportDialog(QDialog):
         layout.addWidget(self.preview_table, 1)
 
         self.count_label = QLabel("0 transactions found")
-        self.count_label.setStyleSheet("color: #8b949e; font-size: 11px;")
+        self.count_label.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 11px;")
         layout.addWidget(self.count_label)
 
         # Buttons
@@ -1553,12 +1554,12 @@ class BulkDocumentImportDialog(QDialog):
         layout = QVBoxLayout(self)
         layout.setSpacing(12)
         layout.setContentsMargins(20, 20, 20, 20)
-        self.setStyleSheet("""
-            QDialog { background-color: #0d1117; color: #e6eef8; }
-            QLabel { color: #c7d2e0; }
-            QTableWidget { background-color: #161b22; color: #e6eef8; border: 1px solid #30363d; border-radius: 6px; }
-            QHeaderView::section { background: #1c2128; color: #8b949e; padding: 6px; border: none;
-                                   border-bottom: 1px solid #30363d; font-weight: bold; }
+        self.setStyleSheet(f"""
+            QDialog {{ background-color: {token('color.bg.secondary')}; color: {token('color.text.primary')}; }}
+            QLabel {{ color: {token('color.text.primary')}; }}
+            QTableWidget {{ background-color: {token('color.bg.secondary')}; color: {token('color.text.primary')}; border: 1px solid {token('color.border.default')}; border-radius: 6px; }}
+            QHeaderView::section {{ background: {token('color.bg.tertiary')}; color: {token('color.text.secondary')}; padding: 6px; border: none;
+                                   border-bottom: 1px solid {token('color.border.default')}; font-weight: bold; }}
         """)
 
         info = QLabel(
@@ -1581,7 +1582,7 @@ class BulkDocumentImportDialog(QDialog):
         layout.addWidget(self.preview_table, 1)
 
         self.count_label = QLabel("0 files found")
-        self.count_label.setStyleSheet("color: #8b949e; font-size: 11px;")
+        self.count_label.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 11px;")
         layout.addWidget(self.count_label)
 
         btn_row = QHBoxLayout()

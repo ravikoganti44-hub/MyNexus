@@ -122,10 +122,10 @@ class BudgetTrackerWidget(QWidget):
         # ── Stat cards ───────────────────────────────────────────────────────
         cards_row = QHBoxLayout()
         cards_row.setSpacing(16)
-        self.card_budget    = StatCard("Total Budget",  "$0",  "💰", "#3fb950")
-        self.card_spent     = StatCard("Total Spent",   "$0",  "💳", "#f59e0b")
-        self.card_income    = StatCard("Total Income",  "$0",  "📈", "#3fb950")
-        self.card_remaining = StatCard("Remaining",     "$0",  "✅", "#58a6ff")
+        self.card_budget    = StatCard("Total Budget",  "$0",  "💰", token("color.semantic.success"))
+        self.card_spent     = StatCard("Total Spent",   "$0",  "💳", token("color.semantic.warning"))
+        self.card_income    = StatCard("Total Income",  "$0",  "📈", token("color.semantic.success"))
+        self.card_remaining = StatCard("Remaining",     "$0",  "✅", token("color.accent.primary"))
         for c in (self.card_budget, self.card_spent, self.card_income, self.card_remaining):
             cards_row.addWidget(c)
         main.addLayout(cards_row)
@@ -283,7 +283,7 @@ class BudgetTrackerWidget(QWidget):
         self.card_spent.set_value(f"${total_expenses:,.0f}")
         self.card_income.set_value(f"${total_income:,.0f}")
         self.card_remaining.set_value(f"${remaining:,.0f}")
-        self.card_remaining.set_color("#f85149" if remaining < 0 else "#58a6ff")
+        self.card_remaining.set_color(token("color.semantic.error") if remaining < 0 else token("color.accent.primary"))
 
     def _refresh_category_bars(self, limits: dict, spending: dict):
         self._clear_layout(self.category_layout)
