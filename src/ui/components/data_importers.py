@@ -1018,7 +1018,7 @@ class BankStatementImportDialog(QDialog):
         # Title
         title = QLabel("🤖 Smart Bank Statement Importer")
         title.setFont(QFont("Segoe UI", 13, QFont.Weight.Bold))
-        title.setStyleSheet("color: #58a6ff;")
+        title.setStyleSheet(f"color: {token('color.accent.primary')};")
         layout.addWidget(title)
 
         info = QLabel(
@@ -1027,7 +1027,7 @@ class BankStatementImportDialog(QDialog):
         )
         info.setWordWrap(True)
         info.setFont(QFont("Segoe UI", 9))
-        info.setStyleSheet("color: #8b949e;")
+        info.setStyleSheet(f"color: {token('color.text.secondary')};")
         layout.addWidget(info)
 
         # Browse row
@@ -1057,7 +1057,7 @@ class BankStatementImportDialog(QDialog):
         reanalyze_row.addWidget(self.reanalyze_btn)
         reanalyze_row.addStretch()
         self.layout_label = QLabel("")
-        self.layout_label.setStyleSheet("color: #3fb950; font-size: 11px;")
+        self.layout_label.setStyleSheet(f"color: {token('color.semantic.success')}; font-size: 11px;")
         self.layout_label.setWordWrap(True)
         reanalyze_row.addWidget(self.layout_label, 1)
         layout.addLayout(reanalyze_row)
@@ -1218,7 +1218,7 @@ class BankStatementImportDialog(QDialog):
         # Header row
         hdr_lbl = QLabel("Column Mapping (auto-detected — override if needed):")
         hdr_lbl.setFont(QFont("Segoe UI", 9, QFont.Weight.Bold))
-        hdr_lbl.setStyleSheet("color: #58a6ff;")
+        hdr_lbl.setStyleSheet(f"color: {token('color.accent.primary')};")
         self.mapping_layout.addWidget(hdr_lbl, 0, 0, 1, 4)
 
         # Reverse map: header → assigned role
@@ -1234,7 +1234,7 @@ class BankStatementImportDialog(QDialog):
             dtype = prof.inferred_type if prof else "?"
             label_text = f"{h}  [{dtype}]"
             lbl = QLabel(label_text)
-            lbl.setStyleSheet("color: #c7d2e0; font-size: 10px;")
+            lbl.setStyleSheet(f"color: {token('color.text.secondary')}; font-size: 10px;")
             lbl.setFixedWidth(180)
 
             combo = QComboBox()
@@ -1736,9 +1736,28 @@ class QuickTemplatesDialog(QDialog):
         layout = QVBoxLayout(self)
         layout.setSpacing(10)
         layout.setContentsMargins(20, 20, 20, 20)
-        self.setStyleSheet("""
-            QDialog { background-color: #0d1117; color: #e6eef8; }
-            QLabel { color: #c7d2e0; }
+        self.setStyleSheet(f"""
+            QDialog {{ background-color: {token('color.bg.secondary')}; color: {token('color.text.primary')}; }}
+            QLabel {{ color: {token('color.text.primary')}; }}
+            QCheckBox {{
+                padding: 8px 12px;
+                background: {token('color.bg.secondary')};
+                border: 1px solid {token('color.border.default')};
+                border-radius: 8px;
+                color: {token('color.text.primary')};
+            }}
+            QCheckBox:hover {{
+                border: 1px solid {token('color.accent.primary')};
+                background: {token('color.bg.tertiary')};
+            }}
+            QCheckBox::indicator {{
+                width: 18px;
+                height: 18px;
+            }}
+            QCheckBox::indicator:checked {{
+                background: {token('color.accent.primary')};
+                border-radius: 4px;
+            }}
         """)
 
         info = QLabel("Select activities to add from common templates:")
@@ -1757,12 +1776,12 @@ class QuickTemplatesDialog(QDialog):
             cb = QCheckBox(f"{tmpl['emoji']}  {tmpl['title']}")
             cb.setFont(QFont("Segoe UI", 10))
             cb.setToolTip(f"{tmpl['description']}\nCategory: {tmpl['category'].title()} | Recurrence: {tmpl['recurrence'].title()}")
-            cb.setStyleSheet("""
-                QCheckBox { padding: 8px 12px; background: #161b22; border: 1px solid #30363d;
-                            border-radius: 8px; color: #e6eef8; }
-                QCheckBox:hover { border: 1px solid #58a6ff; background: #1c2128; }
-                QCheckBox::indicator { width: 18px; height: 18px; }
-                QCheckBox::indicator:checked { background: #58a6ff; border-radius: 4px; }
+            cb.setStyleSheet(f"""
+                QCheckBox {{ padding: 8px 12px; background: {token('color.bg.secondary')}; border: 1px solid {token('color.border.default')};
+                            border-radius: 8px; color: {token('color.text.primary')}; }}
+                QCheckBox:hover {{ border: 1px solid {token('color.accent.primary')}; background: {token('color.bg.tertiary')}; }}
+                QCheckBox::indicator {{ width: 18px; height: 18px; }}
+                QCheckBox::indicator:checked {{ background: {token('color.accent.primary')}; border-radius: 4px; }}
             """)
             grid.addWidget(cb, i // 2, i % 2)
             self._checks.append((cb, tmpl))

@@ -53,7 +53,7 @@ class DayCell(QFrame):
         num = QLabel(str(self.day_date.day))
         if self.is_today:
             num.setStyleSheet(
-                f"color: #fff; background-color: {token('color.accent.primary')}; "
+                f"color: {token('color.text.inverse')}; background-color: {token('color.accent.primary')}; "
                 "border-radius: 11px; padding: 2px 6px; font-weight: 700;")
             num.setFont(QFont("Segoe UI", 11, QFont.Weight.Bold))
         elif self.is_other_month:
@@ -289,7 +289,7 @@ class CalendarViewWidget(QWidget):
         btn.setCursor(Qt.CursorShape.PointingHandCursor)
         btn.setStyleSheet("""
             QPushButton {
-                background: rgba(88,166,255,0.08); color: #58a6ff;
+                background: rgba(88,166,255,0.08); color: {token('color.accent.primary')};
                 border: 1px solid rgba(88,166,255,0.2); border-radius: 8px; font-size: 14px;
             }
             QPushButton:hover { background: rgba(88,166,255,0.15); }
