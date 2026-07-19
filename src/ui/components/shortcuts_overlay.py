@@ -5,6 +5,8 @@ from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QFrame, QHBoxLayout
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
 
+from src.ui.styles.tokens import token
+
 
 _SHORTCUTS = [
     ("Ctrl+K", "Global search across all data"),
@@ -24,7 +26,7 @@ class ShortcutsOverlay(QDialog):
         super().__init__(parent)
         self.setWindowTitle("Keyboard Shortcuts")
         self.setFixedSize(420, 380)
-        self.setStyleSheet("QDialog { background: #0d1117; }")
+        self.setStyleSheet(f"QDialog {{ background: {token('color.bg.secondary')}; }}")
         self._setup_ui()
 
     def _setup_ui(self):
@@ -34,7 +36,7 @@ class ShortcutsOverlay(QDialog):
 
         title = QLabel("Keyboard Shortcuts")
         title.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))
-        title.setStyleSheet("color: #58a6ff;")
+        title.setStyleSheet(f"color: {token('color.accent.primary')};")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(title)
 
@@ -45,13 +47,12 @@ class ShortcutsOverlay(QDialog):
             badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
             badge.setFont(QFont("Consolas", 10, QFont.Weight.Bold))
             badge.setStyleSheet(
-                "background: #21262d; color: #e8eefb; border: 1px solid #30363d; "
-                "border-radius: 6px; padding: 4px 8px;"
+                f"background: {token('color.bg.tertiary')}; color: {token('color.text.primary')}; border: 1px solid {token('color.border.default')}; border-radius: 6px; padding: 4px 8px;"
             )
             row.addWidget(badge)
             lbl = QLabel(desc)
             lbl.setFont(QFont("Segoe UI", 10))
-            lbl.setStyleSheet("color: #b0bbc9;")
+            lbl.setStyleSheet(f"color: {token('color.text.secondary')};")
             row.addWidget(lbl, 1)
             layout.addLayout(row)
 
@@ -59,7 +60,7 @@ class ShortcutsOverlay(QDialog):
 
         close_hint = QLabel("Press Esc to close")
         close_hint.setFont(QFont("Segoe UI", 8))
-        close_hint.setStyleSheet("color: #6b7280;")
+        close_hint.setStyleSheet(f"color: {token('color.text.tertiary')};")
         close_hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(close_hint)
 
