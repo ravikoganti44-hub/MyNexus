@@ -14,6 +14,10 @@ from PyQt6.QtGui import QFont, QColor
 from src.core.ai_engine import Insight
 from src.ui.styles.tokens import token
 
+def _tok_rgba(hex_color: str, alpha: float) -> str:
+    c = QColor(hex_color)
+    return f"rgba({c.red()}, {c.green()}, {c.blue()}, {alpha})"
+
 
 # ---------------------------------------------------------------------------
 # Single insight card
@@ -152,10 +156,10 @@ class AIInsightsPanel(QWidget):
         ai_badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
         ai_badge.setFixedWidth(52)
         ai_badge.setFixedHeight(20)
-        ai_badge.setStyleSheet("""
-            color: #a78bfa;
-            background: rgba(167, 139, 250, 0.12);
-            border: 1px solid rgba(167, 139, 250, 0.3);
+        ai_badge.setStyleSheet(f"""
+            color: {token("color.accent.primary")};
+            background: {_tok_rgba(token("color.accent.primary"), 0.12)};
+            border: 1px solid {_tok_rgba(token("color.accent.primary"), 0.3)};
             border-radius: 10px;
         """)
         hdr.addWidget(ai_badge)
@@ -163,7 +167,7 @@ class AIInsightsPanel(QWidget):
 
         self.count_label = QLabel("")
         self.count_label.setFont(QFont("Segoe UI", 9))
-        self.count_label.setStyleSheet("color: #6b7280;")
+        self.count_label.setStyleSheet(f"color: {token('color.text.secondary')};")
         hdr.addWidget(self.count_label)
         layout.addLayout(hdr)
 
@@ -185,7 +189,7 @@ class AIInsightsPanel(QWidget):
         if not insights:
             empty = QLabel("✅  All systems look good — no issues detected.")
             empty.setFont(QFont("Segoe UI", 10))
-            empty.setStyleSheet("color: #3fb950; padding: 8px 0;")
+            empty.setStyleSheet(f"color: {token('color.semantic.success')}; padding: 8px 0;")
             self.cards_layout.addWidget(empty)
             self.count_label.setText("")
             return

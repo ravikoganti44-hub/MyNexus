@@ -160,17 +160,17 @@ class BudgetTrackerWidget(QWidget):
         self.expenses_table.verticalHeader().setVisible(False)
         self.expenses_table.setSelectionBehavior(
             QTableWidget.SelectionBehavior.SelectRows)
-        self.expenses_table.setStyleSheet("""
-            QTableWidget {
-                background-color: #161b22; alternate-background-color: #21262d;
-                gridline-color: #30363d; border: 1px solid #30363d; border-radius: 8px;
-            }
-            QTableWidget::item { padding: 8px; color: #c9d1d9; }
-            QHeaderView::section {
-                background: #1c2128; color: #8b949e; padding: 10px 8px;
-                border: none; border-bottom: 2px solid #30363d;
+        self.expenses_table.setStyleSheet(f"""
+            QTableWidget {{
+                background-color: {token("color.bg.secondary")}; alternate-background-color: {token("color.bg.tertiary")};
+                gridline-color: {token("color.border.default")}; border: 1px solid {token("color.border.default")}; border-radius: 8px;
+            }}
+            QTableWidget::item {{ padding: 8px; color: {token("color.text.primary")}; }}
+            QHeaderView::section {{
+                background: {token("color.bg.tertiary")}; color: {token("color.text.secondary")}; padding: 10px 8px;
+                border: none; border-bottom: 2px solid {token("color.border.default")};
                 font-weight: 700; font-size: 11px; text-transform: uppercase;
-            }
+            }}
         """)
         h = self.expenses_table.horizontalHeader()
         h.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
@@ -199,12 +199,12 @@ class BudgetTrackerWidget(QWidget):
         btn = QPushButton(symbol)
         btn.setFixedSize(36, 36)
         btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        btn.setStyleSheet("""
-            QPushButton {
-                background: rgba(88,166,255,0.08); color: #58a6ff;
+        btn.setStyleSheet(f"""
+            QPushButton {{
+                background: rgba(88,166,255,0.08); color: {token("color.accent.primary")};
                 border: 1px solid rgba(88,166,255,0.2); border-radius: 8px; font-size: 14px;
-            }
-            QPushButton:hover { background: rgba(88,166,255,0.15); }
+            }}
+            QPushButton:hover {{ background: rgba(88,166,255,0.15); }}
         """)
         return btn
 
@@ -316,30 +316,33 @@ class BudgetTrackerWidget(QWidget):
 
             bar = QProgressBar()
             bar.setMinimum(0)
+            bar.setFixedHeight(16)
+            bar.setTextVisible(False)
+            bar.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Fixed)
             if is_income:
                 bar.setMaximum(max(int(display_amt * 100), 100))
                 bar.setValue(int(display_amt * 100))
-                bar_color = "#3fb950"  # green for income
+                bar_color = token("color.semantic.success")
             else:
                 bar.setMaximum(max(int(limit * 100), int(display_amt * 100) + 1, 100))
                 bar.setValue(int(display_amt * 100))
                 pct = (display_amt / limit * 100) if limit > 0 else 100.0
-                bar_color = "#f85149" if pct >= 100 else ("#f59e0b" if pct >= 80 else "#3fb950")
-            bar.setFixedHeight(16)
-            bar.setTextVisible(False)
-            bar.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+                bar_color = token("color.semantic.error") if pct >= 100 else (token("color.semantic.warning") if pct >= 80 else token("color.semantic.success"))
             bar.setStyleSheet(f"""
-                QProgressBar {{ background-color: #30363d; border-radius: 8px; border: none; }}
+                QProgressBar {{ background-color: {token("color.border.default")}; border-radius: 8px; border: none; }}
                 QProgressBar::chunk {{ background-color: {bar_color}; border-radius: 8px; }}
             """)
             row.addWidget(bar, 1)
 
             if is_income:
                 amounts = QLabel(f"+${display_amt:,.0f}")
+                amounts.setFont(QFont("Segoe UI", 9))
+                amounts.setStyleSheet(f"color: {token('color.semantic.success')}; min-width: 130px;")
             else:
                 amounts = QLabel(f"${display_amt:,.0f} / ${limit:,.0f}")
-            amounts.setFont(QFont("Segoe UI", 9))
-            amounts.setStyleSheet(f"color: {bar_color}; min-width: 130px;")
+                amounts.setFont(QFont("Segoe UI", 9))
+                color_key = 'color.semantic.error' if pct >= 100 else ('color.semantic.warning' if pct >= 80 else 'color.semantic.success')
+                amounts.setStyleSheet(f"color: {token(color_key)}; min-width: 130px;")
             amounts.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             row.addWidget(amounts)
 
