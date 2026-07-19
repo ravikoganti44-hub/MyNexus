@@ -80,7 +80,7 @@ class NotificationPanel(QFrame):
         header = QHBoxLayout()
         title = QLabel("Notifications")
         title.setFont(QFont("Segoe UI", 12, QFont.Weight.Bold))
-        title.setStyleSheet("color: #e8eefb;")
+        title.setStyleSheet(f"color: {token('color.text.primary')};")
         header.addWidget(title)
         header.addStretch()
 
@@ -88,7 +88,7 @@ class NotificationPanel(QFrame):
         mark_all.setCursor(Qt.CursorShape.PointingHandCursor)
         mark_all.setFont(QFont("Segoe UI", 9))
         mark_all.setStyleSheet(
-            "QPushButton { background: transparent; color: #58a6ff; border: none; }"
+            f"QPushButton {{ background: transparent; color: {token('color.accent.primary')}; border: none; }}"
             "QPushButton:hover { text-decoration: underline; }"
         )
         mark_all.clicked.connect(self._mark_all_read)
@@ -115,7 +115,7 @@ class NotificationPanel(QFrame):
             if not notifs:
                 empty = QLabel("No new notifications")
                 empty.setFont(QFont("Segoe UI", 10))
-                empty.setStyleSheet("color: #6b7280;")
+                empty.setStyleSheet(f"color: {token('color.text.tertiary')};")
                 empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 self._items_layout.addWidget(empty)
                 return
@@ -123,23 +123,23 @@ class NotificationPanel(QFrame):
             for n in notifs:
                 card = QFrame()
                 card.setStyleSheet(
-                    "QFrame { background: #21262d; border-radius: 8px; padding: 8px; }"
+                    f"QFrame {{ background: {token('color.bg.tertiary')}; border-radius: 8px; padding: 8px; }}"
                 )
                 row = QVBoxLayout(card)
                 row.setContentsMargins(10, 8, 10, 8)
                 row.setSpacing(2)
                 title = QLabel(n.title or "Notification")
                 title.setFont(QFont("Segoe UI", 10, QFont.Weight.Bold))
-                title.setStyleSheet("color: #e8eefb;")
+                title.setStyleSheet(f"color: {token('color.text.primary')};")
                 row.addWidget(title)
                 msg = QLabel(n.message or "")
                 msg.setFont(QFont("Segoe UI", 9))
-                msg.setStyleSheet("color: #b0bbc9;")
+                msg.setStyleSheet(f"color: {token('color.text.secondary')};")
                 msg.setWordWrap(True)
                 row.addWidget(msg)
                 ts = QLabel(n.sent_at.strftime("%b %d, %H:%M") if n.sent_at else "")
                 ts.setFont(QFont("Segoe UI", 8))
-                ts.setStyleSheet("color: #6b7280;")
+                ts.setStyleSheet(f"color: {token('color.text.muted')};")
                 row.addWidget(ts)
                 self._items_layout.addWidget(card)
         finally:
@@ -162,6 +162,6 @@ class NotificationPanel(QFrame):
                 child.widget().deleteLater()
         empty = QLabel("All caught up!")
         empty.setFont(QFont("Segoe UI", 10))
-        empty.setStyleSheet("color: #3fb950;")
+        empty.setStyleSheet(f"color: {token('color.semantic.success')};")
         empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._items_layout.addWidget(empty)

@@ -181,7 +181,7 @@ class BrowserPasswordImportDialog(QDialog):
         row.addWidget(browse_btn)
 
         self.file_label = QLabel("No file selected")
-        self.file_label.setStyleSheet("color: #8b949e;")
+        self.file_label.setStyleSheet(f"color: {token('color.text.secondary')};")
         row.addWidget(self.file_label, 1)
         layout.addLayout(row)
 
