@@ -411,7 +411,7 @@ class _SnapshotDialog(QDialog):
         add_l.setStyleSheet(
             f"QPushButton{{background:transparent;color:{_RED};border:none;"
             "font-size:11px;font-weight:600;}}"
-            f"QPushButton:hover{{color:#ff7b72;}}")
+            f"QPushButton:hover{{color:{token('color.semantic.error')};}}")
         add_l.setCursor(Qt.CursorShape.PointingHandCursor)
         add_l.clicked.connect(
             lambda: self._add_row(self.liab_layout, suggestions=LIABILITY_CATEGORIES))
@@ -457,8 +457,8 @@ class _SnapshotDialog(QDialog):
         self.notes_edit = QLineEdit()
         self.notes_edit.setPlaceholderText("Optional context for this snapshot...")
         self.notes_edit.setStyleSheet(
-            "QLineEdit{background:#21262d;color:#e6edf3;"
-            "border:1px solid #30363d;border-radius:6px;padding:8px;}")
+            f"QLineEdit{{background:{token('color.bg.tertiary')};color:{token('color.text.primary')};"
+            f"border:1px solid {token('color.border.default')};border-radius:6px;padding:8px;}}")
         notes_row.addWidget(notes_lbl)
         notes_row.addWidget(self.notes_edit, 1)
         root.addLayout(notes_row)
