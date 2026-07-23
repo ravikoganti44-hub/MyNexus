@@ -39,6 +39,7 @@ class SidebarWidget(QWidget):
         btn.setFont(QFont("Segoe UI", 10, QFont.Weight.Medium))
         btn.setIconSize(QSize(18, 18))
         btn.setObjectName("navButton")
+        btn.setProperty("navText", text)
         
         # Set icon
         try:
@@ -58,7 +59,7 @@ class SidebarWidget(QWidget):
                 color: {token("color.text.primary")};\
                 border: 1px solid transparent;\
                 border-radius: {token("radius.md")};\
-                padding: 8px 12px;\
+                padding: 8px 12px 8px 8px;\
                 text-align: left;\
                 font-weight: {token("type.weight.medium")};\
             }}\
