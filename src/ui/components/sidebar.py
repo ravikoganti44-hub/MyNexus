@@ -34,20 +34,20 @@ class SidebarWidget(QWidget):
         """Create a navigation button with icon"""
         btn = QPushButton()
         btn.setText(text)
-        btn.setFixedHeight(44)
+        btn.setFixedHeight(42)
         btn.setCursor(Qt.CursorShape.PointingHandCursor)
         btn.setFont(QFont("Segoe UI", 10, QFont.Weight.Medium))
         btn.setIconSize(QSize(18, 18))
         btn.setObjectName("navButton")
         btn.setProperty("navText", text)
-        
+
         # Set icon
         try:
             icon = IconManager.get_icon(icon_name, size=20, color=token("color.accent.primary"))
             btn.setIcon(icon)
         except Exception:
             pass
-        
+
         btn.clicked.connect(lambda: self._on_button_clicked(btn, page_index))
         self._buttons.append((btn, text))
         return btn
@@ -104,9 +104,9 @@ class SidebarWidget(QWidget):
         # Header Frame
         header_frame = QFrame()
         header_frame.setObjectName("sidebarBrandPanel")
-        header_frame.setMinimumHeight(96)
+        header_frame.setFixedHeight(88)
         header_layout = QVBoxLayout()
-        header_layout.setContentsMargins(10, 12, 10, 12)
+        header_layout.setContentsMargins(10, 10, 10, 10)
         header_layout.setSpacing(spacing("space.2"))
 
         brand_row = QHBoxLayout()
@@ -204,17 +204,25 @@ class SidebarWidget(QWidget):
         btn_settings = self._create_nav_button("settings", "Settings", 8)
         nav_layout.addWidget(btn_settings)
 
-        layout.addWidget(nav_widget)
+        # Scroll wrapper so nav items never clip at small window heights
+        from PyQt6.QtWidgets import QScrollArea
+        nav_scroll = QScrollArea()
+        nav_scroll.setWidgetResizable(True)
+        nav_scroll.setFrameShape(QFrame.Shape.NoFrame)
+        nav_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        nav_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        nav_scroll.setWidget(nav_widget)
+        layout.addWidget(nav_scroll, 1)
 
         # Spacer
         spacer = QSpacerItem(20, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         layout.addItem(spacer)
-        
+
         # Footer separator
         footer_separator = QFrame()
         footer_separator.setStyleSheet(f"background-color: {token('color.border.default')};")
         layout.addWidget(footer_separator)
-        
+
         # Footer meta
         developed_by_label = QLabel("Developed by Sesank Koganti")
         developed_by_label.setObjectName("footerMetaLabel")

@@ -211,6 +211,7 @@ class ActivitiesWidget(QWidget):
         self.table.verticalHeader().setVisible(False)
         # double click for detail
         self.table.cellDoubleClicked.connect(self._on_row_double_clicked)
+        self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         main_layout.addWidget(self.table)
 
         # ── AI Activity Insights ──────────────────────────────────────────
