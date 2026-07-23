@@ -99,7 +99,7 @@ class SidebarWidget(QWidget):
         """Setup sidebar UI"""
         layout = QVBoxLayout()
         layout.setContentsMargins(12, 16, 12, 16)
-        layout.setSpacing(12)
+        layout.setSpacing(spacing("space.3"))
         
         # Header Frame
         header_frame = QFrame()
@@ -107,11 +107,11 @@ class SidebarWidget(QWidget):
         header_frame.setMinimumHeight(96)
         header_layout = QVBoxLayout()
         header_layout.setContentsMargins(10, 12, 10, 12)
-        header_layout.setSpacing(8)
+        header_layout.setSpacing(spacing("space.2"))
 
         brand_row = QHBoxLayout()
         brand_row.setContentsMargins(0, 0, 0, 0)
-        brand_row.setSpacing(10)
+        brand_row.setSpacing(spacing("space.2"))
 
         badge = QLabel()
         badge.setObjectName("brandBadge")
@@ -128,7 +128,7 @@ class SidebarWidget(QWidget):
 
         brand_text_layout = QVBoxLayout()
         brand_text_layout.setContentsMargins(0, 0, 0, 0)
-        brand_text_layout.setSpacing(1)
+        brand_text_layout.setSpacing(spacing("space.1"))
 
         caption = QLabel("PERSONAL HUB")
         caption.setObjectName("sidebarBrandCaption")
@@ -165,15 +165,15 @@ class SidebarWidget(QWidget):
         nav_label = QLabel("NAVIGATION")
         nav_label.setFont(QFont("Segoe UI", 9, QFont.Weight.Bold))
         nav_label.setObjectName("subtitleLabel")
-        nav_label.setContentsMargins(12, 0, 0, 0)
+        nav_label.setContentsMargins(spacing("space.3"), spacing("space.1"), 0, 0)
         layout.addWidget(nav_label)
 
         # ── Nav buttons in a tight sub-layout ──────
         nav_widget = QWidget()
         nav_widget.setStyleSheet("background: transparent;")
         nav_layout = QVBoxLayout(nav_widget)
-        nav_layout.setContentsMargins(0, 0, 0, 0)
-        nav_layout.setSpacing(spacing("space.2"))
+        nav_layout.setContentsMargins(spacing("space.2"), 0, spacing("space.2"), 0)
+        nav_layout.setSpacing(spacing("space.1"))
 
         btn_dashboard = self._create_nav_button("dashboard", "Dashboard", 0)
         nav_layout.addWidget(btn_dashboard)
