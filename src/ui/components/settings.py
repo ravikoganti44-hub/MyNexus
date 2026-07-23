@@ -62,7 +62,60 @@ class SettingsWidget(QWidget):
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(30, 30, 30, 30)
         main_layout.setSpacing(20)
-        
+
+        # Shared polish stylesheet applied to the entire settings page for token-backed
+        # controls: tab inactive dimming, editable field affordance, rounded toggles.
+        polish = f"""
+            QTabBar::tab {{
+                color: {token("color.text.secondary")};
+                padding: 10px 16px;
+            }}
+            QTabBar::tab:selected {{
+                color: {token("color.text.primary")};
+            }}
+
+            QSpinBox {{
+                padding: 8px 10px;
+                background-color: {token("color.bg.tertiary")};
+                border: 1px solid {token("color.border.default")};
+                border-radius: {token("radius.md")};
+                color: {token("color.text.primary")};
+                selection-background-color: {token("color.accent.secondary")};
+            }}
+            QSpinBox:hover {{
+                border-color: {token("color.accent.primary")};
+            }}
+            QSpinBox:focus {{
+                border: 1px solid {token("color.accent.primary")};
+            }}
+
+            QComboBox {{
+                padding: 8px 10px;
+                background-color: {token("color.bg.tertiary")};
+                border: 1px solid {token("color.border.default")};
+                border-radius: {token("radius.md")};
+                color: {token("color.text.primary")};
+                selection-background-color: {token("color.accent.secondary")};
+            }}
+            QComboBox:hover {{
+                border-color: {token("color.accent.primary")};
+            }}
+
+            QCheckBox::indicator {{
+                width: 18px; height: 18px;
+                border-radius: 9px;
+                border: 2px solid {token("color.border.light")};
+                background-color: {token("color.bg.tertiary")};
+            }}
+            QCheckBox::indicator:checked {{
+                border: 2px solid {token("color.accent.primary")};
+                background-color: {token("color.accent.primary")};
+            }}
+            QCheckBox::indicator:hover {{
+                border-color: {token("color.accent.primary")};
+            }}
+        """
+
         # Header
         header_layout = QHBoxLayout()
         title = QLabel("Settings & Preferences")
@@ -70,19 +123,20 @@ class SettingsWidget(QWidget):
         header_layout.addWidget(title)
         header_layout.addStretch()
         main_layout.addLayout(header_layout)
-        
+
         # Tab widget for different settings categories
         tabs = QTabWidget()
-        
+        tabs.setStyleSheet(polish)
+
         # Notifications tab
         tabs.addTab(self._create_notifications_tab(), "🔔 Notifications")
-        
+
         # Display tab
         tabs.addTab(self._create_display_tab(), "🎨 Display")
-        
+
         # Behavior tab
         tabs.addTab(self._create_behavior_tab(), "⚙️ Behavior")
-        
+
         # Data tab
         tabs.addTab(self._create_data_tab(), "💾 Data & Backup")
 
@@ -91,13 +145,13 @@ class SettingsWidget(QWidget):
 
         # About tab
         tabs.addTab(self._create_about_tab(), "ℹ️ About")
-        
+
         main_layout.addWidget(tabs)
-        
+
         # Buttons
         buttons_layout = QHBoxLayout()
         buttons_layout.addStretch()
-        
+
         save_btn = PremiumButton("Save Settings", style=PremiumButton.Style.SUCCESS, icon_name="save")
         save_btn.clicked.connect(self._save_settings)
         buttons_layout.addWidget(save_btn)
@@ -109,9 +163,9 @@ class SettingsWidget(QWidget):
         close_btn = PremiumButton("Close", style=PremiumButton.Style.FLAT, icon_name="close")
         close_btn.clicked.connect(self._on_close)
         buttons_layout.addWidget(close_btn)
-        
+
         main_layout.addLayout(buttons_layout)
-        
+
         self.setLayout(main_layout)
     
     def _create_notifications_tab(self):
