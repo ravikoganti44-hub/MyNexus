@@ -54,7 +54,10 @@ class MainWindow(QMainWindow):
         if FLUENT_CHROME:
             self.setWindowFlags(self.windowFlags() | Qt.WindowType.FramelessWindowHint)
         screen = QApplication.primaryScreen().availableGeometry()
-        self.setGeometry(screen)
+        init_w = max(min(int(screen.width() * 0.92), 1400), 900)
+        init_h = max(min(int(screen.height() * 0.88), 920), 600)
+        self.resize(init_w, init_h)
+        QTimer.singleShot(50, self.showMaximized)
         
         # Premium hover lift for the main window (implemented in global stylesheet)
         
