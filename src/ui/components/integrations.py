@@ -105,6 +105,45 @@ class IntegrationsWidget(QWidget):
         
         self.setLayout(main_layout)
     
+    def showEvent(self, event):
+        super().showEvent(event)
+        QTimer.singleShot(0, self._constrain_table_width)
+    
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._constrain_table_width()
+    
+    def _constrain_table_width(self):
+        available = max(self.width() - 48, 320)
+        table_width = max(available, 360)
+        self.table.setMaximumWidth(table_width)
+        self.table.setMinimumWidth(0)
+        if available < 720:
+            scale = max(available / 720.0, 0.55)
+            fixed_col = max(76, int(88 * scale))
+            text_col = max(90, int(150 * scale))
+            header = self.table.horizontalHeader()
+            header.setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+            self.table.setColumnWidth(0, text_col)
+            self.table.setColumnWidth(1, text_col)
+            self.table.setColumnWidth(2, text_col)
+            self.table.setColumnWidth(3, text_col)
+            self.table.setColumnWidth(4, fixed_col)
+            self.table.setColumnWidth(5, fixed_col)
+            self.table.horizontalHeader().setStretchLastSection(False)
+        else:
+            header = self.table.horizontalHeader()
+            header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+            self.table.setColumnWidth(4, 88)
+            self.table.setColumnWidth(5, 88)
+            header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+            header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+            header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+            header.setSectionResizeMode(4, QHeaderView.ResizeMode.Fixed)
+            header.setSectionResizeMode(5, QHeaderView.ResizeMode.Fixed)
+        self.table.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.table.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+    
     @pyqtSlot()
     def refresh_integrations(self):
         """Refresh integrations table"""

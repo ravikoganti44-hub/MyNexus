@@ -226,6 +226,55 @@ class ActivitiesWidget(QWidget):
         
         self.setLayout(main_layout)
     
+    def showEvent(self, event):
+        super().showEvent(event)
+        QTimer.singleShot(0, self._constrain_table_width)
+    
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._constrain_table_width()
+    
+    def _constrain_table_width(self):
+        available = max(self.width() - 48, 320)
+        table_width = max(available, 360)
+        self.table.setMaximumWidth(table_width)
+        self.table.setMinimumWidth(0)
+        if available < 720:
+            scale = max(available / 720.0, 0.55)
+            title_col = max(120, int(260 * scale))
+            middle_col = max(64, int(110 * scale))
+            small_col = max(54, int(80 * scale))
+            fixed_col = max(76, int(100 * scale))
+            header = self.table.horizontalHeader()
+            header.setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+            self.table.setColumnWidth(0, 38)
+            self.table.setColumnWidth(1, title_col)
+            self.table.setColumnWidth(2, middle_col)
+            self.table.setColumnWidth(3, middle_col)
+            self.table.setColumnWidth(4, middle_col)
+            self.table.setColumnWidth(5, small_col)
+            self.table.setColumnWidth(6, middle_col)
+            self.table.setColumnWidth(7, fixed_col)
+            self.table.setColumnWidth(8, fixed_col)
+            self.table.horizontalHeader().setStretchLastSection(False)
+        else:
+            header = self.table.horizontalHeader()
+            header.setStretchLastSection(False)
+            self.table.setColumnWidth(0, 38)
+            self.table.setColumnWidth(7, 100)
+            self.table.setColumnWidth(8, 100)
+            header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
+            header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+            header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+            header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+            header.setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)
+            header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
+            header.setSectionResizeMode(6, QHeaderView.ResizeMode.Stretch)
+            header.setSectionResizeMode(7, QHeaderView.ResizeMode.Fixed)
+            header.setSectionResizeMode(8, QHeaderView.ResizeMode.Fixed)
+        self.table.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.table.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+    
     def apply_filters(self):
         """Apply search and filter criteria"""
         search_text = self.search_input.text().lower()
