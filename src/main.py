@@ -8,6 +8,7 @@ import os
 from PyQt6.QtCore import Qt, QTimer, QEvent, QPropertyAnimation
 from PyQt6.QtGui import QIcon, QFont, QColor, QShortcut, QKeySequence
 from PyQt6.QtWidgets import (
+    QApplication,
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QStackedWidget,
     QSplitter, QStatusBar, QFrame, QLabel, QGraphicsDropShadowEffect,
     QSystemTrayIcon, QMenu, QGraphicsOpacityEffect
