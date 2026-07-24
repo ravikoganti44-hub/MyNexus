@@ -196,16 +196,18 @@ class ActivitiesWidget(QWidget):
         """)
         header = self.table.horizontalHeader()
         header.setStretchLastSection(False)
-        # Column widths
         self.table.setColumnWidth(0, 38)   # checkbox
-        self.table.setColumnWidth(2, 110)  # category
-        self.table.setColumnWidth(3, 100)  # recurrence
-        self.table.setColumnWidth(4, 110)  # next due
-        self.table.setColumnWidth(5, 80)   # days left
-        self.table.setColumnWidth(6, 120)  # status
         self.table.setColumnWidth(7, 100)  # edit
         self.table.setColumnWidth(8, 100)  # delete
-        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)  # Title stretches
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)  # Title
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)  # Category
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)  # Recurrence
+        header.setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)  # Next Due
+        header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)  # Days Left
+        header.setSectionResizeMode(6, QHeaderView.ResizeMode.Stretch)  # Status
+        header.setSectionResizeMode(7, QHeaderView.ResizeMode.Fixed)    # Edit
+        header.setSectionResizeMode(8, QHeaderView.ResizeMode.Fixed)    # Delete
         # Improve row height for readability
         self.table.verticalHeader().setDefaultSectionSize(44)
         self.table.verticalHeader().setVisible(False)
