@@ -235,7 +235,7 @@ QCheckBox {{
 QCheckBox::indicator {{
     width: 18px;
     height: 18px;
-    border-radius: 4px;
+    border-radius: 9px;
     border: 2px solid {tokens["color.border.light"]};
 }}
 
@@ -444,9 +444,10 @@ QTabWidget::pane {{
 }}
 
 QTabBar::tab {{
-    background-color: transparent;
-    color: {tokens["color.text.secondary"]};
+    background-color: {tokens["color.bg.secondary"]};
+    color: {tokens["color.text.tertiary"]};
     border: none;
+    border-bottom: 2px solid transparent;
     padding: {tokens["space.3"]} {tokens["space.4"]};
     margin: 0 2px;
     font-weight: {tokens["type.weight.semibold"]};
@@ -454,13 +455,13 @@ QTabBar::tab {{
 }}
 
 QTabBar::tab:hover {{
-    color: {tokens["color.accent.primary"]};
+    color: {tokens["color.text.primary"]};
+    border-bottom-color: {tokens["color.border.light"]};
 }}
 
 QTabBar::tab:selected {{
-    background-color: transparent;
     color: {tokens["color.accent.primary"]};
-    border-bottom: 3px solid {tokens["color.accent.primary"]};
+    border-bottom-color: {tokens["color.accent.primary"]};
 }}
 
 /* ======================== SPIN BOXES ======================== */
