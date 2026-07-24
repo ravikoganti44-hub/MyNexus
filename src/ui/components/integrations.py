@@ -3,9 +3,10 @@ Integrations management widget
 """
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QTableWidget,
-    QTableWidgetItem, QDialog, QLineEdit, QComboBox, QFormLayout, QMessageBox
+    QTableWidgetItem, QDialog, QLineEdit, QComboBox, QFormLayout, QMessageBox,
+    QHeaderView
 )
-from PyQt6.QtCore import Qt, pyqtSlot
+from PyQt6.QtCore import Qt, QTimer, pyqtSlot
 from PyQt6.QtGui import QFont
 
 
@@ -89,7 +90,6 @@ class IntegrationsWidget(QWidget):
                 font-weight: 700; font-size: 11px;
             }}
         """)
-        from PyQt6.QtWidgets import QHeaderView
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.table.setColumnWidth(4, 88)

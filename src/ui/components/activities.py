@@ -225,6 +225,8 @@ class ActivitiesWidget(QWidget):
         main_layout.addWidget(self.activity_ai_panel)
         
         self.setLayout(main_layout)
+        self.setMaximumWidth(1200)
+        self.setMinimumWidth(0)
     
     def showEvent(self, event):
         super().showEvent(event)
