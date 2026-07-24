@@ -49,10 +49,11 @@ class MainWindow(QMainWindow):
         
         # Window chrome
         self.setWindowTitle(APP_TITLE)
-        self.setGeometry(100, 100, 1400, 900)
         self.setWindowIcon(IconManager.get_icon("my_nexus", size=64, color=_main_token("color.accent.primary")))
         if FLUENT_CHROME:
             self.setWindowFlags(self.windowFlags() | Qt.WindowType.FramelessWindowHint)
+        screen = QApplication.primaryScreen().availableGeometry()
+        self.setGeometry(screen)
         
         # Premium hover lift for the main window (implemented in global stylesheet)
         
