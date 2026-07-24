@@ -180,14 +180,41 @@ class SidebarWidget(QWidget):
         nav_label.setContentsMargins(spacing("space.3"), spacing("space.2"), 0, 0)
         content_layout.addWidget(nav_label)
 
-        # Nav items
+        # Nav buttons
         nav_scroll_content = QWidget()
+        nav_scroll_content.setStyleSheet("background: transparent;")
         nav_layout = QVBoxLayout(nav_scroll_content)
         nav_layout.setContentsMargins(spacing("space.2"), 0, spacing("space.2"), 0)
         nav_layout.setSpacing(spacing("space.1"))
 
-        for btn, text in self._buttons:
-            nav_layout.addWidget(btn)
+        btn_dashboard = self._create_nav_button("dashboard", "Dashboard", 0)
+        nav_layout.addWidget(btn_dashboard)
+        self.current_button = btn_dashboard
+        btn_dashboard.click()
+
+        btn_activities = self._create_nav_button("activities", "My Activities", 1)
+        nav_layout.addWidget(btn_activities)
+
+        btn_integrations = self._create_nav_button("integrations", "Integrations", 2)
+        nav_layout.addWidget(btn_integrations)
+
+        btn_connected_apps = self._create_nav_button("connected_apps", "Connected Apps", 3)
+        nav_layout.addWidget(btn_connected_apps)
+
+        btn_document_vault = self._create_nav_button("document_vault", "Document Vault", 4)
+        nav_layout.addWidget(btn_document_vault)
+
+        btn_budget = self._create_nav_button("budget", "Budget Tracker", 5)
+        nav_layout.addWidget(btn_budget)
+
+        btn_calendar = self._create_nav_button("calendar_view", "Calendar View", 6)
+        nav_layout.addWidget(btn_calendar)
+
+        btn_net_worth = self._create_nav_button("net_worth", "Net Worth", 7)
+        nav_layout.addWidget(btn_net_worth)
+
+        btn_settings = self._create_nav_button("settings", "Settings", 8)
+        nav_layout.addWidget(btn_settings)
 
         content_layout.addWidget(nav_scroll_content, 1)
 
