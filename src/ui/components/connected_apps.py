@@ -2156,16 +2156,26 @@ class ConnectedAppsWidget(QWidget):
             pass
     
     def render_card_view(self, apps):
-        """Render applications in card view (2-column grid)"""
-        self.card_layout.setHorizontalSpacing(16)
-        self.card_layout.setVerticalSpacing(16)
+        """Render applications in card view (responsive width)."""
+        self.card_layout.setHorizontalSpacing(20)
+        self.card_layout.setVerticalSpacing(20)
         self.card_layout.setColumnStretch(0, 1)
         self.card_layout.setColumnStretch(1, 1)
-        self.card_layout.setColumnStretch(2, 0)
-        self.card_layout.setColumnStretch(3, 0)
+        for col in range(2, 10):
+            self.card_layout.setColumnStretch(col, 0)
+
+        max_card_width = 340
+        container = getattr(self, 'cards_container', None)
+        if container is not None:
+            container_width = container.width()
+            if container_width > 0:
+                max_card_width = max(260, (container_width // 2) - 30)
+
         row, col = 0, 0
         for app in apps:
             card = ApplicationCardWidget(app, self)
+            card.setMaximumWidth(max_card_width)
+            card.setMinimumWidth(min(240, max_card_width))
             self.card_layout.addWidget(card, row, col)
             col += 1
             if col >= 2:

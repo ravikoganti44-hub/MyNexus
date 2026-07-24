@@ -381,9 +381,8 @@ class DocumentVaultWidget(QWidget):
         if viewport_width <= 0:
             return
 
-        action_width = 200
-        remaining = viewport_width - action_width
-        # Distribute remaining space: Name 34%, Category 22%, Type 24%, Reference 20%
+        action_width = 150
+        remaining = max(0, viewport_width - action_width)
         category_width = max(110, int(remaining * 0.22))
         type_width = max(120, int(remaining * 0.24))
         reference_width = max(94, int(remaining * 0.20))

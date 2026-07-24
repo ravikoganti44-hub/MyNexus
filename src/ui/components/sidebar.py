@@ -104,7 +104,7 @@ class SidebarWidget(QWidget):
         # Header Frame
         header_frame = QFrame()
         header_frame.setObjectName("sidebarBrandPanel")
-        header_frame.setFixedHeight(88)
+        header_frame.setFixedHeight(72)
         header_layout = QVBoxLayout()
         header_layout.setContentsMargins(10, 10, 10, 10)
         header_layout.setSpacing(spacing("space.2"))
@@ -161,81 +161,65 @@ class SidebarWidget(QWidget):
         separator.setStyleSheet(f"background-color: {token('color.border.default')};")
         layout.addWidget(separator)
         
-        # Navigation section label
-        nav_label = QLabel("NAVIGATION")
-        nav_label.setFont(QFont("Segoe UI", 9, QFont.Weight.Bold))
-        nav_label.setObjectName("subtitleLabel")
-        nav_label.setContentsMargins(spacing("space.3"), spacing("space.1"), 0, 0)
-        layout.addWidget(nav_label)
+        # ── Nav buttons in a scrollable sub-layout ──────
+        from PyQt6.QtWidgets import QScrollArea
+        content_widget = QWidget()
+        content_layout = QVBoxLayout(content_widget)
+        content_layout.setContentsMargins(0, 0, 0, 0)
+        content_layout.setSpacing(0)
 
-        # ── Nav buttons in a tight sub-layout ──────
-        nav_widget = QWidget()
-        nav_widget.setStyleSheet("background: transparent;")
-        nav_layout = QVBoxLayout(nav_widget)
+        # Header
+        content_layout.addSpacing(10)
+        content_layout.addWidget(header_frame)
+
+        # Nav section header
+        nav_label = QLabel("NAVIGATION")
+        nav_label.setObjectName("navHeader")
+        nav_label.setFont(QFont("Segoe UI", 9, QFont.Weight.Bold))
+        nav_label.setStyleSheet(f"color: {token('color.text.tertiary')}; letter-spacing: 0.12em;")
+        nav_label.setContentsMargins(spacing("space.3"), spacing("space.2"), 0, 0)
+        content_layout.addWidget(nav_label)
+
+        # Nav items
+        nav_scroll_content = QWidget()
+        nav_layout = QVBoxLayout(nav_scroll_content)
         nav_layout.setContentsMargins(spacing("space.2"), 0, spacing("space.2"), 0)
         nav_layout.setSpacing(spacing("space.1"))
 
-        btn_dashboard = self._create_nav_button("dashboard", "Dashboard", 0)
-        nav_layout.addWidget(btn_dashboard)
-        self.current_button = btn_dashboard
-        btn_dashboard.click()  # Set as active by default
+        for btn, text in self._buttons:
+            nav_layout.addWidget(btn)
 
-        btn_activities = self._create_nav_button("activities", "My Activities", 1)
-        nav_layout.addWidget(btn_activities)
+        content_layout.addWidget(nav_scroll_content, 1)
 
-        btn_integrations = self._create_nav_button("integrations", "Integrations", 2)
-        nav_layout.addWidget(btn_integrations)
-
-        btn_connected_apps = self._create_nav_button("connected_apps", "Connected Apps", 3)
-        nav_layout.addWidget(btn_connected_apps)
-
-        btn_document_vault = self._create_nav_button("document_vault", "Document Vault", 4)
-        nav_layout.addWidget(btn_document_vault)
-
-        btn_budget = self._create_nav_button("budget", "Budget Tracker", 5)
-        nav_layout.addWidget(btn_budget)
-
-        btn_calendar = self._create_nav_button("calendar_view", "Calendar View", 6)
-        nav_layout.addWidget(btn_calendar)
-
-        btn_net_worth = self._create_nav_button("net_worth", "Net Worth", 7)
-        nav_layout.addWidget(btn_net_worth)
-
-        btn_settings = self._create_nav_button("settings", "Settings", 8)
-        nav_layout.addWidget(btn_settings)
-
-        # Scroll wrapper so nav items never clip at small window heights
-        from PyQt6.QtWidgets import QScrollArea
-        nav_scroll = QScrollArea()
-        nav_scroll.setWidgetResizable(True)
-        nav_scroll.setFrameShape(QFrame.Shape.NoFrame)
-        nav_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        nav_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        nav_scroll.setWidget(nav_widget)
-        layout.addWidget(nav_scroll, 1)
-
-        # Spacer
-        spacer = QSpacerItem(20, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-        layout.addItem(spacer)
-
-        # Footer separator
+        # Footer
         footer_separator = QFrame()
+        footer_separator.setFrameShape(QFrame.Shape.HLine)
+        footer_separator.setFixedHeight(1)
         footer_separator.setStyleSheet(f"background-color: {token('color.border.default')};")
-        layout.addWidget(footer_separator)
+        content_layout.addWidget(footer_separator)
 
-        # Footer meta
         developed_by_label = QLabel("Developed by Sesank Koganti")
         developed_by_label.setObjectName("footerMetaLabel")
         developed_by_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         developed_by_label.setFont(QFont("Segoe UI", 8, QFont.Weight.Medium))
-        layout.addWidget(developed_by_label)
+        developed_by_label.setStyleSheet(f"color: {token('color.text.muted')};")
+        content_layout.addWidget(developed_by_label)
 
         version_label = QLabel(APP_VERSION)
         version_label.setObjectName("footerVersionLabel")
         version_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         version_label.setFont(QFont("Segoe UI", 8, QFont.Weight.DemiBold))
-        layout.addWidget(version_label)
-        
+        version_label.setStyleSheet(f"color: {token('color.text.muted')};")
+        content_layout.addWidget(version_label)
+
+        nav_scroll = QScrollArea()
+        nav_scroll.setWidgetResizable(True)
+        nav_scroll.setFrameShape(QFrame.Shape.NoFrame)
+        nav_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        nav_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        nav_scroll.setWidget(content_widget)
+        layout.addWidget(nav_scroll)
+
         self.setLayout(layout)
 
     def _animate_width_to(self, target_width: int):
